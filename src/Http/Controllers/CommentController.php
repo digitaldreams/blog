@@ -30,7 +30,7 @@ class CommentController extends Controller
      */
     public function index(Index $request, Post $post)
     {
-        return view('pages.comments.index', ['records' => Comment::paginate(10)]);
+        return view('blog::pages.comments.index', ['records' => Comment::paginate(10)]);
     }
 
     /**

@@ -32,7 +32,7 @@ class PostController extends Controller
      */
     public function index(Index $request)
     {
-        return view('pages.posts.index', ['records' => Post::with(['category', 'user'])->paginate(10)]);
+        return view('blog::pages.posts.index', ['records' => Post::with(['category', 'user'])->paginate(10)]);
     }
 
     /**
@@ -44,7 +44,7 @@ class PostController extends Controller
      */
     public function show(Request $request, Post $post)
     {
-        return view('pages.posts.show', [
+        return view('blog::pages.posts.show', [
             'record' => $post,
         ]);
     }
@@ -57,7 +57,7 @@ class PostController extends Controller
      */
     public function create(Create $request)
     {
-        return view('pages.posts.create', [
+        return view('blog::pages.posts.create', [
             'model' => new Post,
             'categories' => Category::all(['id', 'title'])
         ]);
@@ -96,7 +96,7 @@ class PostController extends Controller
      */
     public function edit(Edit $request, Post $post)
     {
-        return view('pages.posts.edit', [
+        return view('blog::pages.posts.edit', [
             'model' => $post,
             'categories' => Category::all(['id', 'title'])
         ]);
