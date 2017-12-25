@@ -75,7 +75,7 @@ class PostController extends Controller
         $model->fill($request->all());
 
         if ($request->hasFile('image')) {
-            $model->image = $request->file('image')->store('public/images');
+            $model->image = $request->file('image')->store('images', 'public');
         }
         if ($model->save()) {
 
@@ -145,4 +145,5 @@ class PostController extends Controller
 
         return redirect()->back();
     }
+
 }
