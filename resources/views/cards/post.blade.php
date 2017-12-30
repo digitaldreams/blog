@@ -5,7 +5,7 @@
             <div class="col-sm-9">
                 <h3><a href="{{route('posts.show',$record->slug)}}"> {{$record->title}}</a></h3>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-3 text-right">
                 @if(auth()->check())
                     <div class="btn-group" style="float: left">
                         <a href="{{route('posts.edit',$record->slug)}}">

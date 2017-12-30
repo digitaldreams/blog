@@ -12,7 +12,7 @@
     @if($records->count()>0)
         <div class="row">
             @foreach($records as $record)
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     @include('blog::cards.post')
                 </div>
             @endforeach

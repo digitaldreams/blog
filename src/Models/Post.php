@@ -126,7 +126,7 @@ class Post extends Model
 
     public function getImageUrl()
     {
-        return 'storage' . '/' . $this->image;
+        return asset('storage' . '/' . $this->image);
     }
 
     /**
