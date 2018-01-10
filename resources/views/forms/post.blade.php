@@ -1,4 +1,4 @@
-<form action="{{$route or route('posts.store')}}" method="POST" enctype="multipart/form-data">
+<form action="{{$route or route('blog::posts.store')}}" method="POST" enctype="multipart/form-data">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method or 'POST'}}"/>
 

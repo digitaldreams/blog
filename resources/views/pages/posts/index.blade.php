@@ -5,7 +5,7 @@
     </li>
 @endsection
 @section('tools')
-    <a href="{{route('posts.create')}}"><span class="fa fa-plus"></span></a>
+    <a href="{{route('blog::posts.create')}}"><span class="fa fa-plus"></span></a>
 @endsection
 @section('content')
 

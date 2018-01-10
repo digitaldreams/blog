@@ -60,6 +60,7 @@ class CategoryController extends Controller
 
         return view('blog::pages.categories.create', [
             'model' => new Category,
+            'categories'=>Category::all(['id','parent_id','title'])
 
         ]);
     }
@@ -78,7 +79,7 @@ class CategoryController extends Controller
         if ($model->save()) {
 
             session()->flash('app_message', 'Category saved successfully');
-            return redirect()->route('categories.index');
+            return redirect()->route('blog::categories.index');
         } else {
             session()->flash('app_message', 'Something is wrong while saving Category');
         }
@@ -97,6 +98,8 @@ class CategoryController extends Controller
 
         return view('blog::pages.categories.edit', [
             'model' => $category,
+            'categories' => Category::all(['id','parent_id','title'])
+
 
         ]);
     }
@@ -115,7 +118,7 @@ class CategoryController extends Controller
         if ($category->save()) {
 
             session()->flash('app_message', 'Category successfully updated');
-            return redirect()->route('categories.index');
+            return redirect()->route('blog::categories.index');
         } else {
             session()->flash('app_error', 'Something is wrong while updating Category');
         }

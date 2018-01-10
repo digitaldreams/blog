@@ -1,18 +1,18 @@
 @extends(config('blog.layout'))
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        <a href="{{route('posts.index')}}">Posts</a>
+        <a href="{{route('blog::posts.index')}}">Posts</a>
     </li>
     <li class="breadcrumb-item">
         {{$record->title}}
     </li>
 @endsection
 @section('tools')
-    <a href="{{route('posts.edit',$record->slug)}}">
+    <a href="{{route('blog::posts.edit',$record->slug)}}">
         <span class="fa fa-pencil"></span>
     </a>
     &nbsp;&nbsp;
-    <a href="{{route('posts.create')}}">
+    <a href="{{route('blog::posts.create')}}">
         <span class="fa fa-plus"></span>
     </a>
 @endsection

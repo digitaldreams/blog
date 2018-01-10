@@ -1,10 +1,10 @@
 @extends(config('blog.layout'))
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        <a href="{{route('posts.index')}}">Posts</a>
+        <a href="{{route('blog::posts.index')}}">Posts</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="{{route('posts.show',$model->slug)}}">{{$model->title}}</a>
+        <a href="{{route('blog::posts.show',$model->slug)}}">{{$model->title}}</a>
     </li>
 @endsection
 @section('tools')
@@ -19,7 +19,7 @@
 
                 <div class="panel-body">
                     @include('blog::forms.post',[
-                    'route'=>route('posts.update',$model->slug),
+                    'route'=>route('blog::posts.update',$model->slug),
                     'method'=>'PUT'
                     ])
                 </div>

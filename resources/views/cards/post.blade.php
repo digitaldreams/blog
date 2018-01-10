@@ -3,16 +3,16 @@
     <div class="card-header">
         <div class="row">
             <div class="col-sm-9">
-                <h3><a href="{{route('posts.show',$record->slug)}}"> {{$record->title}}</a></h3>
+                <h3><a href="{{route('blog::posts.show',$record->slug)}}"> {{$record->title}}</a></h3>
             </div>
             <div class="col-sm-3 text-right">
                 @if(auth()->check())
                     <div class="btn-group" style="float: left">
-                        <a href="{{route('posts.edit',$record->slug)}}">
+                        <a href="{{route('blog::posts.edit',$record->slug)}}">
                             <span class="fa fa-pencil"></span>
                         </a>
                         <form onsubmit="return confirm('Are you sure you want to delete?')"
-                              action="{{route('posts.destroy',$record->slug)}}"
+                              action="{{route('blog::posts.destroy',$record->slug)}}"
                               method="post" style="display: inline">
                             {{csrf_field()}}
                             {{method_field('DELETE')}}
@@ -26,7 +26,7 @@
     </div>
     <div class="card-block">
         <p class="card-text text-muted text-right">Under
-            <a href="{{route('categories.show',$record->category->slug)}}"> {{$record->category->title}}</a>
+            <a href="{{route('blog::categories.show',$record->category->slug)}}"> {{$record->category->title}}</a>
             by {{$record->user->name}}
             at {{$record->created_at->diffForHumans()}}</p>
 

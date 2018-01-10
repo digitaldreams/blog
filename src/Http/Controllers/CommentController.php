@@ -48,7 +48,7 @@ class CommentController extends Controller
         $model->user_id = auth()->user()->id;
         if ($model->save()) {
             session()->flash('app_message', 'Comment saved successfully');
-            return redirect()->route('posts.show', $post->slug);
+            return redirect()->route('blog::posts.show', $post->slug);
         } else {
             session()->flash('app_message', 'Something is wrong while saving Comment');
         }

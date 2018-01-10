@@ -80,7 +80,7 @@ class PostController extends Controller
         if ($model->save()) {
 
             session()->flash('app_message', 'Post saved successfully');
-            return redirect()->route('posts.index');
+            return redirect()->route('blog::posts.index');
         } else {
             session()->flash('app_message', 'Something is wrong while saving Post');
         }
@@ -120,7 +120,7 @@ class PostController extends Controller
         if ($post->save()) {
 
             session()->flash('app_message', 'Post successfully updated');
-            return redirect()->route('posts.index');
+            return redirect()->route('blog::posts.index');
         } else {
             session()->flash('app_error', 'Something is wrong while updating Post');
         }

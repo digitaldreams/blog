@@ -1,7 +1,7 @@
 @extends(config('blog.layout'))
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        <a href="{{route('categories.index')}}">Categories</a>
+        <a href="{{route('blog::categories.index')}}">Categories</a>
     </li>
     <li class="breadcrumb-item">
         {{$record->title}}

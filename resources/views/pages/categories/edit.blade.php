@@ -1,29 +1,25 @@
 @extends(config('blog.layout'))
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{route('blog::categories.index')}}">Categories</a> </li>
+    <li class="breadcrumb-item"><a href="{{route('blog::categories.show',$model->slug)}}">{{$model->title}}</a> </li>
+    <li class="breadcrumb-item">Edit</li>
+@endsection
+@section('tools')
+    <a href="{{route('blog::categories.create')}}">
+        <span class="glyphicon glyphicon-plus"></span>
+    </a>
+@endsection
 @section('content')
-<div class="row">
-    <div class='col-md-12'>
-        <div class='panel panel-default'>
-            <div class='panel-heading'>
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h4>
-                            Edit {{$model->id}}
-                        </h4>
-                    </div>
-                    <div class="col-sm-4 text-right">
-                        <a href="{{route('categories.create')}}">
-                            <span class="glyphicon glyphicon-plus"></span> categories
-                        </a>
-                    </div>
+    <div class="row">
+        <div class='col-md-12'>
+            <div class='panel panel-default'>
+                           <div class="panel-body">
+                    @include('blog::forms.category',[
+                    'route'=>route('blog::categories.update',$model->slug),
+                    'method'=>'PUT'
+                    ])
                 </div>
-            </div>
-            <div class="panel-body">
-                @include('forms.category',[
-                'route'=>route('blog::categories.update',$model->id),
-                'method'=>'PUT'
-                ])
             </div>
         </div>
     </div>
-</div>
 @endSection

@@ -25,8 +25,8 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            'title ' => 'nullable|max:255',
-            'slug ' => 'required|unique:categories,slug|max:255',
+            'title' => 'nullable|max:255',
+            'slug' => 'required|max:255|unique:categories,slug,'.$this->route('category')->id,
         ];
     }
 
