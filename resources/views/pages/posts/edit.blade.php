@@ -8,7 +8,7 @@
     </li>
 @endsection
 @section('tools')
-    <a href="{{route('posts.create')}}">
+    <a href="{{route('blog::posts.create')}}">
         <span class="fa fa-plus"></span>
     </a>
 @endsection

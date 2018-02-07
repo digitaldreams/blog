@@ -3,7 +3,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col-sm-9">
-                <h3><a href="{{route('blog::posts.show',$record->slug)}}"> {{$record->title}}</a></h3>
+                <h4><a href="{{route('blog::posts.show',$record->slug)}}"> {{$record->title}}</a></h4>
             </div>
             <div class="col-sm-3 text-right">
                 @if(auth()->check())

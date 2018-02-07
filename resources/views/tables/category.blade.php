@@ -6,15 +6,17 @@
                 <a href="{{route('blog::categories.show',$record->slug)}}"> {{$record->title }}</a>
                 <span class="badge badge-dark">{{$record->posts_count}}</span>
             </td>
-            <td>
+            <td class="text-right">
                 @if(auth()->check())
                     <a href="{{route('blog::categories.show',$record->slug)}}">
                         <span class="fa fa-eye"></span>
-                    </a><a href="{{route('blog::categories.edit',$record->slug)}}">
+                    </a>
+                    <a href="{{route('blog::categories.edit',$record->slug)}}">
                         <span class="fa fa-pencil"></span>
                     </a>
                     <form onsubmit="return confirm('Are you sure you want to delete?')"
-                          action="{{route('blog::categories.destroy',$record->slug)}}" method="post" style="display: inline">
+                          action="{{route('blog::categories.destroy',$record->slug)}}" method="post"
+                          style="display: inline">
                         {{csrf_field()}}
                         {{method_field('DELETE')}}
                         <button type="submit" class="btn btn-default cursor-pointer  btn-sm"><i

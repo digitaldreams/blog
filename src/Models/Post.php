@@ -24,7 +24,7 @@ class Post extends Model
     /**
      * Database table name
      */
-    protected $table = 'posts';
+    protected $table = 'blog_posts';
     /**
      * Protected columns from mass assignment
      */
@@ -105,15 +105,6 @@ class Post extends Model
     public function getContentAttribute($value)
     {
         return htmlspecialchars_decode($this->body);
-    }
-
-
-    /**
-     * image column mutator.
-     */
-    public function setImageAttribute($value)
-    {
-        $this->attributes['image'] = htmlspecialchars($value);
     }
 
     /**

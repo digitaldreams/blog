@@ -25,8 +25,9 @@ class Store extends FormRequest
     public function rules()
     {
         return [
+            'parent_id' => 'nullable|exists:blog_categories,id',
             'title' => 'nullable|max:255',
-            'slug' => 'required|unique:categories,slug|max:255',
+            'slug' => 'nullable|unique:blog_categories,slug|max:255',
         ];
     }
 

@@ -60,7 +60,6 @@ class CategoryController extends Controller
 
         return view('blog::pages.categories.create', [
             'model' => new Category,
-            'categories'=>Category::all(['id','parent_id','title'])
 
         ]);
     }
@@ -95,12 +94,8 @@ class CategoryController extends Controller
      */
     public function edit(Request $request, Category $category)
     {
-
         return view('blog::pages.categories.edit', [
             'model' => $category,
-            'categories' => Category::all(['id','parent_id','title'])
-
-
         ]);
     }
 

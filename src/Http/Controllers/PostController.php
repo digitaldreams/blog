@@ -32,7 +32,7 @@ class PostController extends Controller
      */
     public function index(Index $request)
     {
-        return view('blog::pages.posts.index', ['records' => Post::with(['category', 'user'])->paginate(10)]);
+        return view('blog::pages.posts.index', ['records' => Post::with(['category', 'user'])->paginate(6)]);
     }
 
     /**

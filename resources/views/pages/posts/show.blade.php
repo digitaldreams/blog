@@ -40,7 +40,7 @@
                 </div>
             @endforeach
             @if(auth()->check())
-                <form action="{{route('posts.comments.store',$record->slug)}}" method="post">
+                <form action="{{route('blog::posts.comments.store',$record->slug)}}" method="post">
                     {{csrf_field()}}
                     <div class="form-group">
                         <textarea class="form-control" name="body" placeholder="Say about this post"></textarea>

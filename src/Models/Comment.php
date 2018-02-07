@@ -20,7 +20,7 @@ class Comment extends Model
     /**
      * Database table name
      */
-    protected $table = 'comments';
+    protected $table = 'blog_comments';
     /**
      * Protected columns from mass assignment
      */

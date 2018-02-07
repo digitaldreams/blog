@@ -1,33 +1,20 @@
 <form action="{{$route or route('blog::categories.store')}}" method="POST">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method or 'POST'}}"/>
-    <div class="row">
-        <div class="col-sm-6 form-group">
-            <label for="title">Title</label>
-            <input type="text" class="form-control {{ $errors->has('title') ? ' is-invalid' : '' }}" name="title" id="title" value="{{old('title',$model->title)}}"
-                   placeholder="" maxlength="255">
-            @if($errors->has('title'))
-                <span class="invalid-feedback">
+    <div class="form-group {{ $errors->has('title') ? ' has-danger' : '' }}">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" name="title" id="title" value="{{old('title',$model->title)}}"
+               placeholder="" maxlength="255">
+        @if($errors->has('title'))
+            <span class="invalid-feedback">
         <strong>{{ $errors->first('title') }}</strong>
     </span>
-            @endif
-        </div>
-        <div class="form-group col-sm-6">
-            <label>Parent Category</label>
-            <select name="parent_id" class="form-control">
-                <option value="">None</option>
-                @foreach($categories as $category)
-                    <option value="{{$category->id}}" {{$category->id == $model->parent_id ? 'selected' : ''}}>{{$category->title}}</option>
-                @endforeach
-            </select>
-        </div>
-
+        @endif
     </div>
 
-
-    <div class="form-group ">
+    <div class="form-group {{ $errors->has('slug') ? ' has-danger' : '' }}">
         <label for="slug">Slug</label>
-        <input type="text" class="form-control {{ $errors->has('slug') ? ' is-invalid' : '' }} " name="slug" id="slug" value="{{old('slug',$model->slug)}}"
+        <input type="text" class="form-control is-invalid" name="slug" id="slug" value="{{old('slug',$model->slug)}}"
                placeholder="" maxlength="255" required="required">
         @if($errors->has('slug'))
             <span class="invalid-feedback">

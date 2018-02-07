@@ -26,9 +26,9 @@ class Update extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'slug' => 'nullable|max:255|unique:posts,slug,'.$this->route('post')->id,
+            'slug' => 'nullable|max:255|unique:blog_posts,slug,'.$this->route('post')->id,
             'body' => 'required',
-            'category_id' => 'required|exists:categories,id|numeric',
+            'category_id' => 'required|exists:blog_categories,id|numeric',
             'image' => 'image|max:255',
         ];
     }
