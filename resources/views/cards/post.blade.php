@@ -1,34 +1,26 @@
-<div class="card card-default">
-    <img class="card-img-top" src="{{$record->getImageUrl()}}" alt="{{$record->title}}">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-sm-9">
-                <h4><a href="{{route('blog::posts.show',$record->slug)}}"> {{$record->title}}</a></h4>
-            </div>
-            <div class="col-sm-3 text-right">
-                @if(auth()->check())
-                    <div class="btn-group" style="float: left">
-                        <a href="{{route('blog::posts.edit',$record->slug)}}">
-                            <span class="fa fa-pencil"></span>
-                        </a>
-                        <form onsubmit="return confirm('Are you sure you want to delete?')"
-                              action="{{route('blog::posts.destroy',$record->slug)}}"
-                              method="post" style="display: inline">
-                            {{csrf_field()}}
-                            {{method_field('DELETE')}}
-                            <button type="submit" class="btn btn-default cursor-pointer  btn-sm"><i
-                                        class="text-danger fa fa-remove"></i></button>
-                        </form>
-                    </div>
-                @endif
-            </div>
+<div class="card bg-dark mb-2">
+    <a style="border: 0;color:white" href="{{route('blog::posts.show',$record->slug)}}">
+        <img class="card-img-top" src="{{$record->getImageUrl()}}" alt="{{$record->title}}">
+    </a>
+    <div class="card-body">
+        <div class="card-title">
+            <h3 class="h6">
+                <a href="{{route('blog::posts.show',$record->slug)}}"> {{$record->title}}</a>
+
+            </h3>
         </div>
-    </div>
-    <div class="card-block">
         <p class="card-text text-muted text-right">Under
             <a href="{{route('blog::categories.show',$record->category->slug)}}"> {{$record->category->title}}</a>
             by {{$record->user->name}}
-            at {{$record->created_at->diffForHumans()}}</p>
+            at {{$record->created_at->diffForHumans()}}
+            @if(auth()->check())
+                <a class="card-link" href="{{route('blog::posts.edit',$record->slug)}}">
+                    <span class="fa fa-pencil"></span>
+                </a>
+                @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
+            @endif
+        </p>
+
 
     </div>
 </div>
