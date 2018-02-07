@@ -8,32 +8,38 @@
     </li>
 @endsection
 @section('tools')
-    <a href="{{route('blog::posts.edit',$record->slug)}}">
-        <span class="fa fa-pencil"></span>
-    </a>
-    &nbsp;&nbsp;
-    <a href="{{route('blog::posts.create')}}">
-        <span class="fa fa-plus"></span>
-    </a>
+    @if(auth()->check())
+        &nbsp;
+        <a href="{{route('blog::posts.edit',$record->slug)}}">
+            <span class="fa fa-pencil"></span>
+        </a>
+        &nbsp;&nbsp;
+        @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
+
+        <a href="{{route('blog::posts.create')}}">
+            <span class="fa fa-plus"></span>
+        </a>
+
+    @endif
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-9">
             <img src="{{$record->getImageUrl()}}" class="img-responsive img-rounded">
             <h1>{{$record->title}}</h1>
             {!! $record->content !!}
 
             @foreach($record->comments as $comment)
                 <div class="card mb-3">
-                    <blockquote class="card-body quote">
+                    <blockquote class="p-1 quote">
                         <p>
                             <img align="left" class="img-responsive img-thumbnail mr-2" style="max-width: 60px"
                                  src="{{$comment->user->getAvatarThumb()}}"> {{$comment->body}}
                         </p>
-                        <footer class="text-right">
+                        <footer class="blockquote-footer text-right">
                             <small class="text-muted">
-                                {{$comment->user->getFullName()}} in <cite
-                                        title="Source Title">{{$comment->created_at->diffForHumans()}}</cite>
+                                {{$comment->user->getFullName()}} in
+                                <cite title="Source Title">{{$comment->created_at->diffForHumans()}}</cite>
                             </small>
                         </footer>
                     </blockquote>
@@ -53,7 +59,12 @@
             @else
                 <a href="{{route('login')}}">Login in</a>  to comments
             @endif
-
         </div>
+        <aside class="col-sm-3">
+            <h3 class="h6">Related posts</h3>
+            @foreach($relatedPosts as $post)
+                @include('blog::cards.post-short',['record'=>$post])
+            @endforeach
+        </aside>
     </div>
 @endSection

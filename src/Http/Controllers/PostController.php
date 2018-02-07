@@ -32,7 +32,7 @@ class PostController extends Controller
      */
     public function index(Index $request)
     {
-        return view('blog::pages.posts.index', ['records' => Post::with(['category', 'user'])->paginate(6)]);
+        return view('blog::pages.posts.index', ['records' => Post::with(['category', 'user'])->withCount('comments')->paginate(6)]);
     }
 
     /**
@@ -46,6 +46,7 @@ class PostController extends Controller
     {
         return view('blog::pages.posts.show', [
             'record' => $post,
+            'relatedPosts'=> Post::where('category_id',$post->category_id)->where('id','!=',$post->id)->inRandomOrder()->limit(3)->get()
         ]);
     }
 
