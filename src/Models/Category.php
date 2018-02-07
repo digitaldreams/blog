@@ -51,11 +51,29 @@ class Category extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function children()
+    {
+        return $this->hasMany(static::class, 'parent_id');
+    }
+
+    public function parentCategory()
+    {
+        return $this->belongsTo(static::class, 'parent_id');
+    }
+
+    /**
      * title column mutator.
      */
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = htmlspecialchars($value);
+    }
+
+    public function scopeParent($query)
+    {
+        return $query->whereNull('parent_id');
     }
 
     /**

@@ -31,7 +31,7 @@ class CategoryController extends Controller
      */
     public function index(Index $request)
     {
-        return view('blog::pages.categories.index', ['records' => Category::withCount('posts')->paginate(10)]);
+        return view('blog::pages.categories.index', ['records' => Category::withCount('posts')->with('parentCategory')->paginate(10)]);
     }
 
     /**
@@ -57,10 +57,9 @@ class CategoryController extends Controller
      */
     public function create(Create $request)
     {
-
         return view('blog::pages.categories.create', [
             'model' => new Category,
-
+            'categories' => Category::with('children')->parent()->get(['id', 'title'])
         ]);
     }
 
@@ -96,6 +95,7 @@ class CategoryController extends Controller
     {
         return view('blog::pages.categories.edit', [
             'model' => $category,
+            'categories' => Category::with('children')->parent()->get(['id', 'title'])
         ]);
     }
 

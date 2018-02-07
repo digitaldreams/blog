@@ -3,17 +3,22 @@
     @foreach($records as $record)
         <tr>
             <td>
+                @if(!empty($record->parentCategory))
+                    <a href="{{route('blog::categories.show',$record->parentCategory->slug)}}"> {{$record->parentCategory->title }}</a> <i class="fa fa-arrow-right"></i>
+                @endif
                 <a href="{{route('blog::categories.show',$record->slug)}}"> {{$record->title }}</a>
                 <span class="badge badge-dark">{{$record->posts_count}}</span>
             </td>
             <td class="text-right">
                 @if(auth()->check())
+
                     <a href="{{route('blog::categories.show',$record->slug)}}">
                         <span class="fa fa-eye"></span>
-                    </a>
+                    </a>&nbsp;&nbsp;
                     <a href="{{route('blog::categories.edit',$record->slug)}}">
                         <span class="fa fa-pencil"></span>
                     </a>
+                    &nbsp;&nbsp;
                     <form onsubmit="return confirm('Are you sure you want to delete?')"
                           action="{{route('blog::categories.destroy',$record->slug)}}" method="post"
                           style="display: inline">
