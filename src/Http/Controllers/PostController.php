@@ -32,7 +32,10 @@ class PostController extends Controller
      */
     public function index(Index $request)
     {
-        return view('blog::pages.posts.index', ['records' => Post::with(['category', 'user'])->withCount('comments')->paginate(6)]);
+        return view('blog::pages.posts.index', [
+            'records' => Post::q($request->get('q'))->with(['category', 'user'])->withCount('comments')->paginate(6),
+            'enableSearch' => true
+        ]);
     }
 
     /**

@@ -121,6 +121,18 @@ class Post extends Model
     }
 
     /**
+     * @param $query
+     * @param $keyword
+     * @return mixed
+     */
+    public function scopeQ($query, $keyword)
+    {
+        return $query->where(function ($q) use ($keyword) {
+            $q->orWhere('title', 'LIKE', '%' . $keyword . '%');
+        });
+    }
+
+    /**
      * @return string
      */
     public function getRouteKeyName()

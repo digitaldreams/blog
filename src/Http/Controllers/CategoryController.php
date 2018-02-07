@@ -31,7 +31,10 @@ class CategoryController extends Controller
      */
     public function index(Index $request)
     {
-        return view('blog::pages.categories.index', ['records' => Category::withCount('posts')->with('parentCategory')->paginate(10)]);
+        return view('blog::pages.categories.index', [
+            'records' => Category::q($request->get('q'))->withCount('posts')->with('parentCategory')->paginate(10),
+            'enableSearch' => true
+        ]);
     }
 
     /**

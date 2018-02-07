@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped bg-light">
     <tbody>
     @foreach($records as $record)
         <tr>
