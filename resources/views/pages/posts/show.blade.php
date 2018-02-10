@@ -1,6 +1,9 @@
 @extends(config('blog.layout'))
 @section('breadcrumb')
     <li class="breadcrumb-item">
+        <a href="{{route('blog::categories.show',$record->category->slug)}}">{{$record->category->title}}</a>
+    </li>
+    <li class="breadcrumb-item">
         <a href="{{route('blog::posts.index')}}">Posts</a>
     </li>
     <li class="breadcrumb-item">

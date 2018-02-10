@@ -4,6 +4,7 @@ namespace Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Permit\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @property int $user_id user id
@@ -138,6 +139,18 @@ class Post extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function incrementViewCount()
+    {
+        $ip = request()->ip();
+        $key = $ip . '_posts_views_' . $this->id;
+        if (!Cache::has($key)) {
+            $this->increment('total_view');
+            Cache::put($key, $this->id, 1440);
+            return true;
+        }
+        return false;
     }
 
 }

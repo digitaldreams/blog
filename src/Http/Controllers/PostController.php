@@ -47,9 +47,10 @@ class PostController extends Controller
      */
     public function show(Request $request, Post $post)
     {
+        $post->incrementViewCount();
         return view('blog::pages.posts.show', [
             'record' => $post,
-            'relatedPosts'=> Post::where('category_id',$post->category_id)->where('id','!=',$post->id)->inRandomOrder()->limit(3)->get()
+            'relatedPosts'=> Post::where('category_id',$post->category_id)->where('id','!=',$post->id)->orderBy('total_view','desc')->limit(3)->get()
         ]);
     }
 

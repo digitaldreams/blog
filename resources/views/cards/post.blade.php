@@ -14,7 +14,12 @@
     <div class="card-footer text-right" title="{{$record->created_at->diffForHumans()}}">
 
         <a href="#"><i class="fa fa-user"></i>  {{$record->user->name}}</a>  &nbsp;
-        <label class="badge badge-dark"><i class="fa fa-comment-o"></i> {{$record->comments_count}}</label>
+        <label class="badge badge-dark">
+            <i class="fa fa-comment-o"></i> {{$record->comments_count}}
+        </label>
+        <label class="badge badge-dark">
+            <i class="fa fa-eye"></i> {{$record->total_view}}
+        </label>
         &nbsp;&nbsp;
         @if(auth()->check())
             <a class="card-link" href="{{route('blog::posts.edit',$record->slug)}}">
