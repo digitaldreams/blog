@@ -82,10 +82,14 @@
             </div>
         </div>
     </div>
-
+    <?php
+    $tag = new \SEO\Seo();
+    echo $tag->form($model);
+    ?>
     <div class="form-group text-right ">
         <input type="reset" class="btn btn-default" value="Clear"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
 
     </div>
+
 </form>
