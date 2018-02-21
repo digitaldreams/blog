@@ -42,7 +42,7 @@
         </div> -->
 
     <div class="form-group {{ $errors->has('body') ? ' has-danger' : '' }}">
-        <textarea class="form-control" rows="20" cols="20" name="body"
+        <textarea class="form-control" rows="40" cols="20" name="body"
                   id="summernote">{{old('body',$model->content)}}</textarea>
         @if($errors->has('body'))
             <span class="form-control-feedback">
@@ -82,11 +82,9 @@
             </div>
         </div>
     </div>
-    <?php
-    $tag = new \SEO\Seo();
-    echo $tag->form($model);
-    ?>
-    <div class="form-group text-right ">
+   {!! \SEO\Seo::form($model) !!}
+
+    <div class="form-group text-right mt-2 ">
         <input type="reset" class="btn btn-default" value="Clear"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
 

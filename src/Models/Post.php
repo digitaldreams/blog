@@ -29,7 +29,7 @@ class Post extends Model
     /**
      * Protected columns from mass assignment
      */
-    protected $guarded = ['id'];
+    protected $fillable = ['title', 'slug', 'status', 'body', 'category_id', 'image', 'published_at', 'total_view'];
 
 
     /**

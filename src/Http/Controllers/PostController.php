@@ -11,6 +11,7 @@ use Blog\Http\Requests\Posts\Update;
 use Blog\Models\Category;
 use Blog\Models\Post;
 use Illuminate\Http\Request;
+use SEO\Seo;
 
 /**
  * Description of PostController
@@ -50,7 +51,7 @@ class PostController extends Controller
         $post->incrementViewCount();
         return view('blog::pages.posts.show', [
             'record' => $post,
-            'relatedPosts'=> Post::where('category_id',$post->category_id)->where('id','!=',$post->id)->orderBy('total_view','desc')->limit(3)->get()
+            'relatedPosts' => Post::where('category_id', $post->category_id)->where('id', '!=', $post->id)->orderBy('total_view', 'desc')->limit(3)->get()
         ]);
     }
 
@@ -83,7 +84,7 @@ class PostController extends Controller
             $model->image = $request->file('image')->store('images', 'public');
         }
         if ($model->save()) {
-
+            Seo::save($model, route('blog::posts.show', $model->slug), ['title' => $model->title]);
             session()->flash('app_message', 'Post saved successfully');
             return redirect()->route('blog::posts.index');
         } else {
@@ -123,6 +124,7 @@ class PostController extends Controller
         }
 
         if ($post->save()) {
+            Seo::save($post, route('blog::posts.show', $post->slug), ['title' => $post->title]);
 
             session()->flash('app_message', 'Post successfully updated');
             return redirect()->route('blog::posts.index');
