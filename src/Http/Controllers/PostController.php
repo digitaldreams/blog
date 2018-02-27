@@ -84,7 +84,12 @@ class PostController extends Controller
             $model->image = $request->file('image')->store('images', 'public');
         }
         if ($model->save()) {
-            Seo::save($model, route('blog::posts.show', $model->slug), ['title' => $model->title]);
+            Seo::save($model, route('blog::posts.show', $model->slug), [
+                'title' => $model->title,
+                'images' => [
+                    $model->getImageUrl()
+                ]
+            ]);
             session()->flash('app_message', 'Post saved successfully');
             return redirect()->route('blog::posts.index');
         } else {
@@ -124,7 +129,12 @@ class PostController extends Controller
         }
 
         if ($post->save()) {
-            Seo::save($post, route('blog::posts.show', $post->slug), ['title' => $post->title]);
+            Seo::save($post, route('blog::posts.show', $post->slug), [
+                'title' => $post->title,
+                'images' => [
+                    $post->getImageUrl()
+                ]
+            ]);
 
             session()->flash('app_message', 'Post successfully updated');
             return redirect()->route('blog::posts.index');
