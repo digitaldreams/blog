@@ -54,9 +54,15 @@ class BlogServiceProvider extends ServiceProvider
     public function register()
     {
         $this->publishes([
-            __DIR__ . '/../config/blog.php' => config_path('blog.php'),
+            __DIR__ . '/../config/blog.php' => config_path('blog.php')
+        ], 'blog-config');
+
+        $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/blog'),
-            __DIR__ . '/../resources/assets/summernote' => public_path('summernote')
+        ], 'blog-view');
+        
+        $this->publishes([
+            __DIR__ . '/../resources/assets' => public_path('blog')
         ], 'blog-assets');
 
         $this->mergeConfigFrom(

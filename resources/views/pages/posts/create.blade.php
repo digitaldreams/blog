@@ -649,13 +649,14 @@
         $(document).ready(function (e) {
             $('#summernote').summernote({
                 tabsize: 2,
+                enterHtml:"<br/>",
                 codemirror: {
+                    htmlMode: true,
                     theme: 'monokai',
                     mode: "text/html",
                     lineNumbers: true,
                     tabMode: 'indent'
                 },
-                enterHtml: '',
                 height: 300,
                 toolbar: [
                     ['style', ['style']],

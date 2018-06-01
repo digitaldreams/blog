@@ -3,6 +3,6 @@
       method="post" style="display: inline">
     {{csrf_field()}}
     {{method_field('DELETE')}}
-    <button type="submit" class="btn btn-default cursor-pointer  btn-sm">
+    <button type="submit" class="btn btn-light cursor-pointer  btn-sm">
         <i class="text-danger fa fa-remove"></i></button>
 </form>

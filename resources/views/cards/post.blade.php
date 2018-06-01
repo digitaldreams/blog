@@ -1,4 +1,4 @@
-<div class="card bg-dark mb-2">
+<div class="card bg-light mb-2">
     <a style="border: 0;color:white" href="{{route('blog::posts.show',$record->slug)}}">
         <img class="card-img-top" src="{{$record->getImageUrl()}}" alt="{{$record->title}}">
     </a>
@@ -14,10 +14,10 @@
     <div class="card-footer text-right" title="{{$record->created_at->diffForHumans()}}">
 
         <a href="#"><i class="fa fa-user"></i>  {{$record->user->name}}</a>  &nbsp;
-        <label class="badge badge-dark">
+        <label class="badge badge-light">
             <i class="fa fa-comment-o"></i> {{$record->comments_count}}
         </label>
-        <label class="badge badge-dark">
+        <label class="badge badge-light">
             <i class="fa fa-eye"></i> {{$record->total_view}}
         </label>
         &nbsp;&nbsp;
