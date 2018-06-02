@@ -29,7 +29,7 @@ class Update extends FormRequest
             'slug' => 'nullable|max:255|unique:blog_posts,slug,'.$this->route('post')->id,
             'body' => 'required',
             'category_id' => 'required|exists:blog_categories,id|numeric',
-            'image' => 'image|max:255',
+            'image' => 'image|max:2048',
         ];
     }
 

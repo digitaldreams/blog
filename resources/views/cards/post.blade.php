@@ -1,5 +1,5 @@
 <div class="card bg-light mb-2">
-    <a style="border: 0;color:white" href="{{route('blog::posts.show',$record->slug)}}">
+    <a style="border: 0;" href="{{route('blog::posts.show',$record->slug)}}">
         <img class="card-img-top" src="{{$record->getImageUrl()}}" alt="{{$record->title}}">
     </a>
     <div class="card-body">

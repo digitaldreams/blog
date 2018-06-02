@@ -1,4 +1,4 @@
-<form action="{{$route or route('blog::posts.store')}}" method="POST" enctype="multipart/form-data">
+<form action="{{$route or route('blog::posts.store')}}" method="POST" enctype="multipart/form-data" id="postForm">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method or 'POST'}}"/>
 
@@ -14,7 +14,7 @@
     </span>
             @endif
         </div>
-        <div class="form-group col-sm-4">
+        <div class="form-group col-sm-3">
             <label for="slug">Slug</label>
             <input type="text" class="form-control" name="slug" id="slug" value="{{old('slug',$model->slug)}}"
                    placeholder="By default title will be used as slug" maxlength="255">
@@ -24,22 +24,12 @@
     </span>
             @endif
         </div>
-        <div class="form-group col-sm-4">
-
+        <div class="form-group col-sm-1 pt-4">
+            <button type="submit" class="mt-1 btn btn-block btn-outline-primary"><i class="fa fa-save"></i> Save
+            </button>
         </div>
     </div>
 
-
-<!-- <div class="form-group {{ $errors->has('status') ? ' has-danger' : '' }}">
-        <label for="status">Status</label>
-        <input type="text" class="form-control" name="status" id="status" value="{{old('status',$model->status)}}"
-               placeholder="" maxlength="255" required="required">
-        @if($errors->has('status'))
-    <span class="form-control-feedback">
-<strong>{{ $errors->first('status') }}</strong>
-    </span>
-        @endif
-        </div> -->
 
     <div class="form-group {{ $errors->has('body') ? ' has-danger' : '' }}">
         <textarea class="form-control" rows="40" cols="20" name="body"
@@ -50,39 +40,8 @@
     </span>
         @endif
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group {{ $errors->has('category_id') ? ' has-danger' : '' }}">
-                <label for="category_id">Category</label>
-                <select class="form-control" name="category_id" id="category_id">
-                    @if(isset($categories))
-                        @foreach ($categories as $data)
-                            <option value="{{$data->id}}">{{$data->title}}</option>;
-                        @endforeach
-                    @endif
 
-                </select>
-                @if($errors->has('category_id'))
-                    <span class="form-control-feedback">
-        <strong>{{ $errors->first('category_id') }}</strong>
-    </span>
-                @endif
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="form-group {{ $errors->has('image') ? ' has-danger' : '' }}">
-                <label for="image">Image</label>
-                <input type="file" class="form-control" name="image" id="image"
-                       placeholder="Upload your image">
-                @if($errors->has('image'))
-                    <span class="form-control-feedback">
-        <strong>{{ $errors->first('image') }}</strong>
-    </span>
-                @endif
-            </div>
-        </div>
-    </div>
-   {!! \SEO\Seo::form($model) !!}
+    {!! \SEO\Seo::form($model) !!}
 
     <div class="form-group text-right mt-2 ">
         <input type="reset" class="btn btn-default" value="Clear"/>

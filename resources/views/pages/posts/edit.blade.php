@@ -1,4 +1,4 @@
-@extends(config('blog.layout'))
+@extends(config('blog.layout.create'))
 @section('breadcrumb')
     <li class="breadcrumb-item">
         <a href="{{route('blog::posts.index')}}">Posts</a>
@@ -27,15 +27,6 @@
         </div>
     </div>
 @endSection
-@section('styles')
-    <link href='{{asset('summernote/summernote-bs4.css')}}' rel='stylesheet' type='text/css'/>
-@endsection
-
-@section('scripts')
-    <script src="{{asset('summernote/summernote-bs4.js')}}"></script>
-    <script type="text/javascript">
-        $(document).ready(function (e) {
-            $('#summernote').summernote();
-        })
-    </script>
+@section('topright')
+    @include('blog::pages.posts.top_right')
 @endsection

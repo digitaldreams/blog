@@ -33,8 +33,12 @@ class PostController extends Controller
      */
     public function index(Index $request)
     {
+        $posts = Post::q($request->get('q'))->with(['category', 'user'])->withCount('comments');
+        if (auth()->guest()) {
+            $posts = $posts->where('status', Post::STATUS_PUBLISHED);
+        }
         return view('blog::pages.posts.index', [
-            'records' => Post::q($request->get('q'))->with(['category', 'user'])->withCount('comments')->paginate(6),
+            'records' => $posts->paginate(6),
             'enableSearch' => true
         ]);
     }
