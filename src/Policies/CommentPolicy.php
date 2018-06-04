@@ -16,10 +16,12 @@ class CommentPolicy
      */
     public function before(User $user)
     {
-        //return true if user has super power
+        if (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin()) {
+            return true;
+        }
     }
 
-        /**
+    /**
      * @param User $user
      * @return bool
      */
@@ -27,48 +29,52 @@ class CommentPolicy
     {
         return true;
     }
+
     /**
      * Determine whether the user can view the Comment.
      *
-     * @param  User  $user
-     * @param  Comment  $comment
+     * @param  User $user
+     * @param  Comment $comment
      * @return mixed
      */
-    public function view(User $user, Comment  $comment)
+    public function view(User $user, Comment $comment)
     {
         return true;
     }
+
     /**
      * Determine whether the user can create Comment.
      *
-     * @param  User  $user
+     * @param  User $user
      * @return mixed
      */
     public function create(User $user)
     {
         return true;
     }
+
     /**
      * Determine whether the user can update the Comment.
      *
      * @param User $user
-     * @param  Comment  $comment
+     * @param  Comment $comment
      * @return mixed
      */
-    public function update(User $user, Comment  $comment)
+    public function update(User $user, Comment $comment)
     {
-        return true;
+        return $user->id == $comment->user_id;
     }
+
     /**
      * Determine whether the user can delete the Comment.
      *
-     * @param User  $user
-     * @param  Comment  $comment
+     * @param User $user
+     * @param  Comment $comment
      * @return mixed
      */
-    public function delete(User $user, Comment  $comment)
+    public function delete(User $user, Comment $comment)
     {
-        return true;
+        return $user->id == $comment->user_id;
     }
 
 }

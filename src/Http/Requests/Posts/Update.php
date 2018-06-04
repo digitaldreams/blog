@@ -14,7 +14,7 @@ class Update extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check() && auth()->user()->can('update', $this->route('post'));
     }
 
     /**
@@ -26,7 +26,7 @@ class Update extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'slug' => 'nullable|max:255|unique:blog_posts,slug,'.$this->route('post')->id,
+            'slug' => 'nullable|max:255|unique:blog_posts,slug,' . $this->route('post')->id,
             'body' => 'required',
             'category_id' => 'required|exists:blog_categories,id|numeric',
             'image' => 'image|max:2048',

@@ -2,6 +2,7 @@
 
 namespace Blog\Http\Requests\Categories;
 
+use Blog\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Store extends FormRequest
@@ -14,7 +15,7 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check() && auth()->user()->can('create', Category::class);
     }
 
     /**

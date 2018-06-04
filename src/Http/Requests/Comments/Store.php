@@ -2,6 +2,7 @@
 
 namespace Blog\Http\Requests\Comments;
 
+use Blog\Models\Comment;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Store extends FormRequest
@@ -14,7 +15,7 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->can('create', Comment::class);
     }
 
     /**

@@ -5,7 +5,9 @@
     </li>
 @endsection
 @section('tools')
-    <a href="{{route('blog::posts.create')}}"><span class="fa fa-plus"></span></a>
+    @can('create',\Blog\Models\Post::class)
+        <a href="{{route('blog::posts.create')}}"><span class="fa fa-plus"></span></a>
+    @endcan
 @endsection
 @section('content')
 

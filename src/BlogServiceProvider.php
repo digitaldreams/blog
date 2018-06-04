@@ -41,7 +41,6 @@ class BlogServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'blog');
 
         $this->registerPolicies();
@@ -53,21 +52,25 @@ class BlogServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->publishes([
-            __DIR__ . '/../config/blog.php' => config_path('blog.php')
-        ], 'blog-config');
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
+            $this->publishes([
+                __DIR__ . '/../config/blog.php' => config_path('blog.php')
+            ], 'blog-config');
 
-        $this->publishes([
-            __DIR__ . '/../resources/views' => resource_path('views/vendor/blog'),
-        ], 'blog-view');
-        
-        $this->publishes([
-            __DIR__ . '/../resources/assets' => public_path('blog')
-        ], 'blog-assets');
+            $this->publishes([
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/blog'),
+            ], 'blog-view');
 
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/blog.php', 'blog'
-        );
+            $this->publishes([
+                __DIR__ . '/../resources/assets' => public_path('blog')
+            ], 'blog-assets');
+
+            $this->mergeConfigFrom(
+                __DIR__ . '/../config/blog.php', 'blog'
+            );
+        }
+
     }
 
     /**
