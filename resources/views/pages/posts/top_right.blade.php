@@ -57,3 +57,18 @@
     </span>
     @endif
 </div>
+<div class="form-group">
+    <label for="image">Tags</label>
+    <select form="postForm" class="form-control {{ $errors->has('tags') ? ' is-invalid' : '' }}"
+            name="tags[]" id="blog_tags" multiple>
+        @foreach($tags as $tag)
+            <option value="{{$tag->id}}" {{in_array($tag->id,$model->tagIds())?'selected':''}}>{{$tag->name}}</option>
+        @endforeach
+    </select>
+
+    @if($errors->has('image'))
+        <span class="form-control-feedback">
+        <strong>{{ $errors->first('image') }}</strong>
+    </span>
+    @endif
+</div>

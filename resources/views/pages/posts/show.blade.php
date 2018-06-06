@@ -31,6 +31,13 @@
             <img src="{{$record->getImageUrl()}}" class="img-responsive img-rounded">
             <h1>{{$record->title}}</h1>
             {!! $record->content !!}
+            <div class="row">
+                <div class="col-sm-12">
+                    @foreach($record->tags as $tag)
+                        <a class="badge badge-light px-2 py-1" href="#">{{$tag->name}}</a>
+                    @endforeach
+                </div>
+            </div>
 
             @foreach($record->comments as $comment)
                 <div class="card mb-3">

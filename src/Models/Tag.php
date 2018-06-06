@@ -42,4 +42,5 @@ class Tag extends Model
     {
         return $this->belongsToMany(Post::class, 'blog_post_tag');
     }
+
 }

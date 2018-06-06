@@ -23,3 +23,8 @@
 @section('topright')
     @include('blog::pages.posts.top_right')
 @endsection
+@section('scripts')
+    <script type="text/javascript">
+        $('#blog_tags').select2();
+    </script>
+@endsection

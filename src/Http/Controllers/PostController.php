@@ -10,6 +10,7 @@ use Blog\Http\Requests\Posts\Store;
 use Blog\Http\Requests\Posts\Update;
 use Blog\Models\Category;
 use Blog\Models\Post;
+use Blog\Models\Tag;
 use Illuminate\Http\Request;
 use SEO\Seo;
 
@@ -69,6 +70,7 @@ class PostController extends Controller
     {
         return view('blog::pages.posts.create', [
             'model' => new Post,
+            'tags'=>Tag::all(),
             'categories' => Category::all(['id', 'title'])
         ]);
     }
@@ -88,6 +90,7 @@ class PostController extends Controller
             $model->image = $request->file('image')->store('images', 'public');
         }
         if ($model->save()) {
+            $model->tags()->sync($request->get('tags',[]));
             Seo::save($model, route('blog::posts.show', $model->slug), [
                 'title' => $model->title,
                 'images' => [
@@ -113,6 +116,7 @@ class PostController extends Controller
     {
         return view('blog::pages.posts.edit', [
             'model' => $post,
+            'tags'=>Tag::all(),
             'categories' => Category::all(['id', 'title'])
         ]);
     }
@@ -133,6 +137,7 @@ class PostController extends Controller
         }
 
         if ($post->save()) {
+            $post->tags()->sync($request->get('tags',[]));
             Seo::save($post, route('blog::posts.show', $post->slug), [
                 'title' => $post->title,
                 'images' => [
