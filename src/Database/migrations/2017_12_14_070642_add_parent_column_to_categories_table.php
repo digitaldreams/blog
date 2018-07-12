@@ -14,7 +14,7 @@ class AddParentColumnToCategoriesTable extends Migration
     public function up()
     {
         Schema::table('blog_categories', function (Blueprint $table) {
-            $table->string('parent_id')->unique()->after('id')->nullable();
+            $table->string('parent_id')->after('id')->nullable();
         });
     }
 
