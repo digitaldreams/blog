@@ -1,4 +1,4 @@
-@extends(config('blog.layout'))
+@extends(config('blog.layout.show'))
 @section('breadcrumb')
     <li class="breadcrumb-item">Categories</li>
 @endsection
@@ -7,6 +7,7 @@
         <a href="{{route('blog::categories.create')}}"><span class="fa fa-plus"></span></a>
     @endcan
 @endsection
+
 @section('content')
     @if($records->count()>0)
         @include('blog::tables.category')
