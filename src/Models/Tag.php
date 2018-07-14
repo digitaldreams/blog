@@ -43,4 +43,16 @@ class Tag extends Model
         return $this->belongsToMany(Post::class, 'blog_post_tag');
     }
 
+    /**
+     * @param $query
+     * @param $keyword
+     * @return mixed
+     */
+    public function scopeQ($query, $keyword)
+    {
+        return $query->where(function ($q) use ($keyword) {
+            $q->orWhere('name', 'LIKE', '%' . $keyword . '%');
+        });
+    }
+
 }

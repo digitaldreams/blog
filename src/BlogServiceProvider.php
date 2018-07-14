@@ -5,9 +5,11 @@ namespace Blog;
 use Blog\Models\Category;
 use Blog\Models\Comment;
 use Blog\Models\Post;
+use Blog\Models\Tag;
 use Blog\Policies\CategoryPolicy;
 use Blog\Policies\CommentPolicy;
 use Blog\Policies\PostPolicy;
+use Blog\Policies\TagPolicy;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +25,7 @@ class BlogServiceProvider extends ServiceProvider
         //'Permit\Model' => 'Permit\Policies\ModelPolicy',
         Category::class => CategoryPolicy::class,
         Post::class => PostPolicy::class,
+        Tag::class => TagPolicy::class,
         Comment::class => CommentPolicy::class
     ];
 

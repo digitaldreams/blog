@@ -6,4 +6,6 @@ Route::group(['middleware' => ['web'], 'namespace' => 'Blog\Http\Controllers', '
     Route::resource('posts.comments', 'CommentController');
 
     Route::resource('categories', 'CategoryController');
+    
+    Route::resource('tags', 'TagController');
 });
