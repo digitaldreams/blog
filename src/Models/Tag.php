@@ -54,5 +54,11 @@ class Tag extends Model
             $q->orWhere('name', 'LIKE', '%' . $keyword . '%');
         });
     }
-
+    /**
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
