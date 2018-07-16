@@ -6,10 +6,26 @@
         <div class="card-title">
             <h3 class="h6">
                 <a href="{{route('blog::posts.show',$record->slug)}}"> {{$record->title}}</a>
-
+                <div class="dropdown d-inline" id="dropdown-{{$record->id}}">
+                    <a href="#" class="fa fa-ellipsis-v" data-toggle="dropdown" role="button"
+                       aria-expanded="false">
+                    </a>
+                    <ul class="dropdown-menu p-3 pt-0" role="menu">
+                        <form action="{{route('activities.store')}}" method="post">
+                            {{csrf_field()}}
+                            <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
+                            <input type="hidden" name="activityable_id" value="{{$record->id }}">
+                            @foreach(\App\Models\Activity::actions() as $key=>$activity)
+                                <li>
+                                    <input class="btn btn-block btn-light" name="type" type="submit" value="{{$key}}"
+                                           value="{{$activity}}">
+                                </li>
+                            @endforeach
+                        </form>
+                    </ul>
+                </div>
             </h3>
         </div>
-
     </div>
     <div class="card-footer text-right" title="{{$record->created_at->diffForHumans()}}">
 
@@ -27,5 +43,6 @@
             </a>
             @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
         @endcan
+
     </div>
 </div>

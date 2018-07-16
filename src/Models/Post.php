@@ -3,6 +3,7 @@
 namespace Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Activity;
 use Permit\Models\User;
 use Illuminate\Support\Facades\Cache;
 
@@ -74,6 +75,11 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'post_id');
+    }
+
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'activityable');
     }
 
     /**
