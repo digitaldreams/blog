@@ -20,7 +20,7 @@ class Tag extends Model
     /**
      * Protected columns from mass assignment
      */
-    protected $fillable = ['slug', 'name'];
+    protected $fillable = ['slug', 'name', 'description'];
 
     public static function boot()
     {
@@ -54,6 +54,7 @@ class Tag extends Model
             $q->orWhere('name', 'LIKE', '%' . $keyword . '%');
         });
     }
+
     /**
      * @return string
      */
