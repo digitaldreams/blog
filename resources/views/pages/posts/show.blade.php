@@ -12,16 +12,20 @@
 @endsection
 @section('tools')
     @if(auth()->check())
-        &nbsp;
-        <a href="{{route('blog::posts.edit',$record->slug)}}">
-            <span class="fa fa-pencil"></span>
-        </a>
-        &nbsp;&nbsp;
-        @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
-
-        <a href="{{route('blog::posts.create')}}">
-            <span class="fa fa-plus"></span>
-        </a>
+        &nbsp;@can('update',$record)
+            <a href="{{route('blog::posts.edit',$record->slug)}}">
+                <span class="fa fa-pencil"></span>
+            </a>
+        @endcan
+        &nbsp;&nbsp;        &nbsp;&nbsp;
+        @can('delete',$record)
+            @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
+        @endcan
+        @can('create',\Blog\Models\Post::class)
+            <a href="{{route('blog::posts.create')}}">
+                <span class="fa fa-plus"></span>
+            </a>
+        @endcan
 
     @endif
 @endsection

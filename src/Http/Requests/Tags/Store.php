@@ -3,7 +3,7 @@
 namespace Blog\Http\Requests\Tags;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Blog\Models\Tag;
 class Store extends FormRequest
 {
 
@@ -14,7 +14,7 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->can('create', Tag::class);;
     }
 
     /**

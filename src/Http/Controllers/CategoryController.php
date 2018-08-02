@@ -62,7 +62,8 @@ class CategoryController extends Controller
     {
         return view('blog::pages.categories.create', [
             'model' => new Category,
-            'categories' => Category::with('children')->parent()->get(['id', 'title'])
+            'categories' => Category::with('children')->parent()->get(['id', 'title']),
+            'enableVoice'=>true,
         ]);
     }
 
@@ -98,7 +99,8 @@ class CategoryController extends Controller
     {
         return view('blog::pages.categories.edit', [
             'model' => $category,
-            'categories' => Category::with('children')->parent()->get(['id', 'title'])
+            'categories' => Category::with('children')->parent()->get(['id', 'title']),
+            'enableVoice'=>true,
         ]);
     }
 

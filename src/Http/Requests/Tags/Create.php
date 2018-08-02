@@ -2,6 +2,7 @@
 
 namespace Blog\Http\Requests\Tags;
 
+use Blog\Models\Tag;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Create extends FormRequest
@@ -14,7 +15,7 @@ class Create extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->can('create', Tag::class);
     }
 
     /**

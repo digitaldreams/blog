@@ -4,7 +4,7 @@ namespace Blog\Http\Requests\Tags;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Edit extends FormRequest 
+class Edit extends FormRequest
 {
 
     /**
@@ -12,9 +12,9 @@ class Edit extends FormRequest
      *
      * @return bool
      */
-    public function authorize() 
+    public function authorize()
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->can('update', $this->route('tag'));
     }
 
     /**
@@ -22,7 +22,7 @@ class Edit extends FormRequest
      *
      * @return array
      */
-    public function rules() 
+    public function rules()
     {
         return [
 
@@ -30,14 +30,14 @@ class Edit extends FormRequest
     }
 
     /**
-    * Get the error messages for the defined validation rules.
-    *
-    * @return array
-    */
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
-     
+
         ];
     }
 

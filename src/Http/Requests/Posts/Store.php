@@ -3,7 +3,7 @@
 namespace Blog\Http\Requests\Posts;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Blog\Models\Post;
 class Store extends FormRequest
 {
 
@@ -14,7 +14,7 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check() && auth()->user()->can('create', Post::class);
     }
 
     /**

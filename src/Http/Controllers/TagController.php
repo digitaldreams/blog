@@ -63,6 +63,7 @@ class TagController extends Controller
     {
         return view('blog::pages.tags.create', [
             'model' => new Tag,
+            'enableVoice'=>true,
         ]);
     }
 
@@ -98,6 +99,7 @@ class TagController extends Controller
     {
         return view('blog::pages.tags.edit', [
             'model' => $tag,
+            'enableVoice'=>true,
         ]);
     }
 
