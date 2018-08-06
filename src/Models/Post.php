@@ -134,6 +134,13 @@ class Post extends Model
         return !empty($this->image) ? asset('storage' . '/' . $this->image) : false;
     }
 
+    public function scopeTagId($query, $id)
+    {
+        return $query->whereHas('tags', function ($q) use ($id) {
+            $q->where('id', $id);
+        });
+    }
+
     /**
      * @param $query
      * @param $keyword
