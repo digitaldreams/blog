@@ -7,6 +7,9 @@ use Blog\Http\Requests\Comments\Index;
 use Blog\Http\Requests\Comments\Store;
 use Blog\Models\Comment;
 use Blog\Models\Post;
+use Blog\Notifications\CommentNotification;
+use Notification;
+use Permit\Models\User;
 
 /**
  * Description of CommentController
@@ -47,6 +50,7 @@ class CommentController extends Controller
         $model->post_id = $post->id;
         $model->user_id = auth()->user()->id;
         if ($model->save()) {
+            Notification::send(User::superAdmin()->get(), new CommentNotification($post, auth()->user()));
             session()->flash('app_message', 'Comment saved successfully');
             return redirect()->route('blog::posts.show', $post->slug);
         } else {

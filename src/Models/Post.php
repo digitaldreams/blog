@@ -215,6 +215,6 @@ class Post extends Model implements ModelNotification
      */
     public function getNotificationLink()
     {
-        return route('blog::posts.show', $this->id);
+        return route('blog::posts.show', $this->slug);
     }
 }
