@@ -3,7 +3,6 @@
 namespace Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Activity;
 use Permit\Models\User;
 use Illuminate\Support\Facades\Cache;
 
@@ -80,6 +79,22 @@ class Post extends Model
     public function activities()
     {
         return $this->morphMany(Activity::class, 'activityable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function likes()
+    {
+        return $this->morphMany(Activity::class, 'activityable')->where('type', Activity::TYPE_LIKE);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function favourites()
+    {
+        return $this->morphMany(Activity::class, 'activityable')->where('type', Activity::TYPE_FAVOURITE);
     }
 
     /**

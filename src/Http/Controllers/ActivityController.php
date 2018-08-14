@@ -36,7 +36,7 @@ class ActivityController extends Controller
         $model = Activity::forUser($request)->first();
         if ($model) {
             $model->delete();
-            return redirect()->back()->with('permit_message', 'Your ' . $request->get('type') . 'is undo');
+            return redirect()->back()->with('permit_message', 'Your ' . $request->get('type') . ' is undo');
         } else {
             $model = new Activity();
         }

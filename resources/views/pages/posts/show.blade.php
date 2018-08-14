@@ -11,6 +11,29 @@
     </li>
 @endsection
 @section('tools')
+    &nbsp;&nbsp;
+    <label class="badge badge-light">
+        <i class="fa fa-eye"></i> {{$record->total_view}}
+    </label>
+    <form action="{{route('blog::activities.store')}}" method="post" class="d-inline">
+        {{csrf_field()}}
+        <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
+        <input type="hidden" name="activityable_id" value="{{$record->id }}">
+        <input type="hidden" name="type" value="like">
+        <button class="btn badge badge-light">
+            <i class="fa fa-thumbs-up"></i> {{$record->likes()->count()}}
+        </button>
+    </form>
+    <form action="{{route('blog::activities.store')}}" method="post" class="d-inline">
+        {{csrf_field()}}
+        <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
+        <input type="hidden" name="activityable_id" value="{{$record->id }}">
+        <input type="hidden" name="type" value="favourite">
+        <button class="btn badge badge-light">
+            <i class="fa fa-star"></i> {{$record->favourites()->count()}}
+        </button>
+
+    </form>&nbsp;
     @if(auth()->check())
         &nbsp;@can('update',$record)
             <a href="{{route('blog::posts.edit',$record->slug)}}">
