@@ -42,7 +42,7 @@ class ActivityTypeController extends Controller
     {
         $typeModel = ActivityType::where('name', $type)->first();
         $post = $request->get('model');
-        $list = ActivityType::$map;
+        $list = config('blog.activityType', []);
         $model = isset($list[$post]) ? $list[$post] : $type;
         $activities = Activity::with('activityable')->where('type', $type)->latest($model)->paginate(6);
 

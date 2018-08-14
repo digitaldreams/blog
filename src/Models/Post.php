@@ -5,6 +5,7 @@ namespace Blog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Permit\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Permit\Contracts\ModelNotification;
 
 /**
  * @property int $user_id user id
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Cache;
  * @property Category $category belongsTo
  * @property User $user belongsTo
  */
-class Post extends Model
+class Post extends Model implements ModelNotification
 {
     const STATUS_DRAFT = 'draft';
     const STATUS_PENDING = 'pending';
@@ -197,4 +198,23 @@ class Post extends Model
         }
     }
 
+    /**
+     * Return the title of the model. For example
+     *  John Doe and 30 others likes {Tour to Silliong part one}
+     * @return mixed
+     */
+    public function getNotificationMessage()
+    {
+        return $this->title;
+    }
+
+    /**
+     *  Return link that will be used in notification
+     *  For example  return route('posts.index')
+     * @return mixed
+     */
+    public function getNotificationLink()
+    {
+        return route('blog::posts.show', $this->id);
+    }
 }

@@ -9,6 +9,9 @@ use Blog\Http\Requests\Activities\Index;
 use Blog\Http\Requests\Activities\Show;
 use Blog\Http\Requests\Activities\Store;
 use Blog\Http\Requests\Activities\Update;
+use Blog\Models\ActivityType;
+use Blog\Notifications\FavouriteNotification;
+use Blog\Notifications\LikeNotification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Blog\Models\Activity;
@@ -16,6 +19,7 @@ use Permit\Models\User;
 use Photo\Models\Photo;
 use Photo\Services\PhotoService;
 use Blog\Models\Tag;
+use Notification;
 
 /**
  * Description of WordMeaningController
@@ -38,6 +42,19 @@ class ActivityController extends Controller
             $model->delete();
             return redirect()->back()->with('permit_message', 'Your ' . $request->get('type') . ' is undo');
         } else {
+            $activityAbleClass = $request->get('activityable_type');
+            $activityAbleId = $request->get('activityable_id');
+            $activityModel = new $activityAbleClass();
+            $activityModel = $activityModel->find($activityAbleId);
+
+            if ($request->get('type') == Activity::TYPE_LIKE) {
+
+
+                $notificationOb = new LikeNotification($activityModel, auth()->user());
+            } elseif ($request->get('type') == Activity::TYPE_FAVOURITE) {
+                $notificationOb = new FavouriteNotification($activityModel, auth()->user());
+            }
+            Notification::send(User::superAdmin()->get(), $notificationOb);
             $model = new Activity();
         }
         $model->fill($request->all());

@@ -57,11 +57,6 @@ class Activity extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function words()
-    {
-
-    }
-
     public static function actions($user_id = '')
     {
         return ActivityType::forUser($user_id);

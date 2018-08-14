@@ -8,5 +8,8 @@ return [
     /**
      * Layout's will be used to
      */
-    'layout' => 'layouts.app'
+    'layout' => 'layouts.app',
+    'activityType' => [
+        //keyword=>Full Namespace Model class
+    ]
 ];

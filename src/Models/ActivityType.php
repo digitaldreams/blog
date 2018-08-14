@@ -26,14 +26,7 @@ class ActivityType extends Model
      * Mass assignable columns
      */
     protected $fillable = ['name', 'user_id'];
-    /**
-     * @var array
-     */
-    public static $map = [
-        'posts' => Post::class,
-        'words' => WordMeaning::class,
-        'exams' => Exam::class
-    ];
+
     /**
      * Date time columns.
      */
