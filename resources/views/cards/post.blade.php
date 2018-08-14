@@ -11,11 +11,11 @@
                        aria-expanded="false">
                     </a>
                     <ul class="dropdown-menu p-3 pt-0" role="menu">
-                        <form action="{{route('activities.store')}}" method="post">
+                        <form action="{{route('blog::activities.store')}}" method="post">
                             {{csrf_field()}}
                             <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
                             <input type="hidden" name="activityable_id" value="{{$record->id }}">
-                            @foreach(\App\Models\Activity::actions() as $key=>$activity)
+                            @foreach(\Blog\Models\Activity::actions() as $key=>$activity)
                                 <li>
                                     <input class="btn btn-block btn-light" name="type" type="submit" value="{{$key}}"
                                            value="{{$activity}}">

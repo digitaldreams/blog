@@ -13,6 +13,10 @@ use Blog\Policies\TagPolicy;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Blog\Models\Activity;
+use Blog\Policies\ActivityPolicy;
+use Blog\Models\ActivityType;
+use Blog\Policies\ActivityTypePolicy;
 
 class BlogServiceProvider extends ServiceProvider
 {
@@ -26,7 +30,9 @@ class BlogServiceProvider extends ServiceProvider
         Category::class => CategoryPolicy::class,
         Post::class => PostPolicy::class,
         Tag::class => TagPolicy::class,
-        Comment::class => CommentPolicy::class
+        Comment::class => CommentPolicy::class,
+        Activity::class => ActivityPolicy::class,
+        ActivityType::class => ActivityTypePolicy::class
     ];
 
     /**
