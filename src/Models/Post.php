@@ -147,7 +147,7 @@ class Post extends Model implements ModelNotification
 
     public function getImageUrl()
     {
-        return !empty($this->image) ? asset('storage' . '/' . $this->image) : false;
+        return !empty($this->image) ? asset('storage' . '/' . $this->image) : config('blog.defaultPhoto');
     }
 
     public function scopeTagId($query, $id)

@@ -11,5 +11,7 @@ return [
     'layout' => 'layouts.app',
     'activityType' => [
         //keyword=>Full Namespace Model class
-    ]
+    ],
+    'defaultPhoto' => '/storage/images/default.png',
+
 ];

@@ -96,13 +96,7 @@
             @else
                 <a href="{{route('login')}}">Login in</a>  to comments
             @endif
-            <div class="alert alert-light">
-                Share on <a target="_blank"
-                            href="https://www.facebook.com/dialog/share?href={{route('blog::posts.show',$record->slug)}}&app_id={{env('FACEBOOK_CLIENT_ID')}}">
-                    <i class="fa fa-facebook-official fa-2x"></i>
-                </a>
-
-            </div>
+            
         </div>
         <aside class="col-sm-3">
             <h3 class="h6">Related posts</h3>
