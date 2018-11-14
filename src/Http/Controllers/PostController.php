@@ -70,7 +70,7 @@ class PostController extends Controller
     {
         return view('blog::pages.posts.create', [
             'model' => new Post,
-            'tags'=>Tag::all(),
+            'tags' => Tag::all(),
             'categories' => Category::all(['id', 'title'])
         ]);
     }
@@ -84,13 +84,13 @@ class PostController extends Controller
     public function store(Store $request)
     {
         $model = new Post;
-        $model->fill($request->all());
-
+        $model->fill($request->except(['body']));
+        $model->body = filter_var($request->get('body'), FILTER_SANITIZE_STRING);
         if ($request->hasFile('image')) {
             $model->image = $request->file('image')->store('images', 'public');
         }
         if ($model->save()) {
-            $model->tags()->sync($request->get('tags',[]));
+            $model->tags()->sync($request->get('tags', []));
             Seo::save($model, route('blog::posts.show', $model->slug), [
                 'title' => $model->title,
                 'images' => [
@@ -116,7 +116,7 @@ class PostController extends Controller
     {
         return view('blog::pages.posts.edit', [
             'model' => $post,
-            'tags'=>Tag::all(),
+            'tags' => Tag::all(),
             'categories' => Category::all(['id', 'title'])
         ]);
     }
@@ -137,7 +137,7 @@ class PostController extends Controller
         }
 
         if ($post->save()) {
-            $post->tags()->sync($request->get('tags',[]));
+            $post->tags()->sync($request->get('tags', []));
             Seo::save($post, route('blog::posts.show', $post->slug), [
                 'title' => $post->title,
                 'images' => [
