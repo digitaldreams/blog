@@ -20,7 +20,7 @@
             @endforeach
         </div>
     @else
-        <div class="alert alert-warning">No posts found</div>
+        <div class="alert alert-warning">No posts foun</div>
     @endif
 
     <div class='row'>

@@ -171,5 +171,10 @@ class PostController extends Controller
 
         return redirect()->back();
     }
+    public function userShow($post){
+        $userPosts=Post::where('user_id', $post)->get();
+          // dd($userPosts);
+        return view('blog::pages.posts.user',['userPosts'=>$userPosts]);
+    }
 
 }

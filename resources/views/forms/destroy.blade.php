@@ -4,5 +4,6 @@
     {{csrf_field()}}
     {{method_field('DELETE')}}
     <button type="submit" class="btn btn-light cursor-pointer  btn-sm">
-        <i class="text-danger fa fa-remove"></i></button>
+        <i class="far fa-trash-alt"></i>
+        </button> 
 </form>
