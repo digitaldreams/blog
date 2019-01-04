@@ -1,6 +1,6 @@
-<form action="{{$route or route('blog::types.store')}}" method="POST">
+<form action="{{$route ?? route('blog::types.store')}}" method="POST">
     {{csrf_field()}}
-    <input type="hidden" name="_method" value="{{$method or 'POST'}}"/>
+    <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" id="name"

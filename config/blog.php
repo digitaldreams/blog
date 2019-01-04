@@ -8,7 +8,10 @@ return [
     /**
      * Layout's will be used to
      */
-    'layout' => 'layouts.app',
+    'layout' => [
+        'show' => 'permit::layouts.metronic.admin',
+        'create' => 'prototype::layouts.blog'
+    ],
     'activityType' => [
         //keyword=>Full Namespace Model class
     ],

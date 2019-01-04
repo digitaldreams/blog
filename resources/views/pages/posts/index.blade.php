@@ -4,6 +4,9 @@
         Posts
     </li>
 @endsection
+@section('header')
+
+@endsection
 @section('tools')
     @can('create',\Blog\Models\Post::class)
         <a href="{{route('blog::posts.create')}}"><span class="fa fa-plus"></span></a>

@@ -8,7 +8,19 @@
         {{$record->title}}
     </li>
 @endsection
-
+@section('header')
+    <h3><i class="fa fa-pencil-alt text-muted" style="font-size: 18px"></i> Posts</h3>
+@endsection
+@section('tools')
+    <div class="btn-group">
+        @can('create',\Blog\Models\Category::class)
+            <a class="btn btn-secondary" href="{{route('blog::categories.create')}}"> <i class="fa fa-plus"></i> New Category</a>
+        @endcan
+            @can('create',\Blog\Models\Post::class)
+                <a class="btn btn-secondary" href="{{route('blog::posts.create')}}"> <i class="fa fa-plus"></i> New Post</a>
+            @endcan
+    </div>
+@endsection
 @section('content')
 
     @if($posts->count()>0)

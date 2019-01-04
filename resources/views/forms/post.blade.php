@@ -1,6 +1,6 @@
-<form action="{{$route or route('blog::posts.store')}}" method="POST" enctype="multipart/form-data" id="postForm">
+<form action="{{$route ?? route('blog::posts.store')}}" method="POST" enctype="multipart/form-data" id="postForm">
     {{csrf_field()}}
-    <input type="hidden" name="_method" value="{{$method or 'POST'}}"/>
+    <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
 
 
     <div class="form-row">

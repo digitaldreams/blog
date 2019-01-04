@@ -1,6 +1,6 @@
-<form action="{{$route or route('blog::tags.store')}}" method="POST">
+<form action="{{$route ?? route('blog::tags.store')}}" method="POST">
     {{csrf_field()}}
-    <input type="hidden" name="_method" value="{{$method or 'POST'}}"/>
+    <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
     <div class="form-row">
         <div class="form-group col">
             <label for="title">Name</label>

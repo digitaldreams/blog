@@ -2,9 +2,15 @@
 @section('breadcrumb')
     <li class="breadcrumb-item">Categories</li>
 @endsection
+@section('header')
+    <h3>
+        <i class="fa fa-layer-group text-muted" style="font-size: 18px"></i> Categories
+    </h3>
+
+@endsection
 @section('tools')
     @can('create',\Blog\Models\Category::class)
-        <a href="{{route('blog::categories.create')}}"><span class="fa fa-plus"></span></a>
+        <a class="btn btn-secondary" href="{{route('blog::categories.create')}}"><span class="fa fa-plus"></span></a>
     @endcan
 @endsection
 

@@ -48,7 +48,7 @@ class CategoryController extends Controller
     {
         return view('blog::pages.categories.show', [
             'record' => $category,
-            'posts' => $category->posts()->paginate(10)
+            'posts' => $category->posts()->paginate(6)
         ]);
     }
 
