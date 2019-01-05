@@ -8,7 +8,14 @@
         {{$record->name}}
     </li>
 @endsection
-
+@section('header')
+    <h3><i class="fa fa-tag text-muted" style="font-size: 18px"></i> {{$record->name}} </h3>
+@endsection
+@section('tools')
+    @can('create',\Blog\Models\Tag::class)
+        <a class="btn btn-secondary" href="{{route('blog::tags.create')}}"><i class="fa fa-plus"></i> New Tag</a>
+    @endcan
+@endsection
 @section('content')
 
     @if($posts->count()>0)

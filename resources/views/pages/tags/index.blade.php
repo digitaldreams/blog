@@ -2,9 +2,12 @@
 @section('breadcrumb')
     <li class="breadcrumb-item">tags</li>
 @endsection
+@section('header')
+    <h3><i class="fa fa-tags text-muted" style="font-size: 18px"></i> Tags </h3>
+@endsection
 @section('tools')
     @can('create',\Blog\Models\Tag::class)
-        <a href="{{route('blog::tags.create')}}"><span class="fa fa-plus"></span></a>
+        <a class="btn btn-secondary" href="{{route('blog::tags.create')}}"><span class="fa fa-plus"></span></a>
     @endcan
 @endsection
 

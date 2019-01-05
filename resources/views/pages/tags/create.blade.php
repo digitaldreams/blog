@@ -7,6 +7,9 @@
     </li>
     <li class="breadcrumb-item">Create</li>
 @endsection
+@section('header')
+    <h3>Create New Tag</h3>
+@endsection
 @section('content')
     <div class="row">
         <div class='col-md-12'>

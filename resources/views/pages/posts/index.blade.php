@@ -5,7 +5,7 @@
     </li>
 @endsection
 @section('header')
-
+<h3> Posts</h3>
 @endsection
 @section('tools')
     @can('create',\Blog\Models\Post::class)

@@ -10,47 +10,49 @@
         {{$record->title}}
     </li>
 @endsection
+@section('header')
+    <h3>{{$record->title}}</h3>
+@endsection
 @section('tools')
     &nbsp;&nbsp;
-    <label class="badge badge-light">
-        <i class="fa fa-eye"></i> {{$record->total_view}}
-    </label>
-    <form action="{{route('blog::activities.store')}}" method="post" class="d-inline">
-        {{csrf_field()}}
-        <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
-        <input type="hidden" name="activityable_id" value="{{$record->id }}">
-        <input type="hidden" name="type" value="like">
-        <button class="btn badge badge-light">
-            <i class="fa fa-thumbs-up"></i> {{$record->likes()->count()}}
-        </button>
-    </form>
-    <form action="{{route('blog::activities.store')}}" method="post" class="d-inline">
-        {{csrf_field()}}
-        <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
-        <input type="hidden" name="activityable_id" value="{{$record->id }}">
-        <input type="hidden" name="type" value="favourite">
-        <button class="btn badge badge-light">
-            <i class="fa fa-star"></i> {{$record->favourites()->count()}}
-        </button>
-
-    </form>&nbsp;
-    @if(auth()->check())
-        &nbsp;@can('update',$record)
-            <a href="{{route('blog::posts.edit',$record->slug)}}">
-                <span class="fa fa-pencil"></span>
-            </a>
-        @endcan
-        &nbsp;&nbsp;        &nbsp;&nbsp;
-        @can('delete',$record)
-            @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
-        @endcan
-        @can('create',\Blog\Models\Post::class)
-            <a href="{{route('blog::posts.create')}}">
-                <span class="fa fa-plus"></span>
-            </a>
-        @endcan
-
-    @endif
+    <div class="btn-group">
+        <label class="btn btn-secondary">
+            <i class="fa fa-eye"></i> {{$record->total_view}}
+        </label>
+        <form action="{{route('blog::activities.store')}}" method="post" class="d-inline">
+            {{csrf_field()}}
+            <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
+            <input type="hidden" name="activityable_id" value="{{$record->id }}">
+            <input type="hidden" name="type" value="like">
+            <button class="btn btn-secondary">
+                <i class="fa fa-thumbs-up"></i> {{$record->likes()->count()}}
+            </button>
+        </form>
+        <form action="{{route('blog::activities.store')}}" method="post" class="d-inline">
+            {{csrf_field()}}
+            <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
+            <input type="hidden" name="activityable_id" value="{{$record->id }}">
+            <input type="hidden" name="type" value="favourite">
+            <button class="btn btn-secondary">
+                <i class="fa fa-star"></i> {{$record->favourites()->count()}}
+            </button>
+        </form>&nbsp;
+        @if(auth()->check())
+            &nbsp;@can('update',$record)
+                <a class="btn btn-secondary" href="{{route('blog::posts.edit',$record->slug)}}">
+                    <span class="fa fa-pencil-alt"></span>
+                </a>
+            @endcan
+            @can('delete',$record)
+                @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
+            @endcan
+            @can('create',\Blog\Models\Post::class)
+                <a class="btn btn-secondary" href="{{route('blog::posts.create')}}">
+                    <span class="fa fa-plus"></span>
+                </a>
+            @endcan
+        @endif
+    </div>
 @endsection
 @section('content')
     <div class="row">
@@ -96,7 +98,7 @@
             @else
                 <a href="{{route('login')}}">Login in</a>  to comments
             @endif
-            
+
         </div>
         <aside class="col-sm-3">
             <h3 class="h6">Related posts</h3>

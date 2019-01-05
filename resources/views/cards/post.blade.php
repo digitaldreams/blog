@@ -57,7 +57,7 @@
         </form>&nbsp;
         @can('update',$record)
             <a class="card-link" href="{{route('blog::posts.edit',$record->slug)}}">
-                <span class="fa fa-pencil"></span>
+                <span class="fa fa-pencil-alt"></span>
             </a>
             @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
         @endcan
