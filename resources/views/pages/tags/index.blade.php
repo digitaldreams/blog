@@ -1,4 +1,7 @@
 @extends(config('blog.layout.show'))
+@section('styles')
+  <link rel="stylesheet" href="{{ asset('css/tags.css') }}"> 
+@endsection
 @section('breadcrumb')
     <li class="breadcrumb-item">tags</li>
 @endsection
@@ -7,7 +10,7 @@
 @endsection
 @section('tools')
     @can('create',\Blog\Models\Tag::class)
-        <a class="btn btn-secondary" href="{{route('blog::tags.create')}}"><span class="fa fa-plus"></span></a>
+        <a class="btn btn-secondary" title="" data-toggle="tooltip" data-original-title="Create New Tag" href="{{route('blog::tags.create')}}"><span class="fa fa-plus"></span></a>
     @endcan
 @endsection
 

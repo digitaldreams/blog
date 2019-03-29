@@ -9,13 +9,15 @@
 @endsection
 @section('tools')
     @can('create',\Blog\Models\Post::class)
-        <a href="{{route('blog::posts.create')}}"><span class="fa fa-plus"></span></a>
+      <button class="btn btn-primary" onclick="location.href='{{route('blog::posts.create')}}'" type="button">
+        <span class="fa fa-plus"></span> create post
+      </button>
     @endcan
 @endsection
 @section('content')
 
     @if($records->count()>0)
-        <div class="row">
+        <div class="row" id="blog-post">
             @foreach($records as $record)
                 <div class="card-group col-md-4 col-sm-6">
                     @include('blog::cards.post')
