@@ -17,7 +17,7 @@
 @section('content')
 
     @if($records->count()>0)
-        <div class="row" id="blog-post">
+        <div class="row blog-post" id="blog-post">
             @foreach($records as $record)
                 <div class="card-group col-md-4 col-sm-6">
                     @include('blog::cards.post')
