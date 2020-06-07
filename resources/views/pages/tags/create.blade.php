@@ -1,4 +1,4 @@
-@extends(config('blog.layout.show'))
+@extends(config('blog.layout'))
 @section('breadcrumb')
     <li class="breadcrumb-item">
         <a href="{{route('blog::tags.index')}}">
@@ -8,7 +8,7 @@
     <li class="breadcrumb-item">Create</li>
 @endsection
 @section('header')
-    <h3>Create New Tag</h3>
+  Create New Tag
 @endsection
 @section('content')
     <div class="row">

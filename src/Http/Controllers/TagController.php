@@ -33,7 +33,7 @@ class TagController extends Controller
     public function index(Index $request)
     {
         return view('blog::pages.tags.index', [
-            'records' => Tag::q($request->get('q'))->withCount('posts')->paginate(10),
+            'records' => Tag::q($request->get('search'))->withCount('posts')->paginate(10),
             'enableSearch' => true
         ]);
     }
@@ -83,7 +83,7 @@ class TagController extends Controller
             session()->flash('app_message', 'Tag saved successfully');
             return redirect()->route('blog::tags.index');
         } else {
-            session()->flash('app_message', 'Something is wrong while saving Tag');
+            session()->flash('app_message', 'Oops something went wrong while saving your tag');
         }
         return redirect()->back();
     }
@@ -117,7 +117,7 @@ class TagController extends Controller
             session()->flash('app_message', 'Tag successfully updated');
             return redirect()->route('blog::tags.index');
         } else {
-            session()->flash('app_error', 'Something is wrong while updating tag');
+            session()->flash('app_error', 'Oops something went wrong while updating tag');
         }
         return redirect()->back();
     }

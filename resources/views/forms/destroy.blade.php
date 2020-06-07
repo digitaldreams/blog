@@ -1,8 +1,8 @@
-<form class="card-link" onsubmit="return confirm('Are you sure you want to delete?')" action="{{$route ?? ''}}" method="post">
+<form style="display: inline" class="card-link" onsubmit="return confirm('Are you sure you want to delete?')"
+      action="{{$route ?? ''}}"
+      method="post" style="display: inline">
     {{csrf_field()}}
     {{method_field('DELETE')}}
-    <button type="submit">
-        <i class="mdi mdi-delete"></i>
-        <div class="text">Delete</div>
-    </button>
+    <button type="submit" class="btn btn-light cursor-pointer  btn-sm">
+        <i class="text-danger fa fa-times"></i></button>
 </form>

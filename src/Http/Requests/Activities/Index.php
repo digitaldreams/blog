@@ -15,7 +15,7 @@ class Index extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->can('index', Activity::class);
+        return auth()->check() &&  auth()->user()->can('index', Activity::class);
     }
 
     /**

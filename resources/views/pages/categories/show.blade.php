@@ -1,4 +1,4 @@
-@extends(config('blog.layout.show'))
+@extends(config('blog.layout'))
 @section('breadcrumb')
 
     <li class="breadcrumb-item">

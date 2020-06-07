@@ -3,7 +3,7 @@
 namespace Blog\Policies;
 
 use \Blog\Models\Post;
-use Permit\Models\User;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostPolicy
@@ -14,19 +14,7 @@ class PostPolicy
      * @param User $user
      * @return bool
      */
-    public function before(User $user)
-    {
-        if (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin()) {
-            return true;
-        }
-        //return true if user has super power
-    }
-
-    /**
-     * @param User $user
-     * @return bool
-     */
-    public function index(User $user)
+    public function index($user)
     {
         return true;
     }
@@ -34,22 +22,22 @@ class PostPolicy
     /**
      * Determine whether the user can view the Post.
      *
-     * @param  User $user
-     * @param  Post $post
+     * @param User $user
+     * @param Post $post
      * @return mixed
      */
-    public function view(User $user, Post $post)
+    public function view($user, Post $post)
     {
-        return true;
+        return $post->user_id == $user->id;
     }
 
     /**
      * Determine whether the user can create Post.
      *
-     * @param  User $user
+     * @param User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         return true;
     }
@@ -58,10 +46,10 @@ class PostPolicy
      * Determine whether the user can update the Post.
      *
      * @param User $user
-     * @param  Post $post
+     * @param Post $post
      * @return mixed
      */
-    public function update(User $user, Post $post)
+    public function update($user, Post $post)
     {
         return $user->id == $post->user_id;
     }
@@ -70,12 +58,24 @@ class PostPolicy
      * Determine whether the user can delete the Post.
      *
      * @param User $user
-     * @param  Post $post
+     * @param Post $post
      * @return mixed
      */
-    public function delete(User $user, Post $post)
+    public function delete($user, Post $post)
     {
-        return $user->id == $post->user_id;
+        return $user->id == $post->user_id && $post->status !== Post::STATUS_PUBLISHED;
+    }
+
+    /**
+     * Determine whether the user can delete the Post.
+     *
+     * @param User $user
+     * @param Post $post
+     * @return mixed
+     */
+    public function approve($user)
+    {
+        return false;
     }
 
 }

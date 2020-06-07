@@ -2,24 +2,23 @@
 
 namespace Blog\Notifications;
 
+use Blog\Models\Category;
+use Blog\Models\Post;
+use Blog\Models\Tag;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use Permit\Notifications\Channels\Model as ModelChannel;
 
 class FavouriteNotification extends Notification
 {
     use Queueable;
-
     /**
-     * @var Model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     public $model;
 
     /**
-     * @var Model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     public $actor;
 
@@ -38,27 +37,20 @@ class FavouriteNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
     {
-        return [ModelChannel::class];
-    }
-
-    public function toModel($notifiable)
-    {
-        return [
-            'model' => $this->model,
-            'actor' => $this->actor,
-            'verb' => 'mark as favourite'
-        ];
+        return ['database'];
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)
@@ -66,5 +58,42 @@ class FavouriteNotification extends Notification
         return [
             //
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function toDatabase(): array
+    {
+        $data = $this->getData();
+        return [
+            'message' => $this->actor->name . ' mark ' . $data['message'] . ' as favourite.',
+            'link' => $data['link'] ?? '',
+            'icon' => 'fa fa-star text-warning',
+        ];
+    }
+
+    public function getData()
+    {
+        switch (get_class($this->model)) {
+            case Post::class:
+                return [
+                    'message' => $this->model->title,
+                    'link' => route('blog::posts.show', $this->model->slug),
+                ];
+                break;
+            case Category::class:
+                return [
+                    'message' => $this->model->title,
+                    'link' => route('frontend.blog.categories.index', $this->model->slug),
+                ];
+                break;
+            case Tag::class:
+                return [
+                    'message' => $this->model->name,
+                    'link' => route('frontend.blog.tags.index', $this->model->slug),
+                ];
+                break;
+        }
     }
 }

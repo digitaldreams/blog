@@ -2,10 +2,8 @@
 
 namespace Blog\Models;
 
-use Exam\Models\Exam;
 use Illuminate\Database\Eloquent\Model;
-use Permit\Models\User;
-use App\Models\WordMeaning;
+use App\Models\User;
 
 /**
  * @property varchar $name name
@@ -36,7 +34,7 @@ class ActivityType extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            if (auth()->check() && !auth()->user()->isSuperAdmin()) {
+            if (auth()->check() && !auth()->user()->isAdmin()) {
                 $model->user_id = auth()->id();
             }
         });

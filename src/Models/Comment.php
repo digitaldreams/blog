@@ -24,7 +24,7 @@ class Comment extends Model
     /**
      * Protected columns from mass assignment
      */
-    protected $guarded = ['id'];
+    protected $fillable = ['user_id', 'body', 'post_id'];
 
 
     /**

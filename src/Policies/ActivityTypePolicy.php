@@ -3,7 +3,7 @@
 namespace Blog\Policies;
 
 use Blog\Models\ActivityType;
-use Permit\Models\User;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ActivityTypePolicy
@@ -14,18 +14,7 @@ class ActivityTypePolicy
      * @param User $user
      * @return bool
      */
-    public function before(User $user)
-    {
-        if (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin()) {
-            return true;
-        }
-    }
-
-    /**
-     * @param User $user
-     * @return bool
-     */
-    public function index(User $user)
+    public function index($user)
     {
         return true;
     }
@@ -37,7 +26,7 @@ class ActivityTypePolicy
      * @param  ActivityType $activityType
      * @return mixed
      */
-    public function view(User $user, ActivityType $activityType)
+    public function view($user, ActivityType $activityType)
     {
         return empty($activityType->user_id) || $activityType->user_id == $user->id;
     }
@@ -48,7 +37,7 @@ class ActivityTypePolicy
      * @param  User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         return true;
     }
@@ -60,7 +49,7 @@ class ActivityTypePolicy
      * @param  ActivityType $activityType
      * @return mixed
      */
-    public function update(User $user, ActivityType $activityType)
+    public function update($user, ActivityType $activityType)
     {
         return $activityType->user_id == $user->id;
     }
@@ -72,7 +61,7 @@ class ActivityTypePolicy
      * @param  ActivityType $activityType
      * @return mixed
      */
-    public function delete(User $user, ActivityType $activityType)
+    public function delete($user, ActivityType $activityType)
     {
         return $activityType->user_id == $user->id;
     }

@@ -32,7 +32,7 @@ class CategoryController extends Controller
     public function index(Index $request)
     {
         return view('blog::pages.categories.index', [
-            'records' => Category::q($request->get('q'))->withCount('posts')->with('parentCategory')->paginate(10),
+            'records' => Category::q($request->get('search'))->withCount('posts')->with('parentCategory')->paginate(10),
             'enableSearch' => true
         ]);
     }
@@ -83,7 +83,7 @@ class CategoryController extends Controller
             session()->flash('app_message', 'Category saved successfully');
             return redirect()->route('blog::categories.index');
         } else {
-            session()->flash('app_message', 'Something is wrong while saving Category');
+            session()->flash('app_message', 'Oops something went wrong while saving the category');
         }
         return redirect()->back();
     }
@@ -120,7 +120,7 @@ class CategoryController extends Controller
             session()->flash('app_message', 'Category successfully updated');
             return redirect()->route('blog::categories.index');
         } else {
-            session()->flash('app_error', 'Something is wrong while updating Category');
+            session()->flash('app_error', 'Oops something went wrong while updating Category');
         }
         return redirect()->back();
     }

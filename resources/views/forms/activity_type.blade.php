@@ -1,4 +1,4 @@
-<form action="{{$route ?? route('blog::types.store')}}" method="POST">
+<form action="{{$route ?? route('blog::types.store')}}" method="POST" onsubmit="return disableBtn()">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
     <div class="form-group">

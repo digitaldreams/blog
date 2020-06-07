@@ -2,24 +2,16 @@
 
 namespace Blog\Http\Controllers;
 
-use Blog\Http\Requests\Activities\Create;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Blog\Http\Requests\Activities\Destroy;
-use Blog\Http\Requests\Activities\Edit;
-use Blog\Http\Requests\Activities\Index;
-use Blog\Http\Requests\Activities\Show;
 use Blog\Http\Requests\Activities\Store;
 use Blog\Http\Requests\Activities\Update;
-use Blog\Models\ActivityType;
+use Blog\Models\Activity;
 use Blog\Notifications\FavouriteNotification;
 use Blog\Notifications\LikeNotification;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Blog\Models\Activity;
-use Permit\Models\User;
-use Photo\Models\Photo;
-use Photo\Services\PhotoService;
-use Blog\Models\Tag;
-use Notification;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Description of WordMeaningController
@@ -28,10 +20,38 @@ use Notification;
  */
 class ActivityController extends Controller
 {
+
+    public function show(Request $request, $action)
+    {
+        $model = false;
+
+        $activityAbleType = $request->get('type');
+        $activityAbleId = $request->get('id');
+        if (class_exists($activityAbleType)) {
+            $model = $activityAbleType::find($activityAbleId);
+            if (!$model) {
+                return redirect()->back()->with('error', 'Activity Type does not exists any more');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Activity Type does not exists any more');
+        }
+
+        return view('blog::pages.activities.show', [
+            'model' => $model,
+            'action' => $action,
+            'activities' => Activity::where('activityable_type', $activityAbleType)
+                ->where('activityable_id', $activityAbleId)
+                ->where('type', $action)
+                ->latest()
+                ->paginate(10),
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
@@ -40,7 +60,7 @@ class ActivityController extends Controller
         $model = Activity::forUser($request)->first();
         if ($model) {
             $model->delete();
-            return redirect()->back()->with('permit_message', 'Your ' . $request->get('type') . ' is undo');
+            return redirect()->back()->with('message', 'Your ' . $request->get('type') . ' is undo');
         } else {
             $activityAbleClass = $request->get('activityable_type');
             $activityAbleId = $request->get('activityable_id');
@@ -48,32 +68,33 @@ class ActivityController extends Controller
             $activityModel = $activityModel->find($activityAbleId);
 
             if ($request->get('type') == Activity::TYPE_LIKE) {
-
-
                 $notificationOb = new LikeNotification($activityModel, auth()->user());
+            } elseif ($request->get('type') == Activity::TYPE_INAPPROPRIATE) {
+                //   $notificationOb = new InappropriateNotification($activityModel, auth()->user());
             } elseif ($request->get('type') == Activity::TYPE_FAVOURITE) {
                 $notificationOb = new FavouriteNotification($activityModel, auth()->user());
             }
-            Notification::send(User::superAdmin()->get(), $notificationOb);
+            Notification::send(User::getAdmins(), $notificationOb);
             $model = new Activity();
         }
         $model->fill($request->all());
 
         if ($model->save()) {
-            session()->flash('permit_message', 'Thanks for ' . $request->get('type'));
+            session()->flash('message', 'Thanks for ' . $request->get('type'));
         } else {
-            session()->flash('permit_error', 'Something is wrong while ' . $request->get('type'));
+            session()->flash('error', 'Oops something went wrong while ' . $request->get('type'));
         }
         return redirect()->back();
     }
 
+
     /**
      * Update a existing resource in storage.
      *
-     * @param  Request $request
-     * @param  Activity $activity
+     * @param Update   $request
+     * @param Activity $activity
+     *
      * @return \Illuminate\Http\Response
-     * @throws \Exception
      */
     public function update(Update $request, Activity $activity)
     {
@@ -81,10 +102,10 @@ class ActivityController extends Controller
 
         if ($activity->save()) {
             $activity->tags()->sync($request->get('tags', []));
-            session()->flash('permit_message', 'Your activity successfully updated');
+            session()->flash('message', 'Your activity successfully updated');
             return redirect()->back();
         } else {
-            session()->flash('permit_error', 'Something is wrong while updating Word');
+            session()->flash('error', 'Oops something went wrong while updating Word');
         }
         return redirect()->back();
     }
@@ -92,17 +113,18 @@ class ActivityController extends Controller
     /**
      * Delete a  resource from  storage.
      *
-     * @param  Request $request
-     * @param  Activity $activity
+     * @param Request  $request
+     * @param Activity $activity
+     *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
     public function destroy(Destroy $request, Activity $activity)
     {
         if ($activity->delete()) {
-            session()->flash('permit_message', 'Word  successfully deleted');
+            session()->flash('message', 'Word  successfully deleted');
         } else {
-            session()->flash('permit_error', 'Error occurred while deleting Word');
+            session()->flash('error', 'Error occurred while deleting Word');
         }
 
         return redirect()->back();

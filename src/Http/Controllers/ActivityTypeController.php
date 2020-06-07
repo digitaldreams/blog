@@ -77,10 +77,10 @@ class ActivityTypeController extends Controller
         $model->fill($request->all());
 
         if ($model->save()) {
-            session()->flash('permit_message', 'Activity Type saved successfully');
+            session()->flash('message', 'Activity Type saved successfully');
             return redirect()->route('blog::types.index');
         } else {
-            session()->flash('permit_message', 'Something is wrong while saving Activity Type');
+            session()->flash('message', 'Oops something went wrong while saving Activity Type');
         }
         return redirect()->back();
     }
@@ -112,10 +112,10 @@ class ActivityTypeController extends Controller
 
         if ($type->save()) {
 
-            session()->flash('permit_message', 'Activity Type successfully updated');
+            session()->flash('message', 'Activity Type successfully updated');
             return redirect()->route('blog::types.index');
         } else {
-            session()->flash('app_error', 'Something is wrong while updating Activity Type');
+            session()->flash('error', 'Oops something went wrong while updating Activity Type');
         }
         return redirect()->back();
     }
@@ -131,9 +131,9 @@ class ActivityTypeController extends Controller
     public function destroy(Destroy $request, ActivityType $type)
     {
         if ($type->delete()) {
-            session()->flash('permit_message', 'Activity Type successfully deleted');
+            session()->flash('message', 'Activity Type successfully deleted');
         } else {
-            session()->flash('permit_error', 'Error occurred while deleting Activity Type');
+            session()->flash('error', 'Error occurred while deleting Activity Type');
         }
         return redirect()->back();
     }

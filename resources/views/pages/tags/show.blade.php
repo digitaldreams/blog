@@ -1,4 +1,4 @@
-@extends(config('blog.layout.show'))
+@extends(config('blog.layout'))
 @section('breadcrumb')
 
     <li class="breadcrumb-item">
@@ -9,7 +9,7 @@
     </li>
 @endsection
 @section('header')
-    <h3><i class="fa fa-tag text-muted" style="font-size: 18px"></i> {{$record->name}} </h3>
+<i class="fa fa-tag text-muted" style="font-size: 18px"></i> {{$record->name}}
 @endsection
 @section('tools')
     @can('create',\Blog\Models\Tag::class)

@@ -4,10 +4,12 @@ namespace Blog;
 
 use Blog\Models\Category;
 use Blog\Models\Comment;
+use Blog\Models\Newsletter;
 use Blog\Models\Post;
 use Blog\Models\Tag;
 use Blog\Policies\CategoryPolicy;
 use Blog\Policies\CommentPolicy;
+use Blog\Policies\NewsletterPolicy;
 use Blog\Policies\PostPolicy;
 use Blog\Policies\TagPolicy;
 use Illuminate\Support\Facades\Event;
@@ -32,7 +34,8 @@ class BlogServiceProvider extends ServiceProvider
         Tag::class => TagPolicy::class,
         Comment::class => CommentPolicy::class,
         Activity::class => ActivityPolicy::class,
-        ActivityType::class => ActivityTypePolicy::class
+        ActivityType::class => ActivityTypePolicy::class,
+        Newsletter::class => NewsletterPolicy::class
     ];
 
     /**

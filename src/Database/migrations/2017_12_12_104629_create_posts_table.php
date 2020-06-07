@@ -15,7 +15,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->string('title')->nullable();
             //pending, accepted, published, canceled
             $table->string('status')->default('pending');

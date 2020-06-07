@@ -2,8 +2,8 @@
 
 namespace Blog\Policies;
 
+use App\User;
 use Blog\Models\Activity;
-use Permit\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ActivityPolicy
@@ -12,20 +12,10 @@ class ActivityPolicy
 
     /**
      * @param User $user
+     *
      * @return bool
      */
-    public function before(User $user)
-    {
-        if (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin()) {
-            return true;
-        }
-    }
-
-    /**
-     * @param User $user
-     * @return bool
-     */
-    public function index(User $user)
+    public function index($user)
     {
         return true;
     }
@@ -33,11 +23,12 @@ class ActivityPolicy
     /**
      * Determine whether the user can view the Activity.
      *
-     * @param  User $user
-     * @param  Activity $activity
+     * @param User     $user
+     * @param Activity $activity
+     *
      * @return mixed
      */
-    public function view(User $user, Activity $activity)
+    public function view($user, Activity $activity)
     {
         return true;
     }
@@ -45,10 +36,11 @@ class ActivityPolicy
     /**
      * Determine whether the user can create Activity.
      *
-     * @param  User $user
+     * @param User $user
+     *
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         return true;
     }
@@ -56,11 +48,12 @@ class ActivityPolicy
     /**
      * Determine whether the user can update the Activity.
      *
-     * @param User $user
-     * @param  Activity $activity
+     * @param User     $user
+     * @param Activity $activity
+     *
      * @return mixed
      */
-    public function update(User $user, Activity $activity)
+    public function update($user, Activity $activity)
     {
         return true;
     }
@@ -68,11 +61,12 @@ class ActivityPolicy
     /**
      * Determine whether the user can delete the Activity.
      *
-     * @param User $user
-     * @param  Activity $activity
+     * @param User     $user
+     * @param Activity $activity
+     *
      * @return mixed
      */
-    public function delete(User $user, Activity $activity)
+    public function delete($user, Activity $activity)
     {
         return false;
     }

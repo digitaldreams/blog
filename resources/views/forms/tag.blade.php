@@ -1,4 +1,4 @@
-<form action="{{$route ?? route('blog::tags.store')}}" method="POST" class="m-form">
+<form action="{{$route ?? route('blog::tags.store')}}" method="POST" class="m-form" onsubmit="return disableBtn()">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
     <div class="m-form__group form-group row">

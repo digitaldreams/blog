@@ -4,18 +4,28 @@ namespace Blog\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Permit\Notifications\Channels\Model as ModelChannel;
+use Illuminate\Notifications\Notification;
 
 class CommentNotification extends Notification
 {
     use Queueable;
 
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     public $model;
 
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     public $actor;
+    /**
+     * @var string
+     */
+    private $subject;
+
+    private $actionLink;
 
     /**
      * Create a new notification instance.
@@ -27,38 +37,57 @@ class CommentNotification extends Notification
     {
         $this->model = $model;
         $this->actor = $user;
+        $this->subject = $this->actor->name . ' make a comment on ' . $this->model->title;
+        $this->actionLink = route('blog::frontend.blog.posts.show', [
+            'category' => $this->model->category->slug,
+            'post' => $this->model->slug,
+        ]);
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
     {
-        return [ModelChannel::class];
+        return ['database', 'mail'];
     }
 
-    public function toModel($notifiable)
+    /**
+     * @param $notifiable
+     *
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
     {
-        return [
-            'model' => $this->model,
-            'actor' => $this->actor,
-            'verb' => 'comments on '
-        ];
+        return (new MailMessage())->subject($this->subject)->view('blog::emails.notifications.comment', [
+            'post' => $this->model,
+        ]);
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)
     {
         return [
             //
+        ];
+    }
+
+    public function toDatabase()
+    {
+        return [
+            'message' => $this->subject,
+            'link' => $this->actionLink,
+            'icon' => 'fa fa-user-plus',
         ];
     }
 }

@@ -3,14 +3,14 @@ return [
     /**
      * User model are used in Authentication
      */
-    'userModel' => App\User::class,
+    'userModel' => App\Models\User::class,
 
     /**
      * Layout's will be used to
      */
     'layout' => [
-        'show' => 'permit::layouts.metronic.admin',
-        'create' => 'prototype::layouts.blog'
+        'show' => 'blog::layouts.app',
+        'create' => 'blog::layouts.app'
     ],
     'activityType' => [
         //keyword=>Full Namespace Model class

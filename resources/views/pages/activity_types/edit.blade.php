@@ -1,4 +1,4 @@
-@extends('permit::layouts.app')
+@extends(config('blog.layout'))
 @section('breadcrumb')
     <li class="breadcrumb-item">
         <a href="{{route('blog::types.index')}}">activity types</a>

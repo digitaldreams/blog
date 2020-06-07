@@ -3,7 +3,7 @@
 namespace Blog\Policies;
 
 use \Blog\Models\Category;
-use Permit\Models\User;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CategoryPolicy
@@ -14,18 +14,7 @@ class CategoryPolicy
      * @param User $user
      * @return bool
      */
-    public function before(User $user)
-    {
-        if (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin()) {
-            return true;
-        }
-    }
-
-    /**
-     * @param User $user
-     * @return bool
-     */
-    public function index(User $user)
+    public function index($user)
     {
         return true;
     }
@@ -37,7 +26,7 @@ class CategoryPolicy
      * @param  Category $category
      * @return mixed
      */
-    public function view(User $user, Category $category)
+    public function view($user, Category $category)
     {
         return true;
     }
@@ -48,7 +37,7 @@ class CategoryPolicy
      * @param  User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         return true;
     }
@@ -60,7 +49,7 @@ class CategoryPolicy
      * @param  Category $category
      * @return mixed
      */
-    public function update(User $user, Category $category)
+    public function update($user, Category $category)
     {
         return false;
     }
@@ -72,7 +61,7 @@ class CategoryPolicy
      * @param  Category $category
      * @return mixed
      */
-    public function delete(User $user, Category $category)
+    public function delete($user, Category $category)
     {
         return false;
     }

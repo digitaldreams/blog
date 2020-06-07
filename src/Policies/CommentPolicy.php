@@ -3,7 +3,7 @@
 namespace Blog\Policies;
 
 use \Blog\Models\Comment;
-use Permit\Models\User;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CommentPolicy
@@ -14,18 +14,7 @@ class CommentPolicy
      * @param User $user
      * @return bool
      */
-    public function before(User $user)
-    {
-        if (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin()) {
-            return true;
-        }
-    }
-
-    /**
-     * @param User $user
-     * @return bool
-     */
-    public function index(User $user)
+    public function index($user)
     {
         return true;
     }
@@ -37,7 +26,7 @@ class CommentPolicy
      * @param  Comment $comment
      * @return mixed
      */
-    public function view(User $user, Comment $comment)
+    public function view($user, Comment $comment)
     {
         return true;
     }
@@ -48,7 +37,7 @@ class CommentPolicy
      * @param  User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         return true;
     }
@@ -60,7 +49,7 @@ class CommentPolicy
      * @param  Comment $comment
      * @return mixed
      */
-    public function update(User $user, Comment $comment)
+    public function update($user, Comment $comment)
     {
         return $user->id == $comment->user_id;
     }
@@ -72,7 +61,7 @@ class CommentPolicy
      * @param  Comment $comment
      * @return mixed
      */
-    public function delete(User $user, Comment $comment)
+    public function delete($user, Comment $comment)
     {
         return $user->id == $comment->user_id;
     }

@@ -16,6 +16,7 @@ class Activity extends Model
     const TYPE_DISLIKE = 'dislike';
     const TYPE_FAVOURITE = 'favourite';
     const TYPE_LATER = 'later';
+    const TYPE_INAPPROPRIATE = 'inappropriate';
     /**
      * Database Table Name
      * @var string
@@ -34,7 +35,13 @@ class Activity extends Model
      * Protected column that will not be mass assignable
      * @var array
      */
-    protected $fillable = ['activityable_type', 'activityable_id', 'type'];
+    protected $fillable = [
+        'activityable_type',
+        'activityable_id',
+        'type',
+        'reason',
+        'message'
+    ];
 
     public static function boot()
     {
@@ -75,7 +82,7 @@ class Activity extends Model
             ->where('type', $request->get('type'));
     }
 
-    public  function scopeLatest($query,$type)
+    public function scopeLatest($query, $type)
     {
         return $query->where('user_id', auth()->user()->id)
             ->where('activityable_type', $type)

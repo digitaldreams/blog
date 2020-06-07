@@ -3,7 +3,7 @@
 namespace Blog\Policies;
 
 use \Blog\Models\Tag;
-use Permit\Models\User;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TagPolicy
@@ -14,18 +14,7 @@ class TagPolicy
      * @param User $user
      * @return bool
      */
-    public function before(User $user)
-    {
-        if (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin()) {
-            return true;
-        }
-    }
-
-    /**
-     * @param User $user
-     * @return bool
-     */
-    public function index(User $user)
+    public function index($user)
     {
         return true;
     }
@@ -37,7 +26,7 @@ class TagPolicy
      * @param  Tag $tag
      * @return mixed
      */
-    public function view(User $user, Tag $tag)
+    public function view($user, Tag $tag)
     {
         return true;
     }
@@ -48,7 +37,7 @@ class TagPolicy
      * @param  User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create($user)
     {
         return true;
     }
@@ -60,7 +49,7 @@ class TagPolicy
      * @param  Tag $tag
      * @return mixed
      */
-    public function update(User $user, Tag $tag)
+    public function update($user, Tag $tag)
     {
         return false;
     }
@@ -72,7 +61,7 @@ class TagPolicy
      * @param  Tag $tag
      * @return mixed
      */
-    public function delete(User $user, Tag $tag)
+    public function delete($user, Tag $tag)
     {
         return false;
     }

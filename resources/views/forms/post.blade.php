@@ -1,4 +1,5 @@
-<form action="{{$route ?? route('blog::posts.store')}}" method="POST" enctype="multipart/form-data" id="postForm">
+<form action="{{$route ?? route('blog::posts.store')}}" method="POST" enctype="multipart/form-data" id="postForm"
+      onsubmit="return disableBtn()">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
 
@@ -7,6 +8,7 @@
         <div class="form-group col-sm-8">
             <label for="title">Title</label>
             <input type="text" class="form-control" name="title" id="title" value="{{old('title',$model->title)}}"
+                   required
                    placeholder="" maxlength="255">
             @if($errors->has('title'))
                 <span class="form-control-feedback">
@@ -14,7 +16,7 @@
     </span>
             @endif
         </div>
-        <div class="form-group col-sm-3">
+        <div class="form-group col-sm-4">
             <label for="slug">Slug</label>
             <input type="text" class="form-control" name="slug" id="slug" value="{{old('slug',$model->slug)}}"
                    placeholder="By default title will be used as slug" maxlength="255">
@@ -24,16 +26,13 @@
     </span>
             @endif
         </div>
-        <div class="form-group col-sm-1 pt-4">
-            <button type="submit" class="mt-1 btn btn-block btn-outline-primary"><i class="fa fa-save"></i> Save
-            </button>
-        </div>
+
     </div>
 
 
     <div class="form-group {{ $errors->has('body') ? ' has-danger' : '' }}">
-        <textarea class="form-control" rows="40" cols="20" name="body"
-                  id="summernote">{{old('body',$model->content)}}</textarea>
+        <textarea class="form-control" rows="40" cols="20" name="body" required
+                  id="summernote">{{old('body',$model->body)}}</textarea>
         @if($errors->has('body'))
             <span class="form-control-feedback">
         <strong>{{ $errors->first('body') }}</strong>

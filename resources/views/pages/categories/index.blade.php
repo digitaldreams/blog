@@ -1,11 +1,9 @@
-@extends(config('blog.layout.show'))
+@extends(config('blog.layout'))
 @section('breadcrumb')
     <li class="breadcrumb-item">Categories</li>
 @endsection
 @section('header')
-    <h3>
         <i class="fa fa-layer-group text-muted" style="font-size: 18px"></i> Categories
-    </h3>
 
 @endsection
 @section('tools')
@@ -22,3 +20,8 @@
     @endif
     {!! $records->render() !!}
 @endSection
+
+
+@section('script')
+    @include('blog::pages.navigationscripts')
+@endsection

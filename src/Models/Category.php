@@ -21,7 +21,7 @@ class Category extends Model
     /**
      * Protected columns from mass assignment
      */
-    protected $guarded = ['id'];
+    protected $fillable = ['parent_id', 'title', 'slug'];
 
 
     /**
@@ -95,6 +95,7 @@ class Category extends Model
             $q->orWhere('title', 'LIKE', '%' . $keyword . '%');
         });
     }
+
     /**
      * @return string
      */
