@@ -429,71 +429,7 @@
                   Its width can be set to 100% for a color band
                   that spans the width of the page.
                 -->
-                <table bgcolor="#282727" border="0" cellpadding="0" cellspacing="0" width="670" id="emailHeader">
 
-                    <!-- HEADER ROW // -->
-                    <tr>
-                        <td align="center" valign="top">
-                            <!-- CENTERING TABLE // -->
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                <tr>
-                                    <td align="center" valign="top">
-                                        <!-- FLEXIBLE CONTAINER // -->
-                                        <table border="0" cellpadding="10" cellspacing="0" width="670"
-                                               class="flexibleContainer">
-                                            <tr>
-                                                <td valign="top" width="670" class="flexibleContainerCell">
-
-                                                    <!-- CONTENT TABLE // -->
-                                                    <table align="left" border="0" cellpadding="0" cellspacing="0"
-                                                           width="100%">
-                                                        <tr>
-
-                                                            <td align="left" valign="middle" id="invisibleIntroduction"
-                                                                class="flexibleContainerBox"
-                                                                style="display:none !important; mso-hide:all;">
-                                                                <table border="0" cellpadding="0" cellspacing="0"
-                                                                       width="100%" style="max-width:100%;">
-                                                                    <tr>
-                                                                        <td align="left" class="textContent">
-                                                                            <div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#828282;text-align:center;line-height:120%;">
-                                                                                <!--The introduction of your message preview goes here. Try to make it short.-->
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                            <td align="right" valign="middle"
-                                                                class="flexibleContainerBox">
-                                                                <table border="0" cellpadding="0" cellspacing="0"
-                                                                       width="100%" style="max-width:100%;">
-                                                                    <tr>
-                                                                        <td align="left" class="textContent">
-                                                                            <!-- CONTENT // -->
-                                                                            <div style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#828282;text-align:right;line-height:120%;">
-                                                                                <a href="#" target="_blank"
-                                                                                   style="text-decoration:none;border-bottom:1px solid #828282;color:#828282;"><span
-                                                                                            style="color:#ee7e08;">View&nbsp;in&nbsp;browser</span></a>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <!-- // FLEXIBLE CONTAINER -->
-                                    </td>
-                                </tr>
-                            </table>
-                            <!-- // CENTERING TABLE -->
-                        </td>
-                    </tr>
-                    <!-- // END -->
-
-                </table>
                 <!-- // END -->
 
                 <!-- EMAIL BODY // -->
@@ -544,11 +480,9 @@
                                                     <table border="0" cellpadding="1" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td align="center" valign="top" class="textContent">
-                                                                <a href="#"><img src="https://i.ibb.co/f2TNWBF/logo.png"
+                                                                <a href="#"><img src="https://i.ibb.co/vVvqzbT/logo.png"
                                                                                  alt="Logo"
                                                                                  style="display:inline-block;"></a>
-                                                                <h2 style="text-align:center;font-weight:bold;font-family:Helvetica,Arial,sans-serif;font-size:20px;margin-bottom:10px;color:#FFFFFF;line-height:135%;">
-                                                                    Everyone is a winner on the BOM</h2>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -569,97 +503,9 @@
                     <!-- MODULE ROW // -->
                 @yield('header')
                 <!-- // MODULE ROW -->
-                    <tr>
-                        <td align="center" valign="top">
-                            <!-- CENTERING TABLE // -->
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                <tbody><tr>
-                                    <td align="center" valign="top">
-                                        <!-- FLEXIBLE CONTAINER // -->
-                                        <table border="0" cellpadding="0" cellspacing="0" width="670" class="flexibleContainer">
-                                            <tbody><tr>
-                                                <td align="center" valign="top" width="670" class="flexibleContainerCell">
-                                                    <table border="0" cellpadding="30" cellspacing="0" width="100%">
-                                                        <tbody><tr>
-                                                            <td align="center" valign="top" style="padding-top:0px;padding-bottom:0px;">
 
-                                                                <!-- CONTENT TABLE // -->
-                                                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                                                    <tbody><tr>
-                                                                        <td valign="top" align="center" class="textContent">
-                                                                            <div style="margin-top:45px;">
-                                                                                <a href="{{url('/')}}">
-                                                                                    <img src="https://i.ibb.co/K6bbnzT/group-13.png" style="display:inline-block; ">
-                                                                                </a>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    </tbody></table>
-                                                                <!-- // CONTENT TABLE -->
-
-                                                            </td>
-                                                        </tr>
-                                                        </tbody></table>
-                                                </td>
-                                            </tr>
-                                            </tbody></table>
-                                        <!-- // FLEXIBLE CONTAINER -->
-                                    </td>
-                                </tr>
-                                </tbody></table>
-                            <!-- // CENTERING TABLE -->
-                        </td>
-                    </tr>
                     <!-- MODULE ROW // -->
-                    <tr>
-                        <td align="center" valign="top">
-                            <!-- CENTERING TABLE // -->
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#FFFFFF">
-                                <tr>
-                                    <td align="center" valign="top">
-                                        <!-- FLEXIBLE CONTAINER // -->
-                                        <table border="0" cellpadding="0" cellspacing="0" width="670"
-                                               class="flexibleContainer">
-                                            <tr>
-                                                <td align="center" valign="top" width="670"
-                                                    class="flexibleContainerCell">
-                                                    <table border="0" cellpadding="30" cellspacing="0" width="100%">
-                                                        <tr>
-                                                            <td align="center" valign="top">
 
-                                                                <!-- CONTENT TABLE // -->
-                                                                <table border="0" cellpadding="0" cellspacing="0"
-                                                                       width="100%">
-                                                                    <tr>
-                                                                        <td valign="top" class="textContent">
-                                                                            <!--
-                                                                              The "mc:edit" is a feature for MailChimp which allows
-                                                                              you to edit certain row. It makes it easy for you to quickly edit row sections.
-                                                                              http://kb.mailchimp.com/templates/code/create-editable-content-areas-with-mailchimps-template-language
-                                                                            -->
-
-                                                                            <h1 mc:edit="header" style="color:#020202;line-height:125%;font-family:Helvetica,Arial,sans-serif;font-size:46px;font-weight:bold;margin-top:0;margin-bottom:3px;text-align:center;">
-                                                                                Hey <b style="color:#ee7e08; text-transform: capitalize;">{{$user->first_name ??''}}
-                                                                                    </b><br>You have a message from<br>
-                                                                                the BOM Squad</h1>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <!-- // CONTENT TABLE -->
-
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <!-- // FLEXIBLE CONTAINER -->
-                                    </td>
-                                </tr>
-                            </table>
-                            <!-- // CENTERING TABLE -->
-                        </td>
-                    </tr>
                     <!-- // MODULE ROW -->
 
 
@@ -667,7 +513,7 @@
                     <tr>
                         <td align="center" valign="top">
                             <!-- CENTERING TABLE // -->
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" >
                                 <tr>
                                     <td align="center" valign="top">
                                         <!-- FLEXIBLE CONTAINER // -->
@@ -678,7 +524,7 @@
                                                     class="flexibleContainerCell">
                                                     <table border="0" cellpadding="30" cellspacing="0" width="100%">
                                                         <tr>
-                                                            <td align="center" valign="top" style="padding-top:0px;">
+                                                            <td align="center" valign="top" style="padding-top:30px;">
 
                                                                 <!-- CONTENT TABLE // -->
                                                                 <table border="0" cellpadding="0" cellspacing="0"
@@ -686,7 +532,8 @@
                                                                     <tr>
                                                                         <td valign="top" align="center"
                                                                             class="textContent">
-                                                                            <div style="text-align:center;font-family:Helvetica,Arial,sans-serif;font-size:16px;margin-bottom:50px;color:#757373;line-height:1.38;">
+                                                                            <div
+                                                                                style="text-align:center;font-family:Helvetica,Arial,sans-serif;font-size:16px;margin-bottom:50px;color:#757373;line-height:1.38;">
                                                                                 @yield('content')
                                                                             </div>
 
@@ -729,7 +576,8 @@
                                                            class="flexibleContainer">
                                                         <tr>
                                                             <td align="left" valign="top" class="textContent">
-                                                                <div style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:15px;margin-bottom:10;color:#5F5F5F;line-height:135%;">
+                                                                <div
+                                                                    style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:15px;margin-bottom:10;color:#5F5F5F;line-height:135%;">
                                                                     &nbsp;
                                                                 </div>
                                                             </td>
@@ -775,14 +623,15 @@
                                                                         <td align="left" class="textContent">
                                                                             <h3 style="color:#FFFFFF;line-height:normal;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;margin-top:0;margin-bottom:14px;text-align:center;">
                                                                                 Our Services</h3>
-                                                                            <div style="text-align:center;font-family:Helvetica,Arial,sans-serif;font-size:14px;margin-bottom:0;color:#FFFFFF;line-height:135%;">
+                                                                            <div
+                                                                                style="text-align:center;font-family:Helvetica,Arial,sans-serif;font-size:14px;margin-bottom:0;color:#FFFFFF;line-height:135%;">
                                                                                 <a href="#"
                                                                                    style="color:#ee7e08;text-decoration:none;">Review&nbsp;Portal</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
-                                                                                        href="#"
-                                                                                        style="text-decoration:none;color:#ee7e08;">Digital
+                                                                                    href="#"
+                                                                                    style="text-decoration:none;color:#ee7e08;">Digital
                                                                                     Services Hub</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a
-                                                                                        href="#"
-                                                                                        style="text-decoration:none;color:#ee7e08;">Product/Business
+                                                                                    href="#"
+                                                                                    style="text-decoration:none;color:#ee7e08;">Product/Business
                                                                                     Directory</a>
                                                                             </div>
                                                                         </td>
@@ -790,46 +639,7 @@
                                                                     <tr>
                                                                         <td>&nbsp;</td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <table border="0" cellpadding="0"
-                                                                                   cellspacing="0" width="100%">
-                                                                                <tr>
-                                                                                    <td align="left" width="20%">
-                                                                                        <div style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;margin-bottom:0;color:#FFFFFF;line-height:135%;">
-                                                                                            Need Help?
-                                                                                        </div>
-                                                                                        <div><a href="https://thebom.com.au/contact-us/"><img
-                                                                                                        src="https://i.ibb.co/w78WPF0/group-54.png"/></a>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td align="center" width="58%">
-                                                                                        <a href="https://thebom.com.au/"><img
-                                                                                                    src="https://i.ibb.co/f2TNWBF/logo.png"/></a>
-                                                                                    </td>
-                                                                                    <td align="left" width="22%">
-                                                                                        <div style="text-align:left;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;margin-bottom:0;color:#FFFFFF;line-height:135%;">
-                                                                                            Follow Us
-                                                                                        </div>
-                                                                                        <div>
-                                                                                            <a href="https://www.facebook.com/thebom.com.au/"><img
-                                                                                                        src="https://i.ibb.co/BNFCkR3/Facebook.png"
-                                                                                                        style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
-                                                                                            <a href="https://www.linkedin.com/company/the-bom"><img
-                                                                                                        src="https://i.ibb.co/HPHNjZc/Linkedin.png"
-                                                                                                        style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
-                                                                                            <a href="https://twitter.com/theBOM_Aus"><img
-                                                                                                        src="https://i.ibb.co/NTt8vRL/Twitter.png"
-                                                                                                        style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
-                                                                                            <a href="https://instagram.com/thebom_aus"><img
-                                                                                                        src="https://i.ibb.co/tzwx1pF/Screenshot-1.png"
-                                                                                                        style="display:inline-block;"/></a>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
+
                                                                 </table>
                                                             </td>
                                                         </tr>
@@ -884,13 +694,31 @@
                                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td valign="top" bgcolor="#000000">
-                                                                <div style="font-family:Helvetica,Arial,sans-serif;font-size:10px;color:#828282;text-align:center;line-height:normal;margin-bottom:15px;">
+                                                                <div
+                                                                    style="font-family:Helvetica,Arial,sans-serif;font-size:10px;color:#828282;text-align:center;line-height:normal;margin-bottom:15px;">
                                                                     <div>&#169; All&nbsp;Rights&nbsp;Reserved | <a
-                                                                                href="{{isset($user) && is_object($user)?route('unsubscribers.store',$user->member_id):'#' }}"
-                                                                                target="_blank"
-                                                                                style="text-decoration:none;color:#ee7e08;"><span
-                                                                                    style="color:#ee7e08;">Unsubscribe</span></a>
+                                                                            href="{{isset($user) && is_object($user)?route('unsubscribers.store',$user->member_id):'#' }}"
+                                                                            target="_blank"
+                                                                            style="text-decoration:none;color:#ee7e08;"><span
+                                                                                style="color:#ee7e08;">Unsubscribe</span></a>
                                                                     </div>
+                                                                </div>
+                                                            </td>
+                                                            <td align="left" width="22%">
+
+                                                                <div>
+                                                                    <a href="https://www.facebook.com/thebom.com.au/"><img
+                                                                            src="https://i.ibb.co/BNFCkR3/Facebook.png"
+                                                                            style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
+                                                                    <a href="https://www.linkedin.com/company/the-bom"><img
+                                                                            src="https://i.ibb.co/HPHNjZc/Linkedin.png"
+                                                                            style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
+                                                                    <a href="https://twitter.com/theBOM_Aus"><img
+                                                                            src="https://i.ibb.co/NTt8vRL/Twitter.png"
+                                                                            style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
+                                                                    <a href="https://instagram.com/thebom_aus"><img
+                                                                            src="https://i.ibb.co/tzwx1pF/Screenshot-1.png"
+                                                                            style="display:inline-block;"/></a>
                                                                 </div>
                                                             </td>
                                                         </tr>

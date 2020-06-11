@@ -1,4 +1,4 @@
-@extends('layouts.emails.master')
+@extends('blog::layouts.emails.default')
 
 @section('title')
     Weekly Newsletter
