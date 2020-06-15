@@ -43,7 +43,25 @@
 @section('script')
     <script type="text/javascript">
         $("#summernote").summernote({
-            height: 500
+            tabsize: 2,
+            prettifyHtml: false,
+
+            enterHtml: "<br/>",
+             height: 600,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear', 'tags']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['icons', ['icons']],
+                //    ['bootstrapColors', ['texts', 'inputButtons', 'badges', 'bg-color']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+                //  ['modal', ['tooltip', 'popover', 'gallery']],
+                //   ['rows', ['colsm', 'colmd', 'collg', 'colxs']],
+            ],
         });
         $('#blog_tags').select2();
     </script>

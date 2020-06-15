@@ -10,7 +10,7 @@
     </li>
 @endsection
 @section('header')
-  <i class="fa fa-pencil-alt text-muted" style="font-size: 18px"></i> Create New Post
+    <i class="fa fa-pencil-alt text-muted" style="font-size: 18px"></i> Create New Post
 @endsection
 @section('tools')
     <div class="btn btn-group btn-group-sm">
@@ -45,9 +45,30 @@
 @endSection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.4/jquery.textcomplete.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/bootsum.js')}}"></script>
     <script type="text/javascript">
         $("#summernote").summernote({
-            height: 500
+            tabsize: 2,
+            enterHtml: "<br/>",
+            gallery: {
+                url: '/api/photo/photos',
+            },
+            height: 600,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear', 'tags']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['icons', ['icons']],
+                ['bootstrapColors', ['texts', 'inputButtons', 'badges', 'bg-color']],
+                ['view', ['fullscreen', 'codeview', 'help']],
+                ['modal', ['tooltip', 'popover', 'gallery']],
+                ['rows', ['colsm', 'colmd', 'collg', 'colxs']],
+            ],
         });
         $('#blog_tags').select2();
     </script>
