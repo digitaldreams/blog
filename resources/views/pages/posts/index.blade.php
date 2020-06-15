@@ -22,24 +22,24 @@
     </div>
 @endsection
 @section('content')
-
-    @if($records->count()>0)
-        <div class="row">
-            <div class="col-md-6">
-                <form>
-                    <div class="input-group mb-3">
-                        <input type="text" name="search" class="form-control" placeholder="Search Post title"
-                               aria-label="Search Post title" aria-describedby="button-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
-                        </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form>
+                <div class="input-group mb-3">
+                    <input type="search" name="search" value="{{request('search')}}" class="form-control" placeholder="Search Post"
+                           aria-label="Search Post title" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
                     </div>
-                </form>
-            </div>
-            <div class="col-md-6">
-                {!! $records->render() !!}
-            </div>
+                </div>
+            </form>
         </div>
+        <div class="col-md-6">
+            {!! $records->render() !!}
+        </div>
+    </div>
+    @if($records->count()>0)
+
 
         <div class="row">
             @foreach($records as $record)

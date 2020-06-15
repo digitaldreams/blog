@@ -10,6 +10,7 @@ trait FullTextSearch
      * @param string $term
      * @param string $start
      * @param string $end
+     *
      * @return string
      */
     protected function fullTextWildcards($term, $start = "+", $end = "*")
@@ -39,11 +40,15 @@ trait FullTextSearch
      * Scope a query that matches a full text search of term.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $term
+     * @param string                                $term
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSearch($query, $term)
     {
+        if (empty($term)) {
+            return $query;
+        }
         $columns = implode(',', $this->searchable);
 
         $query->whereRaw("MATCH ({$columns}) AGAINST (? IN BOOLEAN MODE)", $this->fullTextWildcards($term));

@@ -2,13 +2,11 @@
 
 namespace Blog\Models;
 
-use App\Contracts\ApproveAble;
 use Blog\Services\ActivityHelper;
 use Blog\Services\FullTextSearch;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
-use Permit\Contracts\ModelNotification;
 use Photo\Models\Photo;
 use Illuminate\Support\Str;
 /**
@@ -152,18 +150,6 @@ class Post extends Model
     {
         return $query->whereHas('tags', function ($q) use ($id) {
             $q->where('id', $id);
-        });
-    }
-
-    /**
-     * @param $query
-     * @param $keyword
-     * @return mixed
-     */
-    public function scopeQ($query, $keyword)
-    {
-        return $query->where(function ($q) use ($keyword) {
-            $q->orWhere('title', 'LIKE', '%' . $keyword . '%');
         });
     }
 

@@ -2,17 +2,20 @@
 
 namespace Blog\Models;
 
+use Blog\Services\FullTextSearch;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
- * @property varchar $title title
- * @property varchar $slug slug
- * @property timestamp $created_at created at
- * @property timestamp $updated_at updated at
- * @property \Illuminate\Database\Eloquent\Collection $post hasMany
+ * @property string                                   $title      title
+ * @property string                                   $slug       slug
+ * @property \Carbon\Carbon                           $created_at created at
+ * @property \Carbon\Carbon                           $updated_at updated at
+ * @property \Illuminate\Database\Eloquent\Collection $post       hasMany
  */
 class Category extends Model
 {
+    use FullTextSearch;
 
     /**
      * Database table name
@@ -23,6 +26,7 @@ class Category extends Model
      */
     protected $fillable = ['parent_id', 'title', 'slug'];
 
+    protected $searchable = ['title'];
 
     /**
      * Date time columns.
@@ -33,7 +37,7 @@ class Category extends Model
     {
         static::creating(function ($model) {
             if (empty($model->slug)) {
-                $model->slug = str_slug($model->title);
+                $model->slug = Str::slug($model->title);
             }
             return true;
         });
@@ -63,37 +67,9 @@ class Category extends Model
         return $this->belongsTo(static::class, 'parent_id');
     }
 
-    /**
-     * title column mutator.
-     */
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = htmlspecialchars($value);
-    }
-
     public function scopeParent($query)
     {
         return $query->whereNull('parent_id');
-    }
-
-    /**
-     * slug column mutator.
-     */
-    public function setSlugAttribute($value)
-    {
-        $this->attributes['slug'] = htmlspecialchars($value);
-    }
-
-    /**
-     * @param $query
-     * @param $keyword
-     * @return mixed
-     */
-    public function scopeQ($query, $keyword)
-    {
-        return $query->where(function ($q) use ($keyword) {
-            $q->orWhere('title', 'LIKE', '%' . $keyword . '%');
-        });
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Blog\Http\Controllers;
 
+use App\Models\User;
 use Blog\Http\Requests\Posts\Create;
 use Blog\Http\Requests\Posts\Destroy;
 use Blog\Http\Requests\Posts\Edit;
@@ -16,7 +17,6 @@ use Blog\Notifications\NewPostApproval;
 use Blog\Notifications\NewPostApprovalCompleted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
-use App\Models\User;
 use Photo\Models\Photo;
 use Photo\Services\PhotoService;
 use SEO\Seo;
@@ -28,26 +28,22 @@ use SEO\Seo;
  */
 class PostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['show', 'index']]);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @param Index $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Index $request)
     {
-        $posts = Post::q($request->get('search'))
+        $posts = Post::search($request->get('search'))
             ->with(['category', 'user'])
             ->withCount('comments');
 
         return view('blog::pages.posts.index', [
             'records' => $posts->latest()->paginate(6),
-            'enableSearch' => true
+            'enableSearch' => true,
         ]);
     }
 
@@ -55,7 +51,8 @@ class PostController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param Post $post
+     * @param Post    $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, Post $post)
@@ -67,7 +64,7 @@ class PostController extends Controller
                 ->where('id', '!=', $post->id)
                 ->orderBy('total_view', 'desc')
                 ->limit(3)
-                ->get()
+                ->get(),
         ]);
     }
 
@@ -75,6 +72,7 @@ class PostController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Create $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Create $request)
@@ -83,7 +81,7 @@ class PostController extends Controller
         return view('blog::pages.posts.create', [
             'model' => $model,
             'tags' => Tag::all(),
-            'categories' => Category::all(['id', 'title'])
+            'categories' => Category::all(['id', 'title']),
         ]);
     }
 
@@ -91,6 +89,7 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Store $request
+     *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
@@ -117,12 +116,12 @@ class PostController extends Controller
             $model->tags()->sync($request->get('tags', []));
             Seo::save($model, route('blog::frontend.blog.posts.show', [
                 'category' => $model->category->slug,
-                'post' => $model->slug
+                'post' => $model->slug,
             ]), [
                 'title' => $model->title,
                 'images' => [
-                    $model->getImageUrl()
-                ]
+                    $model->getImageUrl(),
+                ],
             ]);
 
             return redirect()->route('blog::posts.index');
@@ -137,6 +136,7 @@ class PostController extends Controller
      *
      * @param Edit $request
      * @param Post $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Edit $request, Post $post)
@@ -144,7 +144,7 @@ class PostController extends Controller
         return view('blog::pages.posts.edit', [
             'model' => $post,
             'tags' => Tag::all(),
-            'categories' => Category::all(['id', 'title'])
+            'categories' => Category::all(['id', 'title']),
         ]);
     }
 
@@ -152,7 +152,8 @@ class PostController extends Controller
      * Update a existing resource in storage.
      *
      * @param Update $request
-     * @param Post $post
+     * @param Post   $post
+     *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
@@ -173,12 +174,12 @@ class PostController extends Controller
             $post->tags()->sync($request->get('tags', []));
             Seo::save($post, route('blog::frontend.blog.posts.show', [
                 'category' => $post->category->slug,
-                'post' => $post->slug
+                'post' => $post->slug,
             ]), [
                 'title' => $post->title,
                 'images' => [
-                    $post->getImageUrl()
-                ]
+                    $post->getImageUrl(),
+                ],
             ]);
 
             session()->flash('app_message', 'Post successfully updated');
@@ -193,7 +194,8 @@ class PostController extends Controller
      * Delete a  resource from  storage.
      *
      * @param Destroy $request
-     * @param Post $post
+     * @param Post    $post
+     *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
@@ -208,6 +210,13 @@ class PostController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param \Blog\Http\Requests\Posts\Destroy $request
+     * @param \Blog\Models\Post                 $post
+     * @param                                   $status
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function status(Destroy $request, Post $post, $status)
     {
         $post->status = $status;

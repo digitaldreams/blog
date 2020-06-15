@@ -707,16 +707,17 @@
                                                             <td align="left" width="22%">
 
                                                                 <div>
-                                                                    <a href="https://www.facebook.com/thebom.com.au/"><img
+                                                                    <a href="https://www.facebook.com/shohozenglishbd/">
+                                                                        <img
                                                                             src="https://i.ibb.co/BNFCkR3/Facebook.png"
                                                                             style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
-                                                                    <a href="https://www.linkedin.com/company/the-bom"><img
+                                                                    <a href="https://www.linkedin.com/company/shohozenglish"><img
                                                                             src="https://i.ibb.co/HPHNjZc/Linkedin.png"
                                                                             style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
-                                                                    <a href="https://twitter.com/theBOM_Aus"><img
+                                                                    <a href="https://twitter.com/shohozenglish"><img
                                                                             src="https://i.ibb.co/NTt8vRL/Twitter.png"
                                                                             style="display:inline-block;"/></a>&nbsp;&nbsp;&nbsp;
-                                                                    <a href="https://instagram.com/thebom_aus"><img
+                                                                    <a href="https://instagram.com/shohozenglish"><img
                                                                             src="https://i.ibb.co/tzwx1pF/Screenshot-1.png"
                                                                             style="display:inline-block;"/></a>
                                                                 </div>

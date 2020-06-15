@@ -18,44 +18,44 @@ use Illuminate\Http\Request;
  */
 class CategoryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['show', 'index']]);
-    }
-
     /**
      * Display a listing of the resource.
      *
-     * @param  Index $request
+     * @param Index $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Index $request)
     {
         return view('blog::pages.categories.index', [
-            'records' => Category::q($request->get('search'))->withCount('posts')->with('parentCategory')->paginate(10),
-            'enableSearch' => true
-        ]);
+            'records' => Category::search($request->get('search'))
+                ->withCount('posts')
+                ->with('parentCategory')
+                ->paginate(10),
+            ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Show $request
-     * @param  Category $category
+     * @param Show     $request
+     * @param Category $category
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Show $request, Category $category)
     {
         return view('blog::pages.categories.show', [
             'record' => $category,
-            'posts' => $category->posts()->paginate(6)
+            'posts' => $category->posts()->paginate(6),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Create $request
+     * @param Create $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Create $request)
@@ -63,14 +63,14 @@ class CategoryController extends Controller
         return view('blog::pages.categories.create', [
             'model' => new Category,
             'categories' => Category::with('children')->parent()->get(['id', 'title']),
-            'enableVoice'=>true,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Store $request
+     * @param Store $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Store $request)
@@ -91,8 +91,9 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Request $request
-     * @param  Category $category
+     * @param Request  $request
+     * @param Category $category
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, Category $category)
@@ -100,15 +101,16 @@ class CategoryController extends Controller
         return view('blog::pages.categories.edit', [
             'model' => $category,
             'categories' => Category::with('children')->parent()->get(['id', 'title']),
-            'enableVoice'=>true,
+            'enableVoice' => true,
         ]);
     }
 
     /**
      * Update a existing resource in storage.
      *
-     * @param  Update $request
-     * @param  Category $category
+     * @param Update   $request
+     * @param Category $category
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Update $request, Category $category)
@@ -128,8 +130,9 @@ class CategoryController extends Controller
     /**
      * Delete a  resource from  storage.
      *
-     * @param  Destroy $request
-     * @param  Category $category
+     * @param Destroy  $request
+     * @param Category $category
+     *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */

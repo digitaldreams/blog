@@ -30,7 +30,7 @@
     <!-- Custom styles for this template -->
     <link href="{{asset('css/frontend.css')}}" rel="stylesheet">
 </head>
-<body>
+<body style="margin-top: 60px">
 <section>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"

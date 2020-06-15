@@ -13,6 +13,22 @@
 @endsection
 
 @section('content')
+    <div class="row">
+        <div class="col-md-6">
+            <form>
+                <div class="input-group mb-3">
+                    <input type="search" name="search" value="{{request('search')}}" class="form-control" placeholder="Search Category"
+                           aria-label="Search category" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            {!! $records->render() !!}
+        </div>
+    </div>
     @if($records->count()>0)
         @include('blog::tables.category')
     @else
