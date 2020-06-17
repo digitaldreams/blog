@@ -38,6 +38,10 @@
                            <span>
                                {{$record->title}}
                            </span>
+                    @can('update',$record)
+                        <a href="{{route('blog::posts.edit',$record->slug)}}"><i class="fa fa-pencil"></i>
+                        </a>
+                    @endcan
                 </li>
             </ul>
         </div>

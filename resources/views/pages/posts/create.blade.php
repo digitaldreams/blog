@@ -45,31 +45,13 @@
 @endSection
 
 @section('script')
+    @include('blog::includes.popoverModal')
+    @include('blog::includes.tooltipModal')
+    @include('blog::includes.summernoteImageInsertModal')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.4/jquery.textcomplete.min.js"></script>
     <script type="text/javascript" src="{{asset('js/bootsum.js')}}"></script>
     <script type="text/javascript">
-        $("#summernote").summernote({
-            tabsize: 2,
-            enterHtml: "<br/>",
-            gallery: {
-                url: '/api/photo/photos',
-            },
-            height: 600,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear', 'tags']],
-                ['fontname', ['fontname']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
-                ['icons', ['icons']],
-                ['bootstrapColors', ['texts', 'inputButtons', 'badges', 'bg-color']],
-                ['view', ['fullscreen', 'codeview', 'help']],
-                ['modal', ['tooltip', 'popover', 'gallery']],
-                ['rows', ['colsm', 'colmd', 'collg', 'colxs']],
-            ],
-        });
+
         $('#blog_tags').select2();
     </script>
 @endsection

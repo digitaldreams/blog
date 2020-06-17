@@ -78,6 +78,10 @@ class BlogServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/assets' => public_path('blog')
             ], 'blog-assets');
 
+            $this->publishes([
+                __DIR__ . '/../resources/plugins' => resource_path('js')
+            ], 'blog-assets');
+
             $this->mergeConfigFrom(
                 __DIR__ . '/../config/blog.php', 'blog'
             );

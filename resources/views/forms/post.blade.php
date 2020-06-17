@@ -31,7 +31,7 @@
 
 
     <div class="form-group {{ $errors->has('body') ? ' has-danger' : '' }}">
-        <textarea class="form-control" rows="40" cols="20" name="body" required
+        <textarea class="form-control bootstrap-summernote-editor" rows="40" cols="20" name="body" required
                   id="summernote">{{old('body',$model->body)}}</textarea>
         @if($errors->has('body'))
             <span class="form-control-feedback">

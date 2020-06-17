@@ -9,7 +9,7 @@
     </li>
 @endsection
 @section('header')
-    <h3><i class="fa fa-pencil-alt text-muted" style="font-size: 18px"></i> Posts</h3>
+    <i class="fa fa-pencil-alt text-muted" style="font-size: 18px"></i> Posts
 @endsection
 @section('tools')
     <div class="btn-group">
