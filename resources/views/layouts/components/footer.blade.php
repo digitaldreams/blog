@@ -66,6 +66,78 @@
         }
         return true;
     }
+
+    $(document).ready(function () {
+
+        var clickedNode = null;
+        $('body').on('click', '.note-editing-area,textarea,input', function (e) {
+            clickedNode = e.target;
+        });
+        var recognition = null;
+        var contents = {};
+
+
+        function startDictation(btn) {
+            var lang = $("#voiceCommandLanguage").val() || 'bn-BD';
+
+            if (window.hasOwnProperty('webkitSpeechRecognition')) {
+                if (!recognition) {
+                    recognition = new webkitSpeechRecognition();
+                } else {
+                    recognition.stop();
+                    recognition = null;
+                    return false;
+                }
+
+                recognition.continuous = true;
+                recognition.interimResults = false;
+
+                recognition.lang = lang;
+                recognition.start();
+                $(btn).removeClass('text-gray').addClass('text-primary');
+                recognition.onresult = function (e) {
+                    var lastIndex = parseInt(e.results.length) - parseInt(1);
+                    var lastScript = e.results[lastIndex];
+
+                    var endChar = lang == 'bn-BD' ? ' |' : '.';
+
+                    if (clickedNode) {
+                        if (clickedNode.nodeName == 'INPUT' || clickedNode.nodeName == 'TEXTAREA') {
+                            clickedNode.value = clickedNode.value +' '+ lastScript[0].transcript + endChar;
+                        } else {
+                            var text = document.createTextNode(lastScript[0].transcript + endChar);
+                            clickedNode.appendChild(text);
+                        }
+                    }
+
+                };
+                recognition.onend = function () {
+                    $("#voiceCommandMessage").text('Completed');
+                };
+                recognition.onsoundstart = function (e) {
+                    $("#voiceCommandMessage").text('Listening...');
+                }
+                recognition.onsoundend = function (e) {
+                    $("#voiceCommandMessage").text('Sleeping...');
+                }
+                recognition.onspeechend = function (e) {
+                    $("#voiceCommandMessage").text('Speech Ended');
+                    $(btn).removeClass('text-primary').addClass('text-gray');
+                }
+
+                recognition.onerror = function (e) {
+                    recognition.stop();
+                }
+
+            } else {
+                console.log('Opps sorry your browser does not support Speech Recognition')
+            }
+        }
+
+        $("#initVoiceRecognitionCommand").on('click', function (e) {
+            startDictation(this);
+        });
+    });
 </script>
 @yield('script')
 @yield('scripts')
