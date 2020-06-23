@@ -13,6 +13,7 @@ use Blog\Jobs\TableOfContentGeneratorJob;
 use Blog\Models\Post;
 use Blog\Notifications\NewPostApproval;
 use Blog\Notifications\NewPostApprovalCompleted;
+use Blog\Services\CheckProfanity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Photo\Models\Photo;
@@ -100,13 +101,20 @@ class PostController extends Controller
             $photo->caption = $request->get('title');
             $model->image_id = (new PhotoService($photo))->setFolder('posts')->save($request, 'image')->id;
         }
+
+        $checkProfinity = new CheckProfanity($model);
+
+        if ($checkProfinity->check()) {
+            return redirect()->back()->withInput($request->all());
+        }
+
         if ($model->save()) {
             if (!auth()->user()->can('approve', Post::class)) {
                 //Notify to Admin
                 Notification::send(User::getAdmins(), new NewPostApproval($model));
-                session()->flash('app_message', 'Post saved successfully and one of our moderator will review it soon');
+                session()->flash('message', 'Post saved successfully and one of our moderator will review it soon');
             } else {
-                session()->flash('app_message', 'Post saved successfully');
+                session()->flash('message', 'Post saved successfully');
             }
             dispatch(new TableOfContentGeneratorJob($model));
             $model->tags()->sync($request->get('tags', []));
@@ -122,7 +130,7 @@ class PostController extends Controller
 
             return redirect()->route('blog::posts.index');
         } else {
-            session()->flash('app_message', 'Oops something went wrong while saving your post');
+            session()->flash('message', 'Oops something went wrong while saving your post');
         }
         return redirect()->back();
     }
@@ -162,6 +170,11 @@ class PostController extends Controller
             $photo->title = $request->get('title');
             $post->image_id = (new PhotoService($photo))->setFolder('posts')->save($request, 'image')->id;
         }
+        $checkProfinity = new CheckProfanity($post);
+
+        if ($checkProfinity->check()) {
+            return redirect()->back()->withInput($request->all());
+        }
 
         if ($post->save()) {
             dispatch(new TableOfContentGeneratorJob($post));
@@ -176,10 +189,10 @@ class PostController extends Controller
                 ],
             ]);
 
-            session()->flash('app_message', 'Post successfully updated');
+            session()->flash('message', 'Post successfully updated');
             return redirect()->route('blog::posts.index');
         } else {
-            session()->flash('app_error', 'Oops something went wrong while updating Post');
+            session()->flash('error', 'Oops something went wrong while updating Post');
         }
         return redirect()->back();
     }
@@ -196,9 +209,9 @@ class PostController extends Controller
     public function destroy(Destroy $request, Post $post)
     {
         if ($post->delete()) {
-            session()->flash('app_message', 'Post successfully deleted');
+            session()->flash('message', 'Post successfully deleted');
         } else {
-            session()->flash('app_error', 'Error occurred while deleting Post');
+            session()->flash('error', 'Error occurred while deleting Post');
         }
 
         return redirect()->back();
@@ -218,7 +231,7 @@ class PostController extends Controller
         if (is_object($post->user)) {
             $post->user->notify(new NewPostApprovalCompleted($post));
         }
-        return redirect()->back()->with('app_message', 'Thanks for your action');
+        return redirect()->back()->with('message', 'Thanks for your action');
     }
 
 }

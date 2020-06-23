@@ -34,10 +34,10 @@ class NewsletterController extends Controller
 
         if ($model->save()) {
 
-            session()->flash('app_message', 'Newsletter saved successfully');
+            session()->flash('message', 'Newsletter saved successfully');
             return redirect()->route('blog::newsletters.index');
         } else {
-            session()->flash('app_message', 'Something is wrong while saving Newsletter');
+            session()->flash('message', 'Something is wrong while saving Newsletter');
         }
         return redirect()->back();
     }
@@ -48,7 +48,7 @@ class NewsletterController extends Controller
         $newsletter->fill($request->all());
         $newsletter->save();
         Notification::send(User::getAdmins(), new SubscribedToNewsletter($newsletter));
-        return redirect()->back()->with('app_message', 'Thank you for subscribing to our Newsletter');
+        return redirect()->back()->with('message', 'Thank you for subscribing to our Newsletter');
     }
 
     /**

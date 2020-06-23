@@ -5,6 +5,11 @@
 <!-- MAIN -->
 
     <div class="col px-md-4">
+        @if(session()->has('message'))
+            <div class="alert alert-success">{{session()->pull('message')}}</div>
+        @elseif(session()->has('error'))
+            <div class="alert alert-warning">{{session()->pull('error')}}</div>
+        @endif
         <nav aria-label="breadcrumb">
             <div class="row bg-light mt-3 m-0 p-0">
                 <div class="col-9">

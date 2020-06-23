@@ -10,7 +10,7 @@
                 @if(auth()->check())
                     @can('update',$record)
                         <a href="{{route('blog::tags.edit',$record->slug)}}">
-                            <span class="fa fa-pencil-alt"></span>
+                            <span class="fa fa-pencil-alt">Edit</span>
                         </a>
                     @endcan
                     @can('delete',$record)
@@ -20,7 +20,7 @@
                             {{csrf_field()}}
                             {{method_field('DELETE')}}
                             <button type="submit" class="btn btn-default cursor-pointer  btn-sm"><i
-                                        class="text-danger fa fa-times"></i></button>
+                                        class="text-danger fa fa-times"></i> Delete</button>
                         </form>
                     @endcan
                 @endif

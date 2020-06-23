@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tuhin
- * Date: 2/13/2019
- * Time: 10:17 AM
- */
 
 namespace Blog\Services;
-
 
 use Blog\Models\Category;
 use Blog\Models\Post;
@@ -50,17 +43,18 @@ class CheckProfanity
         $this->model = $model;
     }
 
+    /**
+     * @return bool
+     */
     public function check()
     {
         $class = get_class($this->model);
         if (isset($this->map[$class])) {
             foreach ($this->map[$class] as $column) {
-                $foundWords = $this->checkString($this->model->$column);
+                $foundWords = $this->checkString(strip_tags(strtolower($this->model->$column)));
 
                 if (count($foundWords) > 0) {
-                    session()->flash('app_error', 'profanity words [' . implode(", ", $foundWords) . ']  found on ' . $column . '  ');
-                    //     $this->model->status = Business::STATUS_PROFANITY;
-                    //    $this->model->save();
+                    session()->flash('error', 'profanity words [' . implode(", ", $foundWords) . ']  found on ' . $column . '  ');
                     return true;
                     break;
                 }
@@ -69,6 +63,11 @@ class CheckProfanity
         return false;
     }
 
+    /**
+     * @param $string
+     *
+     * @return array
+     */
     public function checkString($string)
     {
         $trimmed_array = array_map('trim', explode("|", $this->words));

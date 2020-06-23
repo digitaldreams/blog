@@ -9,6 +9,7 @@ use Blog\Http\Requests\Categories\Show;
 use Blog\Http\Requests\Categories\Store;
 use Blog\Http\Requests\Categories\Update;
 use Blog\Models\Category;
+use Blog\Services\CheckProfanity;
 use Illuminate\Http\Request;
 
 /**
@@ -32,7 +33,7 @@ class CategoryController extends Controller
                 ->withCount('posts')
                 ->with('parentCategory')
                 ->paginate(10),
-            ]);
+        ]);
     }
 
     /**
@@ -78,12 +79,17 @@ class CategoryController extends Controller
         $model = new Category;
         $model->fill($request->all());
 
+        $checkProfanity = new CheckProfanity($model);
+        if ($checkProfanity->check()) {
+            return redirect()->back()->withInput($request->all());
+        }
+
         if ($model->save()) {
 
-            session()->flash('app_message', 'Category saved successfully');
+            session()->flash('message', 'Category saved successfully');
             return redirect()->route('blog::categories.index');
         } else {
-            session()->flash('app_message', 'Oops something went wrong while saving the category');
+            session()->flash('message', 'Oops something went wrong while saving the category');
         }
         return redirect()->back();
     }
@@ -117,12 +123,17 @@ class CategoryController extends Controller
     {
         $category->fill($request->all());
 
+        $checkProfanity = new CheckProfanity($category);
+        if ($checkProfanity->check()) {
+            return redirect()->back()->withInput($request->all());
+        }
+
         if ($category->save()) {
 
-            session()->flash('app_message', 'Category successfully updated');
+            session()->flash('message', 'Category successfully updated');
             return redirect()->route('blog::categories.index');
         } else {
-            session()->flash('app_error', 'Oops something went wrong while updating Category');
+            session()->flash('error', 'Oops something went wrong while updating Category');
         }
         return redirect()->back();
     }
@@ -139,9 +150,9 @@ class CategoryController extends Controller
     public function destroy(Destroy $request, Category $category)
     {
         if ($category->delete()) {
-            session()->flash('app_message', 'Category successfully deleted');
+            session()->flash('message', 'Category successfully deleted');
         } else {
-            session()->flash('app_error', 'Error occurred while deleting Category');
+            session()->flash('error', 'Error occurred while deleting Category');
         }
 
         return redirect()->back();

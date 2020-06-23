@@ -10,6 +10,7 @@ use Blog\Http\Requests\Tags\Store;
 use Blog\Http\Requests\Tags\Update;
 use Blog\Models\Category;
 use Blog\Models\Tag;
+use Blog\Services\CheckProfanity;
 use Illuminate\Http\Request;
 
 /**
@@ -82,12 +83,17 @@ class TagController extends Controller
         $model = new Tag;
         $model->fill($request->all());
 
+        $checkProfanity = new CheckProfanity($model);
+        if ($checkProfanity->check()) {
+            return redirect()->back()->withInput($request->all());
+        }
+
         if ($model->save()) {
 
-            session()->flash('app_message', 'Tag saved successfully');
+            session()->flash('message', 'Tag saved successfully');
             return redirect()->route('blog::tags.index');
         } else {
-            session()->flash('app_message', 'Oops something went wrong while saving your tag');
+            session()->flash('message', 'Oops something went wrong while saving your tag');
         }
         return redirect()->back();
     }
@@ -119,11 +125,17 @@ class TagController extends Controller
     public function update(Update $request, Tag $tag)
     {
         $tag->fill($request->all());
+
+        $checkProfanity = new CheckProfanity($tag);
+        if ($checkProfanity->check()) {
+            return redirect()->back()->withInput($request->all());
+        }
+
         if ($tag->save()) {
-            session()->flash('app_message', 'Tag successfully updated');
+            session()->flash('message', 'Tag successfully updated');
             return redirect()->route('blog::tags.index');
         } else {
-            session()->flash('app_error', 'Oops something went wrong while updating tag');
+            session()->flash('error', 'Oops something went wrong while updating tag');
         }
         return redirect()->back();
     }
@@ -140,9 +152,9 @@ class TagController extends Controller
     public function destroy(Destroy $request, Tag $tag)
     {
         if ($tag->delete()) {
-            session()->flash('app_message', 'Tag successfully deleted');
+            session()->flash('message', 'Tag successfully deleted');
         } else {
-            session()->flash('app_error', 'Error occurred while deleting Tag');
+            session()->flash('error', 'Error occurred while deleting Tag');
         }
         return redirect()->back();
     }

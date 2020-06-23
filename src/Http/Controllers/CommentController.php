@@ -51,10 +51,10 @@ class CommentController extends Controller
         $model->user_id = auth()->user()->id;
         if ($model->save()) {
             Notification::send(User::getAdmins(), new CommentNotification($post, auth()->user()));
-            session()->flash('app_message', 'Comment saved successfully');
+            session()->flash('message', 'Comment saved successfully');
             return redirect()->route('blog::posts.show', $post->slug);
         } else {
-            session()->flash('app_message', 'Oops something went wrong while saving your comment');
+            session()->flash('error', 'Oops something went wrong while saving your comment');
         }
         return redirect()->back();
     }
@@ -71,9 +71,9 @@ class CommentController extends Controller
     public function destroy(Destroy $request, Post $post, Comment $comment)
     {
         if ($comment->delete()) {
-            session()->flash('app_message', 'Comment successfully deleted');
+            session()->flash('message', 'Comment successfully deleted');
         } else {
-            session()->flash('app_error', 'Error occurred while deleting Comment');
+            session()->flash('error', 'Error occurred while deleting Comment');
         }
         return redirect()->back();
     }

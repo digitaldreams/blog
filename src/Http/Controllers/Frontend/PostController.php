@@ -2,7 +2,6 @@
 
 namespace Blog\Http\Controllers\Frontend;
 
-
 use Blog\Http\Requests\Posts\Index;
 use Blog\Models\Post;
 use Blog\Models\Tag;
@@ -31,7 +30,6 @@ class PostController extends Controller
 
         return view('blog::pages.posts.frontend.index', [
             'records' => $posts->latest()->paginate(6),
-            'enableSearch' => true
         ]);
     }
 
@@ -68,6 +66,7 @@ class PostController extends Controller
         $latest = Post::where('status', Post::STATUS_PUBLISHED)
             ->where('is_featured', 0)->orderBy('created_at', 'desc')
             ->take(8)->get();
+
         return view('blog::pages.bloghome', [
             'leadPost' => $fpost->shift(),
             'featuredPosts' => $fpost,
@@ -87,6 +86,7 @@ class PostController extends Controller
         $posts = Post::where('status', Post::STATUS_PUBLISHED)
             ->where('category_id', $category->id)
             ->orderBy('created_at', 'desc');
+
         return view('blog::pages.posts.frontend.index', [
             'records' => $posts->paginate(6),
             'model' => $category
@@ -111,7 +111,11 @@ class PostController extends Controller
         ]);
     }
 
-
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function smartSearch(Request $request)
     {
         $result = [];
