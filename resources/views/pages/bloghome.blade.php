@@ -94,7 +94,7 @@
         <br/>
         <div class="row">
             @foreach($latest as $post)
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-4 col-sm-6 mb-3">
                     <div class="card h-100">
                         <img src="{{$post->getImageUrl()}}" class="card-img-top" alt="{{$post->title}}">
                         <div class="card-body">

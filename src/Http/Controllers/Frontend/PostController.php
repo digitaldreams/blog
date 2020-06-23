@@ -65,7 +65,7 @@ class PostController extends Controller
             ->get();
         $latest = Post::where('status', Post::STATUS_PUBLISHED)
             ->where('is_featured', 0)->orderBy('created_at', 'desc')
-            ->take(8)->get();
+            ->take(6)->get();
 
         return view('blog::pages.bloghome', [
             'leadPost' => $fpost->shift(),
