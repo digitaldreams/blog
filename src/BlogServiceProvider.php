@@ -2,11 +2,16 @@
 
 namespace Blog;
 
+use Blog\Models\Activity;
+use Blog\Models\ActivityType;
 use Blog\Models\Category;
 use Blog\Models\Comment;
 use Blog\Models\Newsletter;
 use Blog\Models\Post;
 use Blog\Models\Tag;
+use Blog\Observers\PostObserver;
+use Blog\Policies\ActivityPolicy;
+use Blog\Policies\ActivityTypePolicy;
 use Blog\Policies\CategoryPolicy;
 use Blog\Policies\CommentPolicy;
 use Blog\Policies\NewsletterPolicy;
@@ -15,10 +20,6 @@ use Blog\Policies\TagPolicy;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use Blog\Models\Activity;
-use Blog\Policies\ActivityPolicy;
-use Blog\Models\ActivityType;
-use Blog\Policies\ActivityTypePolicy;
 
 class BlogServiceProvider extends ServiceProvider
 {
@@ -35,7 +36,7 @@ class BlogServiceProvider extends ServiceProvider
         Comment::class => CommentPolicy::class,
         Activity::class => ActivityPolicy::class,
         ActivityType::class => ActivityTypePolicy::class,
-        Newsletter::class => NewsletterPolicy::class
+        Newsletter::class => NewsletterPolicy::class,
     ];
 
     /**
@@ -57,6 +58,8 @@ class BlogServiceProvider extends ServiceProvider
 
         $this->registerPolicies();
         $this->registerListeners();
+
+        Post::observe(PostObserver::class);
     }
 
     /**
@@ -67,7 +70,7 @@ class BlogServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
             $this->publishes([
-                __DIR__ . '/../config/blog.php' => config_path('blog.php')
+                __DIR__ . '/../config/blog.php' => config_path('blog.php'),
             ], 'blog-config');
 
             $this->publishes([
@@ -75,11 +78,11 @@ class BlogServiceProvider extends ServiceProvider
             ], 'blog-view');
 
             $this->publishes([
-                __DIR__ . '/../resources/assets' => public_path('blog')
+                __DIR__ . '/../resources/assets' => public_path('blog'),
             ], 'blog-assets');
 
             $this->publishes([
-                __DIR__ . '/../resources/plugins' => resource_path('js')
+                __DIR__ . '/../resources/plugins' => resource_path('js'),
             ], 'blog-assets');
 
             $this->mergeConfigFrom(

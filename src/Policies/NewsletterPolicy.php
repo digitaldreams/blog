@@ -3,12 +3,24 @@
 namespace Blog\Policies;
 
 use \Blog\Models\Newsletter;
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class NewsletterPolicy
 {
     use HandlesAuthorization;
+
+    /**
+     * @param $user
+     *
+     * @return bool
+     */
+    public function before($user)
+    {
+        if (method_exists($user, 'isAdmin') && $user->isAdmin()) {
+            return true;
+        }
+    }
 
     /**
      * @param User $user

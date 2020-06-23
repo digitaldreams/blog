@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Blog\Models\Newsletter;
 use Blog\Http\Requests\Newsletters\Store;
 use Illuminate\Support\Facades\Notification;
-use Permit\Models\User;
+use App\Models\User;
 use Blog\Notifications\SubscribedToNewsletter;
 
 

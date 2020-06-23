@@ -697,7 +697,7 @@
                                                                 <div
                                                                     style="font-family:Helvetica,Arial,sans-serif;font-size:10px;color:#828282;text-align:center;line-height:normal;margin-bottom:15px;">
                                                                     <div>&#169; All&nbsp;Rights&nbsp;Reserved | <a
-                                                                            href="{{isset($user) && is_object($user)?route('unsubscribers.store',$user->member_id):'#' }}"
+                                                                            href="@@unsubcribeLink@@"
                                                                             target="_blank"
                                                                             style="text-decoration:none;color:#ee7e08;"><span
                                                                                 style="color:#ee7e08;">Unsubscribe</span></a>

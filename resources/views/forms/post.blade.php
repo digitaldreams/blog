@@ -16,17 +16,6 @@
     </span>
             @endif
         </div>
-        <div class="form-group col-sm-4">
-            <label for="slug">Slug</label>
-            <input type="text" class="form-control" name="slug" id="slug" value="{{old('slug',$model->slug)}}"
-                   placeholder="By default title will be used as slug" maxlength="255">
-            @if($errors->has('slug'))
-                <span class="form-control-feedback">
-        <strong>{{ $errors->first('slug') }}</strong>
-    </span>
-            @endif
-        </div>
-
     </div>
 
 

@@ -20,6 +20,7 @@ class CommentNotification extends Notification
      * @var \Illuminate\Database\Eloquent\Model
      */
     public $actor;
+
     /**
      * @var string
      */

@@ -2,13 +2,25 @@
 
 namespace Blog\Policies;
 
-use App\User;
+use App\Models\User;
 use Blog\Models\Activity;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ActivityPolicy
 {
     use HandlesAuthorization;
+
+    /**
+     * @param $user
+     *
+     * @return bool
+     */
+    public function before($user)
+    {
+        if (method_exists($user, 'isAdmin') && $user->isAdmin()) {
+            return true;
+        }
+    }
 
     /**
      * @param User $user

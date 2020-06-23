@@ -3,10 +3,6 @@
 namespace Blog\Http\Controllers;
 
 use App\Models\User;
-use Blog\Http\Requests\Posts\Create;
-use Blog\Http\Requests\Posts\Destroy;
-use Blog\Http\Requests\Posts\Edit;
-use Blog\Http\Requests\Posts\Index;
 use Blog\Http\Requests\Posts\Store;
 use Blog\Http\Requests\Posts\Update;
 use Blog\Jobs\TableOfContentGeneratorJob;
@@ -18,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Photo\Models\Photo;
 use Photo\Services\PhotoService;
-use SEO\Seo;
 
 /**
  * Description of PostController
@@ -30,12 +25,15 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Index $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Index $request)
+    public function index(Request $request)
     {
+        $this->authorize('index', Post::class);
+
         $posts = Post::search($request->get('search'))
             ->with(['category', 'user'])
             ->withCount('comments');
@@ -56,26 +54,23 @@ class PostController extends Controller
      */
     public function show(Request $request, Post $post)
     {
-        $post->incrementViewCount();
         return view('blog::pages.posts.show', [
             'record' => $post,
-            'relatedPosts' => Post::where('category_id', $post->category_id)
-                ->where('id', '!=', $post->id)
-                ->orderBy('total_view', 'desc')
-                ->limit(3)
-                ->get(),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param Create $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Create $request)
+    public function create(Request $request)
     {
+        $this->authorize('create', Post::class);
+
         $model = new Post();
         return view('blog::pages.posts.create', [
             'model' => $model,
@@ -92,6 +87,8 @@ class PostController extends Controller
      */
     public function store(Store $request)
     {
+        $this->authorize('create', Post::class);
+
         $model = new Post;
         $model->fill($request->except(['body']));
         $model->body = $request->get('body');
@@ -109,6 +106,8 @@ class PostController extends Controller
         }
 
         if ($model->save()) {
+            dispatch(new TableOfContentGeneratorJob($model));
+
             if (!auth()->user()->can('approve', Post::class)) {
                 //Notify to Admin
                 Notification::send(User::getAdmins(), new NewPostApproval($model));
@@ -116,17 +115,7 @@ class PostController extends Controller
             } else {
                 session()->flash('message', 'Post saved successfully');
             }
-            dispatch(new TableOfContentGeneratorJob($model));
             $model->tags()->sync($request->get('tags', []));
-            Seo::save($model, route('blog::frontend.blog.posts.show', [
-                'category' => $model->category->slug,
-                'post' => $model->slug,
-            ]), [
-                'title' => $model->title,
-                'images' => [
-                    $model->getImageUrl(),
-                ],
-            ]);
 
             return redirect()->route('blog::posts.index');
         } else {
@@ -138,13 +127,15 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Edit $request
      * @param Post $post
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Edit $request, Post $post)
+    public function edit(Post $post)
     {
+        $this->authorize('update', $post);
+
         return view('blog::pages.posts.edit', [
             'model' => $post,
         ]);
@@ -161,6 +152,7 @@ class PostController extends Controller
      */
     public function update(Update $request, Post $post)
     {
+        $this->authorize('update', $post);
         $post->fill($request->all());
 
         if ($request->hasFile('image')) {
@@ -178,17 +170,8 @@ class PostController extends Controller
 
         if ($post->save()) {
             dispatch(new TableOfContentGeneratorJob($post));
-            $post->tags()->sync($request->get('tags', []));
-            Seo::save($post, route('blog::frontend.blog.posts.show', [
-                'category' => $post->category->slug,
-                'post' => $post->slug,
-            ]), [
-                'title' => $post->title,
-                'images' => [
-                    $post->getImageUrl(),
-                ],
-            ]);
 
+            $post->tags()->sync($request->get('tags', []));
             session()->flash('message', 'Post successfully updated');
             return redirect()->route('blog::posts.index');
         } else {
@@ -206,26 +189,30 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Destroy $request, Post $post)
+    public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
+
         if ($post->delete()) {
             session()->flash('message', 'Post successfully deleted');
         } else {
             session()->flash('error', 'Error occurred while deleting Post');
         }
-
-        return redirect()->back();
     }
 
     /**
-     * @param \Blog\Http\Requests\Posts\Destroy $request
+     * Approve or Deny a Post.
+     *
      * @param \Blog\Models\Post                 $post
      * @param                                   $status
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function status(Destroy $request, Post $post, $status)
+    public function status(Post $post, $status)
     {
+        $this->authorize('approve', $post);
+
         $post->status = $status;
         $post->save();
         if (is_object($post->user)) {
