@@ -146,4 +146,23 @@ class CategoryController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function select2Search(Request $request)
+    {
+        $tags = Category::search($request->get('term'))->take(10)->get();
+        $data = $tags->map(function ($tag) {
+            return [
+                'id' => $tag->id,
+                'text' => $tag->title,
+            ];
+        })->all();
+        return response()->json([
+            'results' => $data,
+        ]);
+    }
 }

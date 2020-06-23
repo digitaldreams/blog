@@ -34,7 +34,7 @@
         <div class='col-md-9'>
             <div class='panel panel-default'>
                 <div class="panel-body">
-                    @include('blog::forms.post',['categories'=>$categories])
+                    @include('blog::forms.post')
                 </div>
             </div>
         </div>
@@ -43,15 +43,4 @@
         </div>
     </div>
 @endSection
-
-@section('script')
-    @include('blog::includes.popoverModal')
-    @include('blog::includes.tooltipModal')
-    @include('blog::includes.summernoteImageInsertModal')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.4/jquery.textcomplete.min.js"></script>
-    <script type="text/javascript" src="{{asset('js/bootsum.js')}}"></script>
-    <script type="text/javascript">
-
-        $('#blog_tags').select2();
-    </script>
-@endsection
+@include('blog::pages.posts.scripts')

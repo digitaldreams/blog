@@ -27,50 +27,54 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Index $request
+     * @param Index $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Index $request)
     {
         return view('blog::pages.tags.index', [
             'records' => Tag::q($request->get('search'))->withCount('posts')->paginate(10),
-            'enableSearch' => true
+            'enableSearch' => true,
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Show $request
-     * @param Tag $tag
+     * @param Show $request
+     * @param Tag  $tag
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Show $request, Tag $tag)
     {
         return view('blog::pages.tags.show', [
             'record' => $tag,
-            'posts' => $tag->posts()->paginate(10)
+            'posts' => $tag->posts()->paginate(10),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param  Create $request
+     * @param Create $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Create $request)
     {
         return view('blog::pages.tags.create', [
             'model' => new Tag,
-            'enableVoice'=>true,
+            'enableVoice' => true,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Store $request
+     * @param Store $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Store $request)
@@ -91,23 +95,25 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Request $request
-     * @param Tag $tag
+     * @param Request $request
+     * @param Tag     $tag
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, Tag $tag)
     {
         return view('blog::pages.tags.edit', [
             'model' => $tag,
-            'enableVoice'=>true,
+            'enableVoice' => true,
         ]);
     }
 
     /**
      * Update a existing resource in storage.
      *
-     * @param  Update $request
-     * @param Tag $tag
+     * @param Update $request
+     * @param Tag    $tag
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Update $request, Tag $tag)
@@ -125,8 +131,9 @@ class TagController extends Controller
     /**
      * Delete a  resource from  storage.
      *
-     * @param  Destroy $request
-     * @param  Category $category
+     * @param Destroy  $request
+     * @param Category $category
+     *
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
@@ -138,5 +145,24 @@ class TagController extends Controller
             session()->flash('app_error', 'Error occurred while deleting Tag');
         }
         return redirect()->back();
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function select2Search(Request $request)
+    {
+        $tags = Tag::q($request->get('term'))->take(10)->get();
+        $data = $tags->map(function ($tag) {
+            return [
+                'id' => $tag->id,
+                'text' => $tag->name,
+            ];
+        })->all();
+        return response()->json([
+            'results' => $data,
+        ]);
     }
 }

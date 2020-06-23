@@ -1,12 +1,9 @@
 <div class="m-form__group form-group">
     <label for="category_id">Category</label>
     <select form="postForm" class="form-control" name="category_id" id="category_id" required>
-        @if(isset($categories))
-            @foreach ($categories as $data)
-                <option value="{{$data->id}}">{{$data->title}}</option>;
-            @endforeach
+        @if($model->category_id)
+            <option value="{{$model->category_id}}" selected>{{$model->category->title}}</option>
         @endif
-
     </select>
     @if($errors->has('category_id'))
         <span class="form-control-feedback">
@@ -49,17 +46,19 @@
     </span>
     @endif
 </div>
+
 <div class="form-group">
     <label for="image">Tags</label>
     <select form="postForm" class="form-control {{ $errors->has('tags') ? ' is-invalid' : '' }}"
             name="tags[]" id="blog_tags" multiple>
-        @foreach($tags as $tag)
-            <option value="{{$tag->id}}" {{in_array($tag->id,$model->tagIds())?'selected':''}}>{{$tag->name}}</option>
-        @endforeach
+        @if(!empty($model->tags))
+            @foreach($model->tags as $tag)
+                <option value="{{$tag->id}}" selected>{{$tag->name}}</option>
+            @endforeach
+        @endif
     </select>
-
-
 </div>
+
 <div class="form-group">
     <label for="image">Image</label>
     <input type="file" form="postForm" class="form-control {{ $errors->has('image') ? ' is-invalid' : '' }}"

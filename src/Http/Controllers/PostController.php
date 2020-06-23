@@ -10,9 +10,7 @@ use Blog\Http\Requests\Posts\Index;
 use Blog\Http\Requests\Posts\Store;
 use Blog\Http\Requests\Posts\Update;
 use Blog\Jobs\TableOfContentGeneratorJob;
-use Blog\Models\Category;
 use Blog\Models\Post;
-use Blog\Models\Tag;
 use Blog\Notifications\NewPostApproval;
 use Blog\Notifications\NewPostApprovalCompleted;
 use Illuminate\Http\Request;
@@ -80,8 +78,6 @@ class PostController extends Controller
         $model = new Post();
         return view('blog::pages.posts.create', [
             'model' => $model,
-            'tags' => Tag::all(),
-            'categories' => Category::all(['id', 'title']),
         ]);
     }
 
@@ -143,8 +139,6 @@ class PostController extends Controller
     {
         return view('blog::pages.posts.edit', [
             'model' => $post,
-            'tags' => Tag::all(),
-            'categories' => Category::all(['id', 'title']),
         ]);
     }
 
