@@ -22,16 +22,6 @@ class Tag extends Model
      */
     protected $fillable = ['slug', 'name', 'description'];
 
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->slug)) {
-                $model->slug = str_slug($model->name);
-            }
-            return true;
-        });
-    }
 
     /**
      * post

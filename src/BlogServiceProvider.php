@@ -11,6 +11,7 @@ use Blog\Models\Post;
 use Blog\Models\Tag;
 use Blog\Observers\CategoryObserver;
 use Blog\Observers\PostObserver;
+use Blog\Observers\TagObserver;
 use Blog\Policies\ActivityPolicy;
 use Blog\Policies\ActivityTypePolicy;
 use Blog\Policies\CategoryPolicy;
@@ -62,6 +63,7 @@ class BlogServiceProvider extends ServiceProvider
 
         Post::observe(PostObserver::class);
         Category::observe(CategoryObserver::class);
+        Tag::observe(TagObserver::class);
     }
 
     /**

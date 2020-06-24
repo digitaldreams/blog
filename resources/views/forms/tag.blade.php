@@ -15,21 +15,7 @@
             @endif
         </div>
     </div>
-    <div class="m-form__group  form-group row">
-        <label for="slug" class="col-form-label col-md-2">Slug</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control {{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug"
-                   id="slug"
-                   value="{{old('slug',$model->slug)}}"
-                   placeholder="If blank title will be used as slug" maxlength="150">
-            @if($errors->has('slug'))
-                <span class="invalid-feedback ">
-                    <strong>{{ $errors->first('slug') }}</strong>
-                </span>
-            @endif
-        </div>
 
-    </div>
     <div class="m-form__group  form-group row">
         <label class="col-form-label col-md-2">Description</label>
         <div class="col-md-9">

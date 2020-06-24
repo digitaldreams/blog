@@ -25,20 +25,7 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            'slug' => 'nullable|max:191',
-            'name' => 'required|max:150',
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-
+            'name' => 'required|max:150|unique:blog_tags,name,' . $this->route('tag')->id,
         ];
     }
 

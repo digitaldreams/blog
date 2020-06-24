@@ -2,10 +2,6 @@
 
 namespace Blog\Http\Controllers;
 
-use Blog\Http\Requests\Tags\Create;
-use Blog\Http\Requests\Tags\Destroy;
-use Blog\Http\Requests\Tags\Index;
-use Blog\Http\Requests\Tags\Show;
 use Blog\Http\Requests\Tags\Store;
 use Blog\Http\Requests\Tags\Update;
 use Blog\Models\Category;
@@ -20,20 +16,19 @@ use Illuminate\Http\Request;
  */
 class TagController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['show', 'index']]);
-    }
 
     /**
      * Display a listing of the resource.
      *
-     * @param Index $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Index $request)
+    public function index(Request $request)
     {
+        $this->authorize('index', Tag::class);
+
         return view('blog::pages.tags.index', [
             'records' => Tag::q($request->get('search'))->withCount('posts')->paginate(10),
             'enableSearch' => true,
@@ -43,13 +38,15 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Show $request
-     * @param Tag  $tag
+     * @param Tag $tag
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(Show $request, Tag $tag)
+    public function show(Tag $tag)
     {
+        $this->authorize('view', $tag);
+
         return view('blog::pages.tags.show', [
             'record' => $tag,
             'posts' => $tag->posts()->paginate(10),
@@ -59,12 +56,13 @@ class TagController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param Create $request
-     *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Create $request)
+    public function create()
     {
+        $this->authorize('create', Tag::class);
+
         return view('blog::pages.tags.create', [
             'model' => new Tag,
             'enableVoice' => true,
@@ -101,16 +99,17 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Request $request
-     * @param Tag     $tag
+     * @param Tag $tag
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Request $request, Tag $tag)
+    public function edit(Tag $tag)
     {
+        $this->authorize('update', $tag);
+
         return view('blog::pages.tags.edit', [
             'model' => $tag,
-            'enableVoice' => true,
         ]);
     }
 
@@ -143,14 +142,15 @@ class TagController extends Controller
     /**
      * Delete a  resource from  storage.
      *
-     * @param Destroy  $request
-     * @param Category $category
+     * @param \Blog\Models\Tag $tag
      *
      * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Destroy $request, Tag $tag)
+    public function destroy(Tag $tag)
     {
+        $this->authorize('delete', $tag);
+
         if ($tag->delete()) {
             session()->flash('message', 'Tag successfully deleted');
         } else {

@@ -2,8 +2,9 @@
 
 namespace Blog\Http\Requests\Tags;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Blog\Models\Tag;
+use Illuminate\Foundation\Http\FormRequest;
+
 class Store extends FormRequest
 {
 
@@ -25,21 +26,7 @@ class Store extends FormRequest
     public function rules()
     {
         return [
-            'slug' => 'nullable|max:191',
-            'name' => 'required|max:150',
+            'name' => 'required|max:150|unique:blog_tags,name',
         ];
     }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-
-        ];
-    }
-
 }
