@@ -26,8 +26,7 @@ class Update extends FormRequest
     {
         return [
             'parent_id' => 'nullable|exists:blog_categories,id',
-            'title' => 'nullable|max:255',
-            'slug' => 'nullable|unique:blog_categories,slug,' . $this->route('category')->id,
+            'title' => 'required|max:255|unique:blog_categories,slug,' . $this->route('category')->id,
         ];
     }
 

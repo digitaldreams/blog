@@ -23,19 +23,22 @@
                     id="parent_id">
                 <option value="">None</option>
                 @foreach($categories as $category)
-                    <option value="{{$category->id}}" {{$category->id==old('parent_id',$model->parent_id)?'selected':''}}>{{$category->title}}</option>
+                    <option
+                        value="{{$category->id}}" {{$category->id==old('parent_id',$model->parent_id)?'selected':''}}>{{$category->title}}</option>
 
                     @if($category->children->count()>0)
                         <optgroup label="Child of {{$category->title}}">
 
                             @foreach($category->children as $child)
-                                <option value="{{$child->id}}" {{$child->id==old('parent_id',$model->parent_id)?'selected':''}}>
+                                <option
+                                    value="{{$child->id}}" {{$child->id==old('parent_id',$model->parent_id)?'selected':''}}>
                                     &nbsp;{{$child->title}}</option>
 
                                 @if($child->children->count()>0)
                                     <optgroup label="&nbsp;&nbsp;&nbsp;&nbsp; Child of {{$child->title}}">
                                         @foreach($child->children as $grandChild)
-                                            <option value="{{$grandChild->id}}" {{$grandChild->id==old('parent_id',$model->parent_id)?'selected':''}}>
+                                            <option
+                                                value="{{$grandChild->id}}" {{$grandChild->id==old('parent_id',$model->parent_id)?'selected':''}}>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$grandChild->title}}</option>
                                         @endforeach
                                     </optgroup>
@@ -53,22 +56,6 @@
             @endif
         </div>
     </div>
-    <div class="m-form__group form-group row ">
-        <label for="slug" class="col-form-label col-md-2">Slug</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control {{ $errors->has('slug') ? ' is-invalid' : '' }}" name="slug"
-                   id="slug"
-                   value="{{old('slug',$model->slug)}}"
-                   placeholder="If blank title will be used as slug" maxlength="255">
-            @if($errors->has('slug'))
-                <span class="invalid-feedback ">
-                    <strong>{{ $errors->first('slug') }}</strong>
-                 </span>
-            @endif
-        </div>
-
-    </div>
-
 
     <div class="form-group text-right ">
         <input type="reset" class="btn btn-default" value="Clear"/>

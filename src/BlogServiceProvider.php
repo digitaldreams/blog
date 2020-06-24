@@ -9,6 +9,7 @@ use Blog\Models\Comment;
 use Blog\Models\Newsletter;
 use Blog\Models\Post;
 use Blog\Models\Tag;
+use Blog\Observers\CategoryObserver;
 use Blog\Observers\PostObserver;
 use Blog\Policies\ActivityPolicy;
 use Blog\Policies\ActivityTypePolicy;
@@ -60,6 +61,7 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerListeners();
 
         Post::observe(PostObserver::class);
+        Category::observe(CategoryObserver::class);
     }
 
     /**

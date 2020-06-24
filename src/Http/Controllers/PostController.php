@@ -159,7 +159,6 @@ class PostController extends Controller
             $post->setImageSize();
             $photo = new Photo();
             $photo->caption = $request->get('title');
-            $photo->title = $request->get('title');
             $post->image_id = (new PhotoService($photo))->setFolder('posts')->save($request, 'image')->id;
         }
         $checkProfinity = new CheckProfanity($post);

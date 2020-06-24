@@ -2,10 +2,6 @@
 
 namespace Blog\Http\Controllers;
 
-use Blog\Http\Requests\Categories\Create;
-use Blog\Http\Requests\Categories\Destroy;
-use Blog\Http\Requests\Categories\Index;
-use Blog\Http\Requests\Categories\Show;
 use Blog\Http\Requests\Categories\Store;
 use Blog\Http\Requests\Categories\Update;
 use Blog\Models\Category;
@@ -22,12 +18,13 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Index $request
-     *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Index $request)
+    public function index(Request $request)
     {
+        $this->authorize('index', Category::class);
+
         return view('blog::pages.categories.index', [
             'records' => Category::search($request->get('search'))
                 ->withCount('posts')
@@ -39,13 +36,15 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Show     $request
      * @param Category $category
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(Show $request, Category $category)
+    public function show(Category $category)
     {
+        $this->authorize('view', $category);
+
         return view('blog::pages.categories.show', [
             'record' => $category,
             'posts' => $category->posts()->paginate(6),
@@ -55,12 +54,13 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param Create $request
-     *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Create $request)
+    public function create()
     {
+        $this->authorize('create', Category::class);
+
         return view('blog::pages.categories.create', [
             'model' => new Category,
             'categories' => Category::with('children')->parent()->get(['id', 'title']),
@@ -97,17 +97,18 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Request  $request
      * @param Category $category
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(Request $request, Category $category)
+    public function edit(Category $category)
     {
+        $this->authorize('update', $category);
+
         return view('blog::pages.categories.edit', [
             'model' => $category,
             'categories' => Category::with('children')->parent()->get(['id', 'title']),
-            'enableVoice' => true,
         ]);
     }
 
@@ -141,14 +142,15 @@ class CategoryController extends Controller
     /**
      * Delete a  resource from  storage.
      *
-     * @param Destroy  $request
      * @param Category $category
      *
      * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Destroy $request, Category $category)
+    public function destroy(Category $category)
     {
+        $this->authorize('delete', $category);
+
         if ($category->delete()) {
             session()->flash('message', 'Category successfully deleted');
         } else {
