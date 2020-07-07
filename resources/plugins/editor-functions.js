@@ -94,10 +94,10 @@ function sendFile(file, callback, welEditable) {
         contentType: false,
         processData: false,
         type: 'POST',
-        success: function (url) {
+        success: function (data) {
             try {
-                var image = $('<img>').attr('src', url[0].url).attr('alt', url[0].caption).attr('title', url[0].title);
-                $('#summernote').summernote('insertNode', image[0]);
+                var pictureTag= generatePictureTag(data.data);
+                pasteHtmlAtCaret(pictureTag);
             } catch (e) {
                 console.log(e);
             }

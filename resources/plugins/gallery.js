@@ -1,60 +1,43 @@
-var ImageGalleryList = [
-    {
-        src: 'https://scontent-sit4-1.xx.fbcdn.net/v/t31.0-8/18766655_1310770569042585_4897233834252565325_o.jpg?oh=5d67b76bcaa228bc8258348111124bd9&oe=5B3A65B2',
-        caption: 'Brindhabon'
-    },
-    {
-        src: 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/18118782_1477908295605867_7125244197043312913_n.jpg?oh=00fa12487f35d6fe7967fdeba7c87a3e&oe=5B37AE05',
-        caption: 'Brindhabon'
-    },
-    {
-        src: 'https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/18118782_1477908295605867_7125244197043312913_n.jpg?oh=00fa12487f35d6fe7967fdeba7c87a3e&oe=5B37AE05',
-        caption: 'Brindhabon'
-    },
-    {
-        src: 'https://scontent-sit4-1.xx.fbcdn.net/v/t31.0-8/17973562_2118342881725306_3660611057400938150_o.jpg?oh=147cee45af62a39dec2c426894cac1f7&oe=5B4446ED',
-        caption: 'Brindhabon'
-    },
-    'https://scontent-sit4-1.xx.fbcdn.net/v/t31.0-8/17973562_2118342881725306_3660611057400938150_o.jpg?oh=147cee45af62a39dec2c426894cac1f7&oe=5B4446ED'
-
-];
+var ImageGalleryList = [];
+var ajaxImageSource = [];
 
 function renderImages(list) {
     var keys = Object.keys(list);
     var html = '';
     for (i = 0; i < keys.length; i++) {
-        var figureHtml = '';
-        figureHtml = '<figure class="figure cursor-pointer">\n';
         var img = list[i];
-        if (typeof img === 'string') {
-            img = {url: img}
+        if (img.thumbnails.length < 1) {
+            continue;
         }
-        if (typeof img.thumbnail === 'undefined') {
-            img.thumbnail = img.url;
-        }
-        if (typeof img.url === 'undefined') {
-            img.url = img.thumbnail;
-        }
-        if (typeof img.caption === 'undefined' || img.caption != null) {
-            img.caption = '';
-        }
-        figureHtml += '<label for="imageGalleryCheckbox_' + i + '">' +
-            '<input type="checkbox" name="insertGalleryImages" class="insertGalleryImagesCheckbox" id="imageGalleryCheckbox_' + i + '" value="' + img.url + '" >' +
-            '<img src="' + img.thumbnail + '" class="figure-img img-fluid rounded" width="100px" title="' + img.caption + '"/></label>' +
+        var figureHtml = '<label for="imageGalleryCheckbox_' + i + '">' +
+            '<picture class="figure cursor-pointer">\n';
 
-            '\n';
-        if (img.caption != null && img.caption.length > 0) {
-            var caption = img.caption;
-            if (caption.length > 15) {
-                caption = img.caption.substr(0, 15) + '...';
-            }
-            figureHtml += '<figcaption class="figure-caption text-center">' + caption + '</figcaption>\n';
+        for (var th = 0; th < img.thumbnails.length; th++) {
+            figureHtml += '<source srcset="' + img.thumbnails[th] + '">'
         }
 
-        figureHtml += '</figure>\n';
+        figureHtml += '<img src="' + img.thumbnails[0] + '" width="120px" alt="' + img.caption + '" title="' + img.caption + '">';
+        figureHtml += '</picture>\n';
+        figureHtml += '<input type="checkbox" name="insertGalleryImages" class="insertGalleryImagesCheckbox" id="imageGalleryCheckbox_' + i + '" value="' + i + '" >' +
+            '</label>';
         html += figureHtml
     }
     return html;
+}
+
+function generatePictureTag(image) {
+    var html = '<picture class="figure">\n';
+    for (var ins = 0; ins < image.thumbnails.length; ins++) {
+        html += '<source srcset="' + image.thumbnails[ins] + '" media="(min-width::576px)">';
+    }
+    if (image.urls.length > 1) {
+        html += '<source srcset="' + image.urls[1] + '">'
+    }
+    if (image.urls.length > 0) {
+        html += '<img src="' + image.urls[0] + '" class="figure-img img-fluid rounded" alt="' + image.caption + '" title="' + image.caption + '"/>\n';
+    }
+    html += '</picture>\n';
+    return html
 }
 
 (function (factory) {
@@ -102,7 +85,8 @@ function renderImages(list) {
                             $("#imagePreviewContainer").html(renderImages(context.options.gallery.list));
                         } else {
                             $.get(context.options.gallery.url, function (data) {
-                                $("#imagePreviewContainer").html(renderImages(data));
+                                $("#imagePreviewContainer").html(renderImages(data.data));
+                                ajaxImageSource = data.data;
                             });
                         }
                         $(document).on('click', "#insertImageSaveBtn", function () {
@@ -112,12 +96,8 @@ function renderImages(list) {
                                 img.push(this.value);
                             });
                             if (img.length == 1) {
-                                var src = img;
-                                var fig = '<figure class="figure">\n';
-                                fig += '<img src="' + src + '" class="figure-img img-fluid rounded" alt="" title=""/>\n';
-
-                                fig += '</figure>\n';
-                                pasteHtmlAtCaret(fig);
+                                var image = ajaxImageSource[img];
+                                pasteHtmlAtCaret(generatePictureTag(image));
                             } else if (img.length > 1) {
                                 var images = img;
                                 var randNumber = Math.floor(Math.random() * 20);
@@ -125,14 +105,14 @@ function renderImages(list) {
                                 var inner = '<div class="carousel-inner">\n';
 
                                 for (var i = 0; i < images.length; i++) {
+                                    var image = ajaxImageSource[images[i]];
                                     var active = i == 0 ? 'active' : '';
                                     indicators += ' <li data-target="#carouselExampleIndicators_' + randNumber + '" data-slide-to="' + i + '" class="' + active + '"></li>\n';
-                                    inner += '     <div class="carousel-item ' + active + '">\n' +
-                                        '            <img class="d-block w-100" src="' + images[i] + '" alt="{{lorem.sentence}}">\n';
-                                    if (false) {
+                                    inner += '     <div class="carousel-item ' + active + '">\n';
+                                    inner += generatePictureTag(image);
+                                    if (image.caption.length > 0) {
                                         inner += '<div class="carousel-caption d-none d-md-block">\n' +
-                                            '                <h5>{{lorem.words}}</h5>\n' +
-                                            '                <p>{{lorem.sentence}}</p>\n' +
+                                            '                <h5>' + image.caption + '</h5>\n' +
                                             '            </div>\n';
                                     }
                                     inner += '</div>\n'
