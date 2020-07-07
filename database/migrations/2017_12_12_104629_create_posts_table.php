@@ -15,17 +15,22 @@ class CreatePostsTable extends Migration
     {
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('user_id')->unsigned();
+            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('blog_categories', 'id')->onDelete('set null');
+
             $table->string('title')->nullable();
+            $table->string('slug')->unique()->nullable();
             //pending, accepted, published, canceled
             $table->string('status')->default('pending');
             $table->longText('body')->nullable();
-            $table->integer('category_id')->unsigned()->nullable();
-            $table->string('image')->nullable();
+            $table->unsignedInteger('image_id')->nullable();
+            $table->foreign('image_id')->references('id')->on('photo_photos')->onDelete('set null');
+
+            $table->integer('total_view')->default(0);
+            $table->boolean('is_featured')->default(0);
+            $table->text('table_of_content')->nullable();
             $table->dateTime('published_at')->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('blog_categories')->onDelete('cascade');
         });
     }
 

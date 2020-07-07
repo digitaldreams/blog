@@ -2,79 +2,77 @@
 
 namespace Blog\Models;
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\Request;
-use Permit\Models\User;
 
 /**
- * @property int $id id
- * @property varchar $type slug
+ * @property int    $id   id
+ * @property string $type slug
  */
 class Activity extends Model
 {
-    const TYPE_LIKE = 'like';
-    const TYPE_DISLIKE = 'dislike';
-    const TYPE_FAVOURITE = 'favourite';
-    const TYPE_LATER = 'later';
-    const TYPE_INAPPROPRIATE = 'inappropriate';
+
     /**
      * Database Table Name
+     *
      * @var string
      */
     protected $table = 'activities';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function activityable()
-    {
-        return $this->morphTo();
-    }
 
     /**
      * Protected column that will not be mass assignable
+     *
      * @var array
      */
     protected $fillable = [
         'activityable_type',
         'activityable_id',
         'type',
-        'reason',
-        'message'
     ];
 
-    public static function boot()
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function activityable(): MorphTo
     {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->user_id) && auth()->check()) {
-                $model->user_id = auth()->user()->id;
-            }
-            return true;
-        });
+        return $this->morphTo();
     }
 
     /**
-     *
+     * Owner of the Activity.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * @param string $user_id
+     *
+     * @return mixed
+     */
     public static function actions($user_id = '')
     {
         return ActivityType::forUser($user_id);
     }
 
     /**
-     * @param $query
-     * @param $request
-     * @return
+     * Filter Current user Activity
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Http\Request              $request
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForUser($query, Request $request)
+    public function scopeForUser(Builder $query, Request $request): Builder
     {
         return $query->where('user_id', auth()->user()->id)
             ->where('activityable_type', $request->get('activityable_type'))
@@ -82,7 +80,13 @@ class Activity extends Model
             ->where('type', $request->get('type'));
     }
 
-    public function scopeLatest($query, $type)
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $type
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLatest(Builder $query, $type): Builder
     {
         return $query->where('user_id', auth()->user()->id)
             ->where('activityable_type', $type)

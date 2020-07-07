@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tuhin
- * Date: 12/25/2017
- * Time: 11:36 PM
- */
 
 namespace Blog\Database\Seeders;
 
-
-use Blog\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -60,19 +52,19 @@ class TagsTableSeeder extends Seeder
             ],
             [
                 'slug' => str_slug('Exam'),
-                'name' => 'Exam'
+                'name' => 'Exam',
             ],
             [
                 'slug' => str_slug('Words'),
-                'name' => 'Words'
+                'name' => 'Words',
             ],
             [
                 'slug' => str_slug('Games'),
-                'name' => 'Games'
+                'name' => 'Games',
             ],
             [
                 'slug' => str_slug('Tips'),
-                'name' => 'Tips'
+                'name' => 'Tips',
             ],
         ]);
     }

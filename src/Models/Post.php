@@ -2,26 +2,27 @@
 
 namespace Blog\Models;
 
+use App\Models\User;
 use Blog\Services\ActivityHelper;
 use Blog\Services\FullTextSearch;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 use Illuminate\Support\Facades\Cache;
-use Photo\Models\Photo;
 use Illuminate\Support\Str;
+use Photo\Models\Photo;
+
 /**
- * @property int $user_id user id
- * @property varchar $title title
- * @property varchar $status status
- * @property string $table_of_content status
- * @property varchar $body body
- * @property int $category_id category id
- * @property Photo $image image
- * @property datetime $published_at published at
- * @property timestamp $created_at created at
- * @property timestamp $updated_at updated at
- * @property Category $category belongsTo
- * @property User $user belongsTo
+ * @property int       $user_id          user id
+ * @property varchar   $title            title
+ * @property varchar   $status           status
+ * @property string    $table_of_content status
+ * @property varchar   $body             body
+ * @property int       $category_id      category id
+ * @property Photo     $image            image
+ * @property datetime  $published_at     published at
+ * @property timestamp $created_at       created at
+ * @property timestamp $updated_at       updated at
+ * @property Category  $category         belongsTo
+ * @property User      $user             belongsTo
  */
 class Post extends Model
 {
@@ -47,7 +48,7 @@ class Post extends Model
         'image_id',
         'published_at',
         'is_featured',
-        'total_view'
+        'total_view',
     ];
 
     protected $searchable = [
@@ -116,7 +117,8 @@ class Post extends Model
      */
     public function likes()
     {
-        return $this->morphMany(Activity::class, 'activityable')->where('type', Activity::TYPE_LIKE);
+        return $this->morphMany(Activity::class, 'activityable')
+            ->where('type', \Blog\Enums\ActivityType::LIKE);
     }
 
     /**
@@ -124,7 +126,8 @@ class Post extends Model
      */
     public function favourites()
     {
-        return $this->morphMany(Activity::class, 'activityable')->where('type', Activity::TYPE_FAVOURITE);
+        return $this->morphMany(Activity::class, 'activityable')
+            ->where('type', \Blog\Enums\ActivityType::FAVOURITE);
     }
 
     /**
@@ -141,7 +144,7 @@ class Post extends Model
     public function getImageUrl()
     {
         if (is_object($this->image)) {
-            return $this->image->getFormat();
+            return $this->image->getUrl();
         }
         return config('blog.defaultPhoto');
     }
@@ -188,7 +191,8 @@ class Post extends Model
             'photo.maxWidth' => 450,
             'photo.maxHeight' => 304,
             'photo.sizes.thumbnail.width' => 288,
-            'photo.sizes.thumbnail.height' => 238
+            'photo.sizes.thumbnail.height' => 238,
+            'photo.rootPath' => 'posts',
         ]);
     }
 
@@ -204,7 +208,7 @@ class Post extends Model
     {
         return route('blog::frontend.blog.posts.show', [
             'category' => $this->category->slug,
-            'blog' => $this->slug
+            'blog' => $this->slug,
         ]);
     }
 
@@ -218,8 +222,8 @@ class Post extends Model
             'posts' => route('blog::frontend.blog.posts.index'),
             $this->name => route('blog::frontend.blog.posts.show', [
                 'category' => $this->category->slug,
-                'blog' => $this->slug
-            ])
+                'blog' => $this->slug,
+            ]),
         ];
     }
 
@@ -245,16 +249,16 @@ class Post extends Model
             'position' => ++$position,
             'item' => [
                 '@id' => url('/'),
-                'name' => 'Blog'
-            ]
+                'name' => 'Blog',
+            ],
         ];
         $itemList[] = [
             '@type' => 'ListItem',
             'position' => ++$position,
             'item' => [
                 '@id' => route('blog::posts.home'),
-                'name' => 'Home'
-            ]
+                'name' => 'Home',
+            ],
         ];
 
         if (is_object($this->category->parentCategory)) {
@@ -263,8 +267,8 @@ class Post extends Model
                 'position' => ++$position,
                 'item' => [
                     '@id' => route('blog::frontend.blog.categories.index', ['category' => $this->category->parentCategory->slug]),
-                    'name' => $this->category->parentCategory->title
-                ]
+                    'name' => $this->category->parentCategory->title,
+                ],
             ];
         }
         if (is_object($this->category)) {
@@ -273,8 +277,8 @@ class Post extends Model
                 'position' => ++$position,
                 'item' => [
                     '@id' => route('blog::frontend.blog.categories.index', ['category' => $this->category->slug]),
-                    'name' => $this->category->title
-                ]
+                    'name' => $this->category->title,
+                ],
             ];
         }
         $itemList[] = [
@@ -282,8 +286,8 @@ class Post extends Model
             'position' => ++$position,
             'item' => [
                 '@id' => route('blog::frontend.blog.posts.show', ['category' => $this->category->slug, 'post' => $this->slug]),
-                'name' => $this->title
-            ]
+                'name' => $this->title,
+            ],
         ];
         $data['itemListElement'] = $itemList;
         return $data;

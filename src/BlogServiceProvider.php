@@ -9,6 +9,7 @@ use Blog\Models\Comment;
 use Blog\Models\Newsletter;
 use Blog\Models\Post;
 use Blog\Models\Tag;
+use Blog\Observers\ActivityObserver;
 use Blog\Observers\CategoryObserver;
 use Blog\Observers\PostObserver;
 use Blog\Observers\TagObserver;
@@ -57,13 +58,14 @@ class BlogServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'blog');
-
+        $this->loadFactoriesFrom(__DIR__ . '/../database/factories');
         $this->registerPolicies();
         $this->registerListeners();
 
         Post::observe(PostObserver::class);
         Category::observe(CategoryObserver::class);
         Tag::observe(TagObserver::class);
+        Activity::observe(ActivityObserver::class);
     }
 
     /**
@@ -72,7 +74,7 @@ class BlogServiceProvider extends ServiceProvider
     public function register()
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__ . '/Database/migrations');
+            $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
             $this->publishes([
                 __DIR__ . '/../config/blog.php' => config_path('blog.php'),
             ], 'blog-config');

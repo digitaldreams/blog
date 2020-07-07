@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateNewslettersTable extends Migration
 {
@@ -16,7 +16,7 @@ class CreateNewslettersTable extends Migration
         Schema::create('newsletters', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->unique();
             $table->enum('status', ['subscribed', 'unsubscribed'])->default('subscribed');
             $table->timestamps();
         });

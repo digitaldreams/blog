@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tuhin
- * Date: 12/25/2017
- * Time: 11:36 PM
- */
 
-namespace Blog\Database\Seeders;
+namespace Blog\Seeders;
 
-
+use Blog\Database\Seeders\TagsTableSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -22,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(CategoriesTableSeeder::class);
+        $this->call(TagsTableSeeder::class);
         $this->call(PostsTableSeeder::class);
     }
 }

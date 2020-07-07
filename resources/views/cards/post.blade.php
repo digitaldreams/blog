@@ -1,6 +1,6 @@
 <div class="card bg-light mb-3">
     <a style="border: 0;" href="{{route('blog::posts.show',$record->slug)}}">
-        <img class="card-img-top" style="max-height: 300px" src="{{$record->getImageUrl()}}" alt="{{$record->title}}">
+       {!! $record->image->renderThumbnails() !!}
     </a>
     <div class="card-body">
         <div class="card-title">

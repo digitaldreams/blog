@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateActivityTypesTable extends Migration
 {
@@ -16,8 +16,7 @@ class CreateActivityTypesTable extends Migration
         Schema::create('activity_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreignId('user_id')->constrained('users', 'id')->onDelete('set null')->nullable();
             $table->timestamps();
         });
     }

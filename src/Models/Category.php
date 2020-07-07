@@ -20,7 +20,7 @@ class Category extends Model
      * Database table name
      */
     protected $table = 'blog_categories';
-    
+
     /**
      * Protected columns from mass assignment
      */

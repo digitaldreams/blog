@@ -2,18 +2,12 @@
 
 namespace Blog\Http\Controllers;
 
-use App\Models\User;
 use Blog\Http\Requests\Posts\Store;
 use Blog\Http\Requests\Posts\Update;
-use Blog\Jobs\TableOfContentGeneratorJob;
 use Blog\Models\Post;
-use Blog\Notifications\NewPostApproval;
 use Blog\Notifications\NewPostApprovalCompleted;
-use Blog\Services\CheckProfanity;
+use Blog\Repositories\PostRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
-use Photo\Models\Photo;
-use Photo\Services\PhotoService;
 
 /**
  * Description of PostController
@@ -22,6 +16,21 @@ use Photo\Services\PhotoService;
  */
 class PostController extends Controller
 {
+    /**
+     * @var
+     */
+    protected PostRepository $postRepository;
+
+    /**
+     * PostController constructor.
+     *
+     * @param \Blog\Repositories\PostRepository $postRepository
+     */
+    public function __construct(PostRepository $postRepository)
+    {
+        $this->postRepository = $postRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -89,39 +98,13 @@ class PostController extends Controller
     {
         $this->authorize('create', Post::class);
 
-        $model = new Post;
-        $model->fill($request->except(['body']));
-        $model->body = $request->get('body');
-        if ($request->hasFile('image')) {
-            $model->setImageSize();
-            $photo = new Photo();
-            $photo->caption = $request->get('title');
-            $model->image_id = (new PhotoService($photo))->setFolder('posts')->save($request, 'image')->id;
-        }
+        $post = $this->postRepository->create($request->except(['data']), $request->file('image'));
 
-        $checkProfinity = new CheckProfanity($model);
-
-        if ($checkProfinity->check()) {
+        if (!$post) {
             return redirect()->back()->withInput($request->all());
         }
 
-        if ($model->save()) {
-            dispatch(new TableOfContentGeneratorJob($model));
-
-            if (!auth()->user()->can('approve', Post::class)) {
-                //Notify to Admin
-                Notification::send(User::getAdmins(), new NewPostApproval($model));
-                session()->flash('message', 'Post saved successfully and one of our moderator will review it soon');
-            } else {
-                session()->flash('message', 'Post saved successfully');
-            }
-            $model->tags()->sync($request->get('tags', []));
-
-            return redirect()->route('blog::posts.index');
-        } else {
-            session()->flash('message', 'Oops something went wrong while saving your post');
-        }
-        return redirect()->back();
+        return redirect()->route('blog::posts.index');
     }
 
     /**
@@ -153,50 +136,31 @@ class PostController extends Controller
     public function update(Update $request, Post $post)
     {
         $this->authorize('update', $post);
-        $post->fill($request->all());
 
-        if ($request->hasFile('image')) {
-            $post->setImageSize();
-            $photo = new Photo();
-            $photo->caption = $request->get('title');
-            $post->image_id = (new PhotoService($photo))->setFolder('posts')->save($request, 'image')->id;
-        }
-        $checkProfinity = new CheckProfanity($post);
+        $post = $this->postRepository->update($request->except(['data']), $post, $request->file('image'));
 
-        if ($checkProfinity->check()) {
+        if (!$post) {
             return redirect()->back()->withInput($request->all());
         }
-
-        if ($post->save()) {
-            dispatch(new TableOfContentGeneratorJob($post));
-
-            $post->tags()->sync($request->get('tags', []));
-            session()->flash('message', 'Post successfully updated');
-            return redirect()->route('blog::posts.index');
-        } else {
-            session()->flash('error', 'Oops something went wrong while updating Post');
-        }
-        return redirect()->back();
+        return redirect()->route('blog::posts.show', $post->slug);
     }
 
     /**
      * Delete a  resource from  storage.
      *
-     * @param Destroy $request
-     * @param Post    $post
+     * @param Post $post
      *
-     * @return \Illuminate\Http\Response
+     * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception
      */
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
 
-        if ($post->delete()) {
-            session()->flash('message', 'Post successfully deleted');
-        } else {
-            session()->flash('error', 'Error occurred while deleting Post');
-        }
+        $this->postRepository->delete($post);
+
+        return redirect()->route('blog::posts.index')->with('message', $post->title . ' deleted successfully');
     }
 
     /**
