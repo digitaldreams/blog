@@ -14,13 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Description of WordMeaningController
+ * Description of WordMeaningController.
  *
  * @author Tuhin Bepari <digitaldreams40@gmail.com>
  */
 class ActivityController extends Controller
 {
-
     public function show(Request $request, $action)
     {
         $model = false;
@@ -53,6 +52,7 @@ class ActivityController extends Controller
      * @param Request $request
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function store(Store $request)
@@ -60,6 +60,7 @@ class ActivityController extends Controller
         $model = Activity::forUser($request)->first();
         if ($model) {
             $model->delete();
+
             return redirect()->back()->with('message', 'Your ' . $request->get('type') . ' is undo');
         } else {
             $activityAbleClass = $request->get('activityable_type');
@@ -67,11 +68,11 @@ class ActivityController extends Controller
             $activityModel = new $activityAbleClass();
             $activityModel = $activityModel->find($activityAbleId);
 
-            if ($request->get('type') == Activity::TYPE_LIKE) {
+            if (Activity::TYPE_LIKE == $request->get('type')) {
                 $notificationOb = new LikeNotification($activityModel, auth()->user());
-            } elseif ($request->get('type') == Activity::TYPE_INAPPROPRIATE) {
+            } elseif (Activity::TYPE_INAPPROPRIATE == $request->get('type')) {
                 //   $notificationOb = new InappropriateNotification($activityModel, auth()->user());
-            } elseif ($request->get('type') == Activity::TYPE_FAVOURITE) {
+            } elseif (Activity::TYPE_FAVOURITE == $request->get('type')) {
                 $notificationOb = new FavouriteNotification($activityModel, auth()->user());
             }
             Notification::send(User::getAdmins(), $notificationOb);
@@ -84,9 +85,9 @@ class ActivityController extends Controller
         } else {
             session()->flash('error', 'Oops something went wrong while ' . $request->get('type'));
         }
+
         return redirect()->back();
     }
-
 
     /**
      * Update a existing resource in storage.
@@ -103,10 +104,12 @@ class ActivityController extends Controller
         if ($activity->save()) {
             $activity->tags()->sync($request->get('tags', []));
             session()->flash('message', 'Your activity successfully updated');
+
             return redirect()->back();
         } else {
             session()->flash('error', 'Oops something went wrong while updating Word');
         }
+
         return redirect()->back();
     }
 
@@ -117,6 +120,7 @@ class ActivityController extends Controller
      * @param Activity $activity
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function destroy(Destroy $request, Activity $activity)

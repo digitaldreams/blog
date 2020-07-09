@@ -66,6 +66,7 @@ class FavouriteNotification extends Notification
     public function toDatabase(): array
     {
         $data = $this->getData();
+
         return [
             'message' => $this->actor->name . ' mark ' . $data['message'] . ' as favourite.',
             'link' => $data['link'] ?? '',

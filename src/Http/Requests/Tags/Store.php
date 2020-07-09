@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class Store extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -15,7 +14,7 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check() && auth()->user()->can('create', Tag::class);;
+        return auth()->check() && auth()->user()->can('create', Tag::class);
     }
 
     /**

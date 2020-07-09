@@ -8,15 +8,14 @@ use Illuminate\Database\Seeder;
 
 class PostsTableSeeder extends Seeder
 {
-
     public function run()
     {
         $generator = \Faker\Factory::create();
         $user = config('auth.providers.users.model');
-        $user = new $user;
+        $user = new $user();
         $user = $user->first();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $image = $generator->image(storage_path('app/public/images'));
             $fileName = pathinfo($image, PATHINFO_BASENAME);
             Post::create([
@@ -29,7 +28,5 @@ class PostsTableSeeder extends Seeder
                 'image' => 'images/' . $fileName,
             ]);
         }
-
     }
-
 }

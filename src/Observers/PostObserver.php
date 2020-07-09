@@ -2,14 +2,12 @@
 
 namespace Blog\Observers;
 
-use Blog\Jobs\TableOfContentGeneratorJob;
 use Blog\Models\Post;
 use Blog\Services\UniqueSlugGeneratorService;
 use SEO\Seo;
 
 class PostObserver
 {
-
     /**
      * Handle the Platform "creating" event.
      *
@@ -40,6 +38,5 @@ class PostObserver
                 $post->getImageUrl(),
             ],
         ]);
-
     }
 }

@@ -5,10 +5,10 @@ namespace Blog\Jobs;
 use Blog\Models\Post;
 use Blog\Services\TableOfContent;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Tidy;
 
 class TableOfContentGeneratorJob implements ShouldQueue
@@ -37,7 +37,7 @@ class TableOfContentGeneratorJob implements ShouldQueue
      */
     public function handle()
     {
-        $tidy_options = array('indent' => 2); // equivalent of auto
+        $tidy_options = ['indent' => 2]; // equivalent of auto
         $tidy = new tidy();
         $tidy->parseString($this->post->body, $tidy_options);
         $tidy->cleanRepair();

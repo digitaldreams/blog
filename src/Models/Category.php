@@ -17,12 +17,12 @@ class Category extends Model
     use FullTextSearch;
 
     /**
-     * Database table name
+     * Database table name.
      */
     protected $table = 'blog_categories';
 
     /**
-     * Protected columns from mass assignment
+     * Protected columns from mass assignment.
      */
     protected $fillable = ['parent_id', 'title', 'slug'];
 
@@ -32,7 +32,7 @@ class Category extends Model
     protected $searchable = ['title'];
 
     /**
-     * posts
+     * posts.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -66,5 +66,4 @@ class Category extends Model
     {
         return 'slug';
     }
-
 }

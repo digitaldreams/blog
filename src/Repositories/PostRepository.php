@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Blog\Repositories;
 
 use App\Models\User;
@@ -41,6 +40,7 @@ class PostRepository
      * @param \Illuminate\Http\UploadedFile $file
      *
      * @return \Blog\Models\Post|bool
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function create(array $data, UploadedFile $file)
@@ -64,6 +64,7 @@ class PostRepository
      * @param \Illuminate\Http\UploadedFile $file
      *
      * @return \Blog\Models\Post|bool
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \Exception
      */
@@ -90,6 +91,7 @@ class PostRepository
      * @param \Blog\Models\Post $post
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public function delete(Post $post)
@@ -97,6 +99,7 @@ class PostRepository
         if ($post->delete()) {
             $this->photoRepository->delete($post->image);
         }
+
         return true;
     }
 
@@ -108,6 +111,7 @@ class PostRepository
     protected function hasProfanity($model): bool
     {
         $checkProfanity = new CheckProfanity($model);
+
         return $checkProfanity->check();
     }
 
@@ -130,8 +134,7 @@ class PostRepository
         if ($tags) {
             $model->tags()->sync($tags);
         }
+
         return $model;
-
     }
-
 }

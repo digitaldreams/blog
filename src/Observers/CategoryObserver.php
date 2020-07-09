@@ -18,5 +18,4 @@ class CategoryObserver
     {
         (new UniqueSlugGeneratorService())->createSlug($category, $category->title);
     }
-
 }

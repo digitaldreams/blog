@@ -82,5 +82,4 @@ class ActivityTypePolicy
     {
         return $activityType->user_id == $user->id;
     }
-
 }

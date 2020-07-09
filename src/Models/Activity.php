@@ -17,15 +17,14 @@ class Activity extends Model
 {
 
     /**
-     * Database Table Name
+     * Database Table Name.
      *
      * @var string
      */
     protected $table = 'activities';
 
-
     /**
-     * Protected column that will not be mass assignable
+     * Protected column that will not be mass assignable.
      *
      * @var array
      */
@@ -34,7 +33,6 @@ class Activity extends Model
         'activityable_id',
         'type',
     ];
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
@@ -65,7 +63,7 @@ class Activity extends Model
     }
 
     /**
-     * Filter Current user Activity
+     * Filter Current user Activity.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param \Illuminate\Http\Request              $request
@@ -92,5 +90,4 @@ class Activity extends Model
             ->where('activityable_type', $type)
             ->orderBy('created_at', 'desc');
     }
-
 }

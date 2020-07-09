@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class Unsubscribe extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,7 +24,7 @@ class Unsubscribe extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email'
+            'email' => 'required|email',
         ];
     }
 
@@ -37,8 +36,6 @@ class Unsubscribe extends FormRequest
     public function messages()
     {
         return [
-
         ];
     }
-
 }

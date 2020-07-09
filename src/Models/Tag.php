@@ -5,26 +5,25 @@ namespace Blog\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property string $slug slug
- * @property int $name name
+ * @property string    $slug       slug
+ * @property int       $name       name
  * @property timestamp $created_at created at
  * @property timestamp $updated_at updated at
- * @property Post $posts belongsToMany
+ * @property Post      $posts      belongsToMany
  */
 class Tag extends Model
 {
     /**
-     * Database table name
+     * Database table name.
      */
     protected $table = 'blog_tags';
     /**
-     * Protected columns from mass assignment
+     * Protected columns from mass assignment.
      */
     protected $fillable = ['slug', 'name', 'description'];
 
-
     /**
-     * post
+     * post.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -36,6 +35,7 @@ class Tag extends Model
     /**
      * @param $query
      * @param $keyword
+     *
      * @return mixed
      */
     public function scopeQ($query, $keyword)

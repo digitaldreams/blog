@@ -82,5 +82,4 @@ class ActivityPolicy
     {
         return false;
     }
-
 }

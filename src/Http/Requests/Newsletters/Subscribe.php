@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class Subscribe extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -38,8 +37,7 @@ class Subscribe extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'This email already subscribed'
+            'email.required' => 'This email already subscribed',
         ];
     }
-
 }

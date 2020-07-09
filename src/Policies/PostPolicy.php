@@ -2,8 +2,8 @@
 
 namespace Blog\Policies;
 
-use \Blog\Models\Post;
 use App\Models\User;
+use Blog\Models\Post;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostPolicy
@@ -24,6 +24,7 @@ class PostPolicy
 
     /**
      * @param User $user
+     *
      * @return bool
      */
     public function index($user)
@@ -36,6 +37,7 @@ class PostPolicy
      *
      * @param User $user
      * @param Post $post
+     *
      * @return mixed
      */
     public function view($user, Post $post)
@@ -47,6 +49,7 @@ class PostPolicy
      * Determine whether the user can create Post.
      *
      * @param User $user
+     *
      * @return mixed
      */
     public function create($user)
@@ -59,6 +62,7 @@ class PostPolicy
      *
      * @param User $user
      * @param Post $post
+     *
      * @return mixed
      */
     public function update($user, Post $post)
@@ -71,11 +75,12 @@ class PostPolicy
      *
      * @param User $user
      * @param Post $post
+     *
      * @return mixed
      */
     public function delete($user, Post $post)
     {
-        return $user->id == $post->user_id && $post->status !== Post::STATUS_PUBLISHED;
+        return $user->id == $post->user_id && Post::STATUS_PUBLISHED !== $post->status;
     }
 
     /**
@@ -83,11 +88,11 @@ class PostPolicy
      *
      * @param User $user
      * @param Post $post
+     *
      * @return mixed
      */
     public function approve($user)
     {
         return false;
     }
-
 }

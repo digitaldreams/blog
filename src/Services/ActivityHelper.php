@@ -32,11 +32,11 @@ trait ActivityHelper
 
     public function canMakeActivity($action)
     {
-
     }
 
     /**
      * @param $action
+     *
      * @return bool
      */
     public function hasActivity($action)
@@ -47,6 +47,7 @@ trait ActivityHelper
                 ->where('user_id', auth()->id())
                 ->where('type', $action)
                 ->count();
+
             return $count > 0 ? true : false;
         }
 

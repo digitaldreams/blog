@@ -5,7 +5,7 @@ namespace Blog\Services;
 trait FullTextSearch
 {
     /**
-     * Replaces spaces with full text search wildcards
+     * Replaces spaces with full text search wildcards.
      *
      * @param string $term
      * @param string $start
@@ -13,10 +13,10 @@ trait FullTextSearch
      *
      * @return string
      */
-    protected function fullTextWildcards($term, $start = "+", $end = "*")
+    protected function fullTextWildcards($term, $start = '+', $end = '*')
     {
         // removing symbols used by MySQL
-        $reservedSymbols = ['-', '+', '"', "'", '<', '>', '@', '(', ')', '~', "*"];
+        $reservedSymbols = ['-', '+', '"', "'", '<', '>', '@', '(', ')', '~', '*'];
         $term = str_replace($reservedSymbols, '', $term);
 
         $words = explode(' ', $term);

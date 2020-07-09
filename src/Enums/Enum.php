@@ -1,16 +1,12 @@
 <?php
 
-
 namespace Blog\Enums;
-
 
 use ReflectionClass;
 
 /**
  * This class use code from BenSampo\Enum\Enum class.
- * To use full package visit: https://github.com/BenSampo/laravel-enum
- *
- * @package Blog\Enums
+ * To use full package visit: https://github.com/BenSampo/laravel-enum.
  */
 abstract class Enum
 {
@@ -26,6 +22,7 @@ abstract class Enum
      * Get all of the constants defined on the class.
      *
      * @return array
+     *
      * @throws \ReflectionException
      */
     protected static function getConstants(): array
@@ -44,6 +41,7 @@ abstract class Enum
      * Get all of the enum keys.
      *
      * @return array
+     *
      * @throws \ReflectionException
      */
     public static function getKeys(): array
@@ -55,6 +53,7 @@ abstract class Enum
      * Get all of the enum values.
      *
      * @return array
+     *
      * @throws \ReflectionException
      */
     public static function getValues(): array
@@ -68,6 +67,7 @@ abstract class Enum
      * @param mixed $value
      *
      * @return string
+     *
      * @throws \ReflectionException
      */
     public static function getKey($value): string
@@ -76,11 +76,12 @@ abstract class Enum
     }
 
     /**
-     * Get the value for a single enum key
+     * Get the value for a single enum key.
      *
      * @param string $key
      *
      * @return mixed
+     *
      * @throws \ReflectionException
      */
     public static function getValue(string $key)
@@ -92,6 +93,7 @@ abstract class Enum
      * Get a random key from the enum.
      *
      * @return string
+     *
      * @throws \ReflectionException
      */
     public static function getRandomKey(): string
@@ -105,6 +107,7 @@ abstract class Enum
      * Get a random value from the enum.
      *
      * @return mixed
+     *
      * @throws \ReflectionException
      */
     public static function getRandomValue()
@@ -113,6 +116,4 @@ abstract class Enum
 
         return $values[array_rand($values)];
     }
-
-
 }

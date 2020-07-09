@@ -4,15 +4,14 @@ namespace Blog\Http\Requests\Newsletters;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Edit extends FormRequest 
+class Edit extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize() 
+    public function authorize()
     {
         return auth()->user()->can('update', $this->route('newsletter'));
     }
@@ -22,23 +21,20 @@ class Edit extends FormRequest
      *
      * @return array
      */
-    public function rules() 
+    public function rules()
     {
         return [
-
         ];
     }
 
     /**
-    * Get the error messages for the defined validation rules.
-    *
-    * @return array
-    */
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
-     
         ];
     }
-
 }

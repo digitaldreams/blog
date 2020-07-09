@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Activities;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Blog\Models\Activity;
+use Illuminate\Foundation\Http\FormRequest;
 
 class Index extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -15,7 +14,7 @@ class Index extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check() &&  auth()->user()->can('index', Activity::class);
+        return auth()->check() && auth()->user()->can('index', Activity::class);
     }
 
     /**
@@ -26,7 +25,6 @@ class Index extends FormRequest
     public function rules()
     {
         return [
-
         ];
     }
 
@@ -38,8 +36,6 @@ class Index extends FormRequest
     public function messages()
     {
         return [
-
         ];
     }
-
 }

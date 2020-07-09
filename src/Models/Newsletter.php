@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Permit\Models\User;
 
 /**
- * @property varchar $name name
- * @property varchar $email email
- * @property enum $status status
+ * @property varchar   $name       name
+ * @property varchar   $email      email
+ * @property enum      $status     status
  * @property timestamp $created_at created at
  * @property timestamp $updated_at updated at
  */
@@ -18,17 +18,17 @@ class Newsletter extends Model
     const STATUS_UNSUBSCRIBED = 'unsubscribed';
 
     /**
-     * Database table name
+     * Database table name.
      */
     protected $table = 'newsletters';
 
     /**
-     * Mass assignable columns
+     * Mass assignable columns.
      */
     protected $fillable = [
         'name',
         'email',
-        'status'
+        'status',
     ];
 
     /**
@@ -40,5 +40,4 @@ class Newsletter extends Model
     {
         return $this->belongsTo(User::class, 'email', 'email');
     }
-
 }

@@ -19,5 +19,4 @@ class ActivityObserver
             $activity->user_id = auth()->id();
         }
     }
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Blog\Services;
-
 
 use Illuminate\Support\Str;
 
@@ -22,7 +20,7 @@ class TableOfContent
         'h3' => 3,
         'h4' => 4,
         'h5' => 5,
-        'h6' => 6
+        'h6' => 6,
     ];
     /**
      * @var \DOMDocument
@@ -31,7 +29,7 @@ class TableOfContent
 
     public function __construct($html)
     {
-        $html = (string)trim(str_replace(["<body>", "</body>"], "", (string)$html->body()));
+        $html = (string) trim(str_replace(['<body>', '</body>'], '', (string) $html->body()));
         $this->html = $html;
         $this->dom = @new \DOMDocument('1.0', 'UTF-8');
         libxml_use_internal_errors(true);
@@ -53,11 +51,13 @@ class TableOfContent
                 $this->topLevelHeading = $current;
             }
         }
+
         return $this;
     }
 
     /**
      * @param $level
+     *
      * @return array
      */
     protected function heading($level)
@@ -76,6 +76,7 @@ class TableOfContent
                 'html' => $heading->firstChild->ownerDocument->saveXML($heading),
             ];
         }
+
         return $ret;
     }
 
@@ -89,6 +90,7 @@ class TableOfContent
             }
         }
         ksort($this->parents);
+
         return $this;
     }
 
@@ -109,6 +111,7 @@ class TableOfContent
                 }
             }
         }
+
         return $this;
     }
 
@@ -125,9 +128,10 @@ class TableOfContent
                         $parentHeading = $hNumber;
                     }
                 }
-                $this->parents[$line]['childs'] = $this->tbc("h" . $parentHeading, $childs);
+                $this->parents[$line]['childs'] = $this->tbc('h' . $parentHeading, $childs);
             }
         }
+
         return $this->parents;
     }
 
@@ -152,12 +156,14 @@ class TableOfContent
                 }
             }
         }
+
         return $parents;
     }
 
     public function process()
     {
         $parents = $this->headings()->parseParent()->putChild()->parentChildSort();
+
         return $this->listItem();
     }
 
@@ -166,7 +172,6 @@ class TableOfContent
         $html = '<ul>';
         $this->parents;
         foreach ($this->parents as $parent) {
-
             $html .= '<li><a href="#' . Str::slug($parent['value']) . '">' . Str::limit($parent['value'], 60) . '</a>';
             if (isset($parent['childs']) && !empty($parent['childs'])) {
                 $html .= '<ul>';
@@ -186,6 +191,7 @@ class TableOfContent
             $html .= '</li>';
         }
         $html .= '</ul>';
+
         return $html;
     }
 
@@ -197,13 +203,13 @@ class TableOfContent
         $html = $this->html;
         $replaceArr = [];
         foreach ($this->headings as $line => $heading) {
-            $start = "<" . $heading['name'] . ">";
-            $end = "</" . $heading['name'] . ">";
+            $start = '<' . $heading['name'] . '>';
+            $end = '</' . $heading['name'] . '>';
             $anchor = '<a name="' . Str::slug($heading['value']) . '">' . $heading['value'] . '</a>';
             $replaceHtml = $start . $anchor . $end;
             $replaceArr[$heading['html']] = $replaceHtml;
         }
+
         return strtr($html, $replaceArr);
     }
-
 }

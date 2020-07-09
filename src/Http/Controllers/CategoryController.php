@@ -9,7 +9,7 @@ use Blog\Services\CheckProfanity;
 use Illuminate\Http\Request;
 
 /**
- * Description of CategoryController
+ * Description of CategoryController.
  *
  * @author Tuhin Bepari <digitaldreams40@gmail.com>
  */
@@ -19,6 +19,7 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
@@ -39,6 +40,7 @@ class CategoryController extends Controller
      * @param Category $category
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Category $category)
@@ -55,6 +57,7 @@ class CategoryController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
@@ -62,7 +65,7 @@ class CategoryController extends Controller
         $this->authorize('create', Category::class);
 
         return view('blog::pages.categories.create', [
-            'model' => new Category,
+            'model' => new Category(),
             'categories' => Category::with('children')->parent()->get(['id', 'title']),
         ]);
     }
@@ -76,7 +79,7 @@ class CategoryController extends Controller
      */
     public function store(Store $request)
     {
-        $model = new Category;
+        $model = new Category();
         $model->fill($request->all());
 
         $checkProfanity = new CheckProfanity($model);
@@ -85,12 +88,13 @@ class CategoryController extends Controller
         }
 
         if ($model->save()) {
-
             session()->flash('message', 'Category saved successfully');
+
             return redirect()->route('blog::categories.index');
         } else {
             session()->flash('message', 'Oops something went wrong while saving the category');
         }
+
         return redirect()->back();
     }
 
@@ -100,6 +104,7 @@ class CategoryController extends Controller
      * @param Category $category
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Category $category)
@@ -130,12 +135,13 @@ class CategoryController extends Controller
         }
 
         if ($category->save()) {
-
             session()->flash('message', 'Category successfully updated');
+
             return redirect()->route('blog::categories.index');
         } else {
             session()->flash('error', 'Oops something went wrong while updating Category');
         }
+
         return redirect()->back();
     }
 
@@ -145,6 +151,7 @@ class CategoryController extends Controller
      * @param Category $category
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Category $category)
@@ -174,6 +181,7 @@ class CategoryController extends Controller
                 'text' => $tag->title,
             ];
         })->all();
+
         return response()->json([
             'results' => $data,
         ]);

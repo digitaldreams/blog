@@ -25,7 +25,6 @@ class NewPostApprovalCompleted extends Notification
      */
     protected $actionLink;
 
-
     /**
      * Create a new notification instance.
      *

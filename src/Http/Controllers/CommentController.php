@@ -2,6 +2,7 @@
 
 namespace Blog\Http\Controllers;
 
+use App\Models\User;
 use Blog\Http\Requests\Comments\Destroy;
 use Blog\Http\Requests\Comments\Index;
 use Blog\Http\Requests\Comments\Store;
@@ -9,16 +10,14 @@ use Blog\Models\Comment;
 use Blog\Models\Post;
 use Blog\Notifications\CommentNotification;
 use Illuminate\Support\Facades\Notification;
-use App\Models\User;
 
 /**
- * Description of CommentController
+ * Description of CommentController.
  *
  * @author Tuhin Bepari <digitaldreams40@gmail.com>
  */
 class CommentController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth', ['except' => 'index']);
@@ -27,8 +26,9 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Index $request
-     * @param Post $post
+     * @param Index $request
+     * @param Post  $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Index $request, Post $post)
@@ -39,33 +39,38 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Store $request
-     * @param Post $post
+     * @param Store $request
+     * @param Post  $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Store $request, Post $post)
     {
-        $model = new Comment;
+        $model = new Comment();
         $model->fill($request->all());
         $model->post_id = $post->id;
         $model->user_id = auth()->user()->id;
         if ($model->save()) {
             Notification::send(User::getAdmins(), new CommentNotification($post, auth()->user()));
             session()->flash('message', 'Comment saved successfully');
+
             return redirect()->route('blog::posts.show', $post->slug);
         } else {
             session()->flash('error', 'Oops something went wrong while saving your comment');
         }
+
         return redirect()->back();
     }
 
     /**
      * Delete a  resource from  storage.
      *
-     * @param  Destroy $request
-     * @param Post $post
-     * @param  Comment $comment
+     * @param Destroy $request
+     * @param Post    $post
+     * @param Comment $comment
+     *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function destroy(Destroy $request, Post $post, Comment $comment)
@@ -75,6 +80,7 @@ class CommentController extends Controller
         } else {
             session()->flash('error', 'Error occurred while deleting Comment');
         }
+
         return redirect()->back();
     }
 }

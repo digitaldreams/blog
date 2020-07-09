@@ -2,8 +2,8 @@
 
 namespace Blog\Policies;
 
-use \Blog\Models\Category;
 use App\Models\User;
+use Blog\Models\Category;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CategoryPolicy
@@ -24,6 +24,7 @@ class CategoryPolicy
 
     /**
      * @param User $user
+     *
      * @return bool
      */
     public function index($user)
@@ -34,8 +35,9 @@ class CategoryPolicy
     /**
      * Determine whether the user can view the Category.
      *
-     * @param  User $user
-     * @param  Category $category
+     * @param User     $user
+     * @param Category $category
+     *
      * @return mixed
      */
     public function view($user, Category $category)
@@ -46,7 +48,8 @@ class CategoryPolicy
     /**
      * Determine whether the user can create Category.
      *
-     * @param  User $user
+     * @param User $user
+     *
      * @return mixed
      */
     public function create($user)
@@ -57,8 +60,9 @@ class CategoryPolicy
     /**
      * Determine whether the user can update the Category.
      *
-     * @param User $user
-     * @param  Category $category
+     * @param User     $user
+     * @param Category $category
+     *
      * @return mixed
      */
     public function update($user, Category $category)
@@ -69,13 +73,13 @@ class CategoryPolicy
     /**
      * Determine whether the user can delete the Category.
      *
-     * @param User $user
-     * @param  Category $category
+     * @param User     $user
+     * @param Category $category
+     *
      * @return mixed
      */
     public function delete($user, Category $category)
     {
         return false;
     }
-
 }

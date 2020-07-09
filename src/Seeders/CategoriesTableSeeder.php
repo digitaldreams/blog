@@ -13,7 +13,7 @@ class CategoriesTableSeeder extends Seeder
 
         Category::create([
             'title' => $generator->word,
-            'slug' => $generator->slug
+            'slug' => $generator->slug,
         ]);
     }
 }

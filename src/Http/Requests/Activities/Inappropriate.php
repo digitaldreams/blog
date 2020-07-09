@@ -2,12 +2,11 @@
 
 namespace Blog\Http\Requests\Activities;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Blog\Models\Activity;
+use Illuminate\Foundation\Http\FormRequest;
 
 class Inappropriate extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -15,7 +14,7 @@ class Inappropriate extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check() &&  auth()->user()->can('create', Activity::class);
+        return auth()->check() && auth()->user()->can('create', Activity::class);
     }
 
     /**
@@ -30,7 +29,7 @@ class Inappropriate extends FormRequest
             'activityable_id' => 'required|numeric',
             'type' => 'required|max:50',
             'reason' => 'required|max:100',
-            'message' => 'nullable|max:250|string'
+            'message' => 'nullable|max:250|string',
         ];
     }
 
@@ -42,8 +41,6 @@ class Inappropriate extends FormRequest
     public function messages()
     {
         return [
-
         ];
     }
-
 }

@@ -66,6 +66,7 @@ class LikeNotification extends Notification
     public function toDatabase(): array
     {
         $data = $this->getData();
+
         return [
             'message' => $this->actor->name . ' likes ' . $data['message'] ?? '',
             'link' => $data['link'] ?? '',

@@ -27,7 +27,7 @@ use Illuminate\Support\ServiceProvider;
 class BlogServiceProvider extends ServiceProvider
 {
     /**
-     * The policy
+     * The policy.
      *
      * @var array
      */
@@ -48,11 +48,10 @@ class BlogServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-
     ];
 
     /**
-     * Register Important services that will be used in application
+     * Register Important services that will be used in application.
      */
     public function boot()
     {
@@ -69,7 +68,7 @@ class BlogServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register less important services to application
+     * Register less important services to application.
      */
     public function register()
     {
@@ -95,7 +94,6 @@ class BlogServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/blog.php', 'blog'
             );
         }
-
     }
 
     /**
@@ -111,7 +109,7 @@ class BlogServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register Listeners
+     * Register Listeners.
      */
     public function registerListeners()
     {

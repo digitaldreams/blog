@@ -4,15 +4,14 @@ namespace Blog\Http\Requests\ActivityTypes;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Update extends FormRequest 
+class Update extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize() 
+    public function authorize()
     {
         return true;
     }
@@ -22,24 +21,22 @@ class Update extends FormRequest
      *
      * @return array
      */
-    public function rules() 
+    public function rules()
     {
         return [
-			'name' => 'required|max:191',
-			'user_id' => 'nullable|exists:users,id|numeric',
+            'name' => 'required|max:191',
+            'user_id' => 'nullable|exists:users,id|numeric',
         ];
     }
 
     /**
-    * Get the error messages for the defined validation rules.
-    *
-    * @return array
-    */
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
-     
         ];
     }
-
 }

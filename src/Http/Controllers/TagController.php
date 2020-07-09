@@ -4,25 +4,24 @@ namespace Blog\Http\Controllers;
 
 use Blog\Http\Requests\Tags\Store;
 use Blog\Http\Requests\Tags\Update;
-use Blog\Models\Category;
 use Blog\Models\Tag;
 use Blog\Services\CheckProfanity;
 use Illuminate\Http\Request;
 
 /**
- * Description of CategoryController
+ * Description of CategoryController.
  *
  * @author Tuhin Bepari <digitaldreams40@gmail.com>
  */
 class TagController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
@@ -41,6 +40,7 @@ class TagController extends Controller
      * @param Tag $tag
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Tag $tag)
@@ -57,6 +57,7 @@ class TagController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
@@ -64,7 +65,7 @@ class TagController extends Controller
         $this->authorize('create', Tag::class);
 
         return view('blog::pages.tags.create', [
-            'model' => new Tag,
+            'model' => new Tag(),
             'enableVoice' => true,
         ]);
     }
@@ -78,7 +79,7 @@ class TagController extends Controller
      */
     public function store(Store $request)
     {
-        $model = new Tag;
+        $model = new Tag();
         $model->fill($request->all());
 
         $checkProfanity = new CheckProfanity($model);
@@ -87,12 +88,13 @@ class TagController extends Controller
         }
 
         if ($model->save()) {
-
             session()->flash('message', 'Tag saved successfully');
+
             return redirect()->route('blog::tags.index');
         } else {
             session()->flash('message', 'Oops something went wrong while saving your tag');
         }
+
         return redirect()->back();
     }
 
@@ -102,6 +104,7 @@ class TagController extends Controller
      * @param Tag $tag
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Tag $tag)
@@ -132,10 +135,12 @@ class TagController extends Controller
 
         if ($tag->save()) {
             session()->flash('message', 'Tag successfully updated');
+
             return redirect()->route('blog::tags.index');
         } else {
             session()->flash('error', 'Oops something went wrong while updating tag');
         }
+
         return redirect()->back();
     }
 
@@ -145,6 +150,7 @@ class TagController extends Controller
      * @param \Blog\Models\Tag $tag
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Tag $tag)
@@ -156,6 +162,7 @@ class TagController extends Controller
         } else {
             session()->flash('error', 'Error occurred while deleting Tag');
         }
+
         return redirect()->back();
     }
 
@@ -173,6 +180,7 @@ class TagController extends Controller
                 'text' => $tag->name,
             ];
         })->all();
+
         return response()->json([
             'results' => $data,
         ]);

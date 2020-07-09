@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Blog\Enums;
-
 
 class ActivityType extends Enum
 {

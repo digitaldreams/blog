@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class Update extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,5 +27,4 @@ class Update extends FormRequest
             'name' => 'required|max:150|unique:blog_tags,name,' . $this->route('tag')->id,
         ];
     }
-
 }

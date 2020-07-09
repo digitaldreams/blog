@@ -10,7 +10,7 @@ use Blog\Repositories\PostRepository;
 use Illuminate\Http\Request;
 
 /**
- * Description of PostController
+ * Description of PostController.
  *
  * @author Tuhin Bepari <digitaldreams40@gmail.com>
  */
@@ -37,6 +37,7 @@ class PostController extends Controller
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
@@ -74,6 +75,7 @@ class PostController extends Controller
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Request $request)
@@ -81,6 +83,7 @@ class PostController extends Controller
         $this->authorize('create', Post::class);
 
         $model = new Post();
+
         return view('blog::pages.posts.create', [
             'model' => $model,
         ]);
@@ -92,6 +95,7 @@ class PostController extends Controller
      * @param Store $request
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function store(Store $request)
@@ -113,6 +117,7 @@ class PostController extends Controller
      * @param Post $post
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Post $post)
@@ -131,6 +136,7 @@ class PostController extends Controller
      * @param Post   $post
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function update(Update $request, Post $post)
@@ -142,6 +148,7 @@ class PostController extends Controller
         if (!$post) {
             return redirect()->back()->withInput($request->all());
         }
+
         return redirect()->route('blog::posts.show', $post->slug);
     }
 
@@ -151,6 +158,7 @@ class PostController extends Controller
      * @param Post $post
      *
      * @return void
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception
      */
@@ -166,10 +174,11 @@ class PostController extends Controller
     /**
      * Approve or Deny a Post.
      *
-     * @param \Blog\Models\Post                 $post
-     * @param                                   $status
+     * @param \Blog\Models\Post $post
+     * @param                   $status
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function status(Post $post, $status)
@@ -181,7 +190,7 @@ class PostController extends Controller
         if (is_object($post->user)) {
             $post->user->notify(new NewPostApprovalCompleted($post));
         }
+
         return redirect()->back()->with('message', 'Thanks for your action');
     }
-
 }

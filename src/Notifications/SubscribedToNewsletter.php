@@ -80,7 +80,7 @@ class SubscribedToNewsletter extends Notification
     }
 
     /**
-     * Format message for database notification
+     * Format message for database notification.
      *
      * @param $notifiable
      *

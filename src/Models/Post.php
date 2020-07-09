@@ -33,11 +33,11 @@ class Post extends Model
     const STATUS_REJECTED = 'rejected';
     const  IS_FEATURED = 1;
     /**
-     * Database table name
+     * Database table name.
      */
     protected $table = 'blog_posts';
     /**
-     * Protected columns from mass assignment
+     * Protected columns from mass assignment.
      */
     protected $fillable = [
         'title',
@@ -69,15 +69,16 @@ class Post extends Model
             if (empty($model->slug)) {
                 $slug = Str::slug($model->title);
                 $exists = Post::where('slug', $slug)->count();
-                $model->slug = $exists == 0 ? $slug : $slug . "-" . rand(999, 100000);
+                $model->slug = 0 == $exists ? $slug : $slug . '-' . rand(999, 100000);
             }
+
             return true;
         });
         parent::boot();
     }
 
     /**
-     * category
+     * category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -131,7 +132,7 @@ class Post extends Model
     }
 
     /**
-     * user
+     * user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -140,12 +141,12 @@ class Post extends Model
         return $this->belongsTo(config('blog.userModel'), 'user_id');
     }
 
-
     public function getImageUrl()
     {
         if (is_object($this->image)) {
             return $this->image->getUrl();
         }
+
         return config('blog.defaultPhoto');
     }
 
@@ -171,8 +172,10 @@ class Post extends Model
         if (!Cache::has($key)) {
             $this->increment('total_view');
             Cache::put($key, $this->id, 1440);
+
             return true;
         }
+
         return false;
     }
 
@@ -212,7 +215,6 @@ class Post extends Model
         ]);
     }
 
-
     /**
      * @return array
      */
@@ -234,7 +236,6 @@ class Post extends Model
     {
         return $this->user;
     }
-
 
     public function breadcrumbList()
     {
@@ -290,7 +291,7 @@ class Post extends Model
             ],
         ];
         $data['itemListElement'] = $itemList;
+
         return $data;
     }
-
 }

@@ -2,26 +2,26 @@
 
 namespace Blog\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property varchar $name name
- * @property int $user_id user id
+ * @property varchar   $name       name
+ * @property int       $user_id    user id
  * @property timestamp $created_at created at
  * @property timestamp $updated_at updated at
- * @property User $user belongsTo
+ * @property User      $user       belongsTo
  */
 class ActivityType extends Model
 {
 
     /**
-     * Database table name
+     * Database table name.
      */
     protected $table = 'activity_types';
 
     /**
-     * Mass assignable columns
+     * Mass assignable columns.
      */
     protected $fillable = ['name', 'user_id'];
 
@@ -41,7 +41,7 @@ class ActivityType extends Model
     }
 
     /**
-     * user
+     * user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -53,6 +53,7 @@ class ActivityType extends Model
     public static function forUser($user_id = '')
     {
         $user_id = empty($user_id) && auth()->check() ? auth()->id() : $user_id;
+
         return static::where(function ($q) use ($user_id) {
             return $q->orWhere('user_id', $user_id)
                 ->orWhereNull('user_id');
@@ -65,6 +66,4 @@ class ActivityType extends Model
     {
         return;
     }
-
-
 }

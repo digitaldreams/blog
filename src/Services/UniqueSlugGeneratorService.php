@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Blog\Services;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +7,6 @@ use Illuminate\Support\Str;
 
 class UniqueSlugGeneratorService
 {
-
     /**
      * Create Slug for Model.
      *
