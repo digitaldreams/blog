@@ -14,9 +14,9 @@ class CreateActivityTypesTable extends Migration
     public function up()
     {
         Schema::create('activity_types', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id('id');
             $table->string('name');
-            $table->foreignId('user_id')->constrained('users', 'id')->onDelete('set null')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users', 'id')->onDelete('set null');
             $table->timestamps();
         });
     }

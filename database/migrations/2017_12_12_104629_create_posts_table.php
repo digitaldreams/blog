@@ -14,7 +14,7 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('blog_posts', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id('id');
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('category_id')->nullable()->constrained('blog_categories', 'id')->onDelete('set null');
 
@@ -24,7 +24,7 @@ class CreatePostsTable extends Migration
             $table->string('status')->default('pending');
             $table->longText('body')->nullable();
             $table->unsignedInteger('image_id')->nullable();
-            $table->foreign('image_id')->references('id')->on('photo_photos')->onDelete('set null');
+           // $table->foreign('image_id')->references('id')->on('photo_photos')->onDelete('set null');
 
             $table->integer('total_view')->default(0);
             $table->boolean('is_featured')->default(0);

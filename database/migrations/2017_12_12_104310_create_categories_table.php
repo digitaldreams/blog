@@ -14,7 +14,7 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         Schema::create('blog_categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->foreignId('parent_id')->nullable()->constrained('blog_categories', 'id')->onDelete('set null');
             $table->string('title')->nullable();
             $table->string('slug')->unique();

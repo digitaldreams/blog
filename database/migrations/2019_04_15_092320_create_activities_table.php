@@ -14,7 +14,7 @@ class CreateActivitiesTable extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id('id');
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->string('activityable_type', 100);
             $table->bigInteger('activityable_id')->unsigned();
