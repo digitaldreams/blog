@@ -53,7 +53,7 @@
             name="tags[]" id="blog_tags" multiple>
         @if(!empty($model->tags))
             @foreach($model->tags as $tag)
-                <option value="{{$tag->id}}" selected>{{$tag->name}}</option>
+                <option value="{{$tag->name}}" selected>{{$tag->name}}</option>
             @endforeach
         @endif
     </select>

@@ -173,10 +173,10 @@ class TagController extends Controller
      */
     public function select2Search(Request $request)
     {
-        $tags = Tag::q($request->get('term'))->take(10)->get();
+        $tags = Tag::query()->q($request->get('term'))->take(10)->get();
         $data = $tags->map(function ($tag) {
             return [
-                'id' => $tag->id,
+                'id' => $tag->name,
                 'text' => $tag->name,
             ];
         })->all();

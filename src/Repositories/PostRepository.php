@@ -5,10 +5,13 @@ namespace Blog\Repositories;
 use App\Models\User;
 use Blog\Jobs\TableOfContentGeneratorJob;
 use Blog\Models\Post;
+use Blog\Models\Tag;
 use Blog\Notifications\NewPostApproval;
 use Blog\Services\CheckProfanity;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Photo\Repositories\PhotoRepository;
 
 class PostRepository
@@ -24,15 +27,27 @@ class PostRepository
     protected PhotoRepository $photoRepository;
 
     /**
+     * @var \Illuminate\Database\DatabaseManager
+     */
+    protected $databaseManager;
+    /**
+     * @var \Blog\Models\Tag
+     */
+    protected $tag;
+
+    /**
      * PostRepository constructor.
      *
-     * @param \Blog\Models\Post                   $post
-     * @param \Photo\Repositories\PhotoRepository $photoRepository
+     * @param \Blog\Models\Post                    $post
+     * @param \Photo\Repositories\PhotoRepository  $photoRepository
+     * @param \Illuminate\Database\DatabaseManager $databaseManager
      */
-    public function __construct(Post $post, PhotoRepository $photoRepository)
+    public function __construct(Post $post, Tag $tag, PhotoRepository $photoRepository, DatabaseManager $databaseManager)
     {
         $this->post = $post;
         $this->photoRepository = $photoRepository;
+        $this->databaseManager = $databaseManager;
+        $this->tag = $tag;
     }
 
     /**
@@ -121,7 +136,7 @@ class PostRepository
      *
      * @return mixed
      */
-    protected function notifyAndTags($model, ?array $tags = null): Post
+    protected function notifyAndTags(Post $model, ?array $tags = null): Post
     {
         dispatch(new TableOfContentGeneratorJob($model));
 
@@ -132,9 +147,44 @@ class PostRepository
             session()->flash('message', 'Post saved successfully');
         }
         if ($tags) {
-            $model->tags()->sync($tags);
+            $model->tags()->sync($this->saveTags($tags));
         }
 
         return $model;
+    }
+
+    /**
+     * @param array $tags
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function saveTags(array $tags)
+    {
+        $dbTags = $this->tag->newQuery()->whereIn('name', $tags)->get();
+        if (count($dbTags) < count($tags)) {
+            $remainingTags = array_diff($tags, $dbTags->pluck('name')->toArray());
+            $insertAbleTag = [];
+            foreach ($remainingTags as $rtag) {
+                $insertAbleTag[] = [
+                    'slug' => $this->generateUniqueSlug($rtag),
+                    'name' => $rtag,
+                ];
+            }
+            $this->databaseManager->table($this->tag->getTable())->insert($insertAbleTag);
+        }
+
+        return $this->tag->newQuery()->whereIn('name', $tags)->get();
+    }
+
+    /**
+     * @param $name
+     *
+     * @return string
+     */
+    protected function generateUniqueSlug($name): string
+    {
+        $slug = Str::slug($name);
+
+        return $this->tag->newQuery()->where('slug', $slug)->exists() ? $slug . '-' . rand(1, 1000) : $slug;
     }
 }

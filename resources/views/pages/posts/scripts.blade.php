@@ -7,7 +7,18 @@
     <script type="text/javascript">
 
         $('#blog_tags').select2({
-            minimumInputLength:2,
+            tags: true,
+            tokenSeparators: [",",],
+            createSearchChoice: function (term, data) {
+                if ($(data).filter(function () {
+                    return this.text.localeCompare(term) === 0;
+                }).length === 0) {
+                    return {
+                        id: term,
+                        text: term
+                    };
+                }
+            },
             ajax: {
                 url: '{{route('blog::tags.select2')}}',
                 dataType: 'json'
@@ -15,7 +26,6 @@
         });
 
         $('#category_id').select2({
-            minimumInputLength:2,
             ajax: {
                 url: '{{route('blog::categories.select2')}}',
                 dataType: 'json'
