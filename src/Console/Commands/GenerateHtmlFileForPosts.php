@@ -59,7 +59,17 @@ class GenerateHtmlFileForPosts extends Command
                 continue;
             }
         }
-
+        $posts = $post->newQuery()->where('status', Post::STATUS_PUBLISHED)->get();
+        foreach ($posts as $p) {
+            $this->info($p->slug);
+            try {
+                $route = route('blog::frontend.blog.posts.show', ['category' => $p->category->slug, 'post' => $p->slug]);
+                $this->downloadAndSave($route, $filesystem, $app);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                continue;
+            }
+        }
         return 0;
     }
 
@@ -74,15 +84,15 @@ class GenerateHtmlFileForPosts extends Command
     {
         $pathInfo = parse_url($url);
         $path = $pathInfo['path'];
-        $request = Request::create($path, 'GET');
+        $request = Request::create($url, 'GET');
         $response = $application->handle($request);
         if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
             if (!file_exists(public_path($folder = pathinfo($path, PATHINFO_DIRNAME)))) {
-                mkdir(public_path($folder), 755, true);
+                mkdir(public_path($folder), 0755, true);
             }
 
             $filesystem->put(public_path($path), $response->getContent());
-            $this->info('saving ' . $path);
+            $this->info('saved ' . $path);
         }
     }
 }
