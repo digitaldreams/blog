@@ -1,10 +1,10 @@
 <?php
 Route::group(['middleware' => ['web'], 'namespace' => 'Blog\Http\Controllers', 'as' => 'blog::'], function () {
-    Route::get('blog', 'Frontend\PostController@bloghome')->name('posts.home');
-    Route::get('blog/tags/{tag}', 'Frontend\PostController@tag')->name('frontend.blog.tags.index');
+    Route::get('blog.html', 'Frontend\PostController@bloghome')->name('posts.home');
+    Route::get('blog/tags/{tag}.html', 'Frontend\PostController@tag')->name('frontend.blog.tags.index');
 
-    Route::get('blog/{category}/{post}', 'Frontend\PostController@show')->name('frontend.blog.posts.show');
-    Route::get('blog/{category}', 'Frontend\PostController@category')->name('frontend.blog.categories.index');
+    Route::get('blog/{category}/{post}.html', 'Frontend\PostController@show')->name('frontend.blog.posts.show');
+    Route::get('blog/{category}.html', 'Frontend\PostController@category')->name('frontend.blog.categories.index');
     Route::get('posts/smart-search', 'Frontend\PostController@smartSearch')->name('frontend.blog.smartSearch');
     Route::post('newsletter/subscribe', 'Frontend\NewsletterController@subscribe')->name('frontend.blog.newsletters.subscribe');
     Route::get('newsletter/unsubscribe', 'Frontend\NewsletterController@unsubscribe')->name('frontend.blog.newsletters.unsubscribe');
