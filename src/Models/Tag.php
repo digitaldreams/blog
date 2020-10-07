@@ -52,4 +52,14 @@ class Tag extends Model
     {
         return 'slug';
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function preferredUsers()
+    {
+        $user = config('auth.providers.users.model');
+
+        return $this->belongsToMany($user, 'preferences');
+    }
 }
