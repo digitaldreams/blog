@@ -4,6 +4,7 @@ namespace Blog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Blog\Enums\ActivityType;
 use Blog\Http\Requests\Activities\Destroy;
 use Blog\Http\Requests\Activities\Store;
 use Blog\Http\Requests\Activities\Update;
@@ -38,7 +39,7 @@ class ActivityController extends Controller
         return view('blog::pages.activities.show', [
             'model' => $model,
             'action' => $action,
-            'activities' => Activity::where('activityable_type', $activityAbleType)
+            'activities' => Activity::query()->where('activityable_type', $activityAbleType)
                 ->where('activityable_id', $activityAbleId)
                 ->where('type', $action)
                 ->latest()
@@ -68,11 +69,11 @@ class ActivityController extends Controller
             $activityModel = new $activityAbleClass();
             $activityModel = $activityModel->find($activityAbleId);
 
-            if (Activity::TYPE_LIKE == $request->get('type')) {
+            if (ActivityType::LIKE == $request->get('type')) {
                 $notificationOb = new LikeNotification($activityModel, auth()->user());
-            } elseif (Activity::TYPE_INAPPROPRIATE == $request->get('type')) {
+            } elseif (ActivityType::INAPPROPRIATE == $request->get('type')) {
                 //   $notificationOb = new InappropriateNotification($activityModel, auth()->user());
-            } elseif (Activity::TYPE_FAVOURITE == $request->get('type')) {
+            } elseif (ActivityType::FAVOURITE == $request->get('type')) {
                 $notificationOb = new FavouriteNotification($activityModel, auth()->user());
             }
             Notification::send(User::getAdmins(), $notificationOb);

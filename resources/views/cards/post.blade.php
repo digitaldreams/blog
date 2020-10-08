@@ -35,7 +35,6 @@
             <button class="btn badge badge-light">
                 <i class="fa fa-star"></i> {{$record->favourites()->count()}}
             </button>
-
         </form>&nbsp;
         @can('update',$record)
             <a class="card-link" href="{{route('blog::posts.edit',$record->slug)}}">

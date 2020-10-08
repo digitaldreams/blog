@@ -95,6 +95,12 @@ class LikeNotification extends Notification
                     'link' => route('frontend.blog.tags.index', $this->model->slug),
                 ];
                 break;
+            default:
+                return [
+                    'message' => $this->model->title,
+                    'link' => '',
+                ];
+                break;
         }
     }
 }
