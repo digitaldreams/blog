@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\WebPush\WebPushChannel;
+use NotificationChannels\WebPush\WebPushMessage;
 
 class CommentNotification extends Notification
 {
@@ -54,7 +56,7 @@ class CommentNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'mail'];
+        return ['database', 'mail', WebPushChannel::class];
     }
 
     /**
@@ -69,20 +71,6 @@ class CommentNotification extends Notification
         ]);
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
-
     public function toDatabase()
     {
         return [
@@ -90,5 +78,17 @@ class CommentNotification extends Notification
             'link' => $this->actionLink,
             'icon' => 'fa fa-user-plus',
         ];
+    }
+
+    /**
+     * @return \NotificationChannels\WebPush\WebPushMessage
+     */
+    public function toWebPush()
+    {
+        return (new WebPushMessage())
+            ->title($this->subject)
+            ->body($this->model->title)
+            ->requireInteraction()
+            ->data(['url' => $this->actionLink]);
     }
 }

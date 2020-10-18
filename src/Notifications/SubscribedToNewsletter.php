@@ -6,6 +6,8 @@ use Blog\Models\Newsletter;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\WebPush\WebPushChannel;
+use NotificationChannels\WebPush\WebPushMessage;
 
 class SubscribedToNewsletter extends Notification
 {
@@ -47,7 +49,7 @@ class SubscribedToNewsletter extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'mail'];
+        return ['database', 'mail', WebPushChannel::class];
     }
 
     /**
@@ -66,20 +68,6 @@ class SubscribedToNewsletter extends Notification
     }
 
     /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
      * Format message for database notification.
      *
      * @param $notifiable
@@ -93,5 +81,17 @@ class SubscribedToNewsletter extends Notification
             'link' => $this->actionLink,
             'icon' => 'fa fa-user-plus',
         ];
+    }
+
+    /**
+     * @return \NotificationChannels\WebPush\WebPushMessage
+     */
+    public function toWebPush()
+    {
+        return (new WebPushMessage())
+            ->title('New Subscriber')
+            ->body($this->newsletter->email)
+            ->requireInteraction()
+            ->data(['url' => $this->actionLink]);
     }
 }

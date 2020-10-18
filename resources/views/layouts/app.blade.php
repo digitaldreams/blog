@@ -21,7 +21,7 @@
                 <div class="col-3">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="voiceCommandMessage">Click mic to start</span>
+                            <span class="input-group-text d-xs-none" id="voiceCommandMessage">Click mic to start</span>
                         </div>
                         <select id="voiceCommandLanguage" class="p-0 m-0 form-control">
                             <option value="bn-BD">Bangla</option>
