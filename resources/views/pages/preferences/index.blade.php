@@ -8,12 +8,10 @@
    Select Your Preferences
 @endsection
 @section('tools')
-    <div class="btn-group">
-
-    </div>
+    <input type="submit" class="btn btn-primary" value="Save" form="preferencesForm">
 @endsection
 @section('content')
-    <form action="{{route('blog::preferences.store')}}" method="post">
+    <form action="{{route('blog::preferences.store')}}" method="post" id="preferencesForm">
         {{csrf_field()}}
         <h3>Categories</h3>
         <div class="row">
