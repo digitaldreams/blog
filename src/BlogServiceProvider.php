@@ -20,12 +20,20 @@ use Blog\Policies\CommentPolicy;
 use Blog\Policies\NewsletterPolicy;
 use Blog\Policies\PostPolicy;
 use Blog\Policies\TagPolicy;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class BlogServiceProvider extends ServiceProvider
 {
+    /**
+     * The router instance.
+     *
+     * @var \Illuminate\Routing\Router
+     */
+    protected $router;
+
     /**
      * The policy.
      *
@@ -49,6 +57,17 @@ class BlogServiceProvider extends ServiceProvider
      */
     protected $listen = [
     ];
+
+    /**
+     * BlogServiceProvider constructor.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     */
+    public function __construct($app)
+    {
+        parent::__construct($app);
+        $this->router = $app->get('router');
+    }
 
     /**
      * Register Important services that will be used in application.

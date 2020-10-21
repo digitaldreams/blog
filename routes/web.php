@@ -1,27 +1,34 @@
 <?php
-Route::group(['middleware' => ['web'], 'namespace' => 'Blog\Http\Controllers', 'as' => 'blog::'], function () {
-    Route::get('blog.html', 'Frontend\PostController@bloghome')->name('posts.home');
-    Route::get('blog/tags/{tag}.html', 'Frontend\PostController@tag')->name('frontend.blog.tags.index');
+$this->router->group(['middleware' => ['web'], 'namespace' => 'Blog\Http\Controllers', 'as' => 'blog::'], function () {
+    $this->router->get('blog.html', 'Frontend\PostController@bloghome')->name('posts.home');
+    $this->router->get('blog/tags/{tag}.html', 'Frontend\PostController@tag')->name('frontend.blog.tags.index');
 
-    Route::get('blog/{category}/{post}.html', 'Frontend\PostController@show')->name('frontend.blog.posts.show');
-    Route::get('blog/{category}.html', 'Frontend\PostController@category')->name('frontend.blog.categories.index');
-    Route::get('posts/smart-search', 'Frontend\PostController@smartSearch')->name('frontend.blog.smartSearch');
-    Route::post('newsletter/subscribe', 'Frontend\NewsletterController@subscribe')->name('frontend.blog.newsletters.subscribe');
-    Route::get('newsletter/unsubscribe', 'Frontend\NewsletterController@unsubscribe')->name('frontend.blog.newsletters.unsubscribe');
-    Route::group(['prefix' => 'app', 'middleware' => 'auth'], function () {
-        Route::get('preferences', 'PreferenceController@index')->name('preferences.index');
-        Route::post('preferences', 'PreferenceController@store')->name('preferences.store');
-        Route::post('posts/{post}/status/{status}', 'PostController@status')->name('posts.status');
-        Route::resource('posts', 'PostController');
-        Route::resource('posts.comments', 'CommentController');
-        Route::get('categories/select2', 'CategoryController@select2Search')->name('categories.select2');
-        Route::resource('categories', 'CategoryController');
-        Route::get('tags/select2', 'TagController@select2Search')->name('tags.select2');
-        Route::resource('tags', 'TagController');
-        Route::get('activities/{action}', 'ActivityController@show')->name('activities.show');
-        Route::resource('activities', 'ActivityController')->only(['store', 'update', 'destroy']);
-        Route::resource('types', 'ActivityTypeController');
-        Route::resource('newsletters', 'NewsletterController', ['only' => ['index', 'show']]);
+    $this->router->get('blog/{category}/{post}.html', 'Frontend\PostController@show')->name('frontend.blog.posts.show');
+    $this->router->get('blog/{category}.html', 'Frontend\PostController@category')->name('frontend.blog.categories.index');
+    $this->router->get('posts/smart-search', 'Frontend\PostController@smartSearch')->name('frontend.blog.smartSearch');
+
+    $this->router->post('newsletter/subscribe', 'Frontend\NewsletterController@subscribe')->name('frontend.blog.newsletters.subscribe');
+    $this->router->get('newsletter/unsubscribe', 'Frontend\NewsletterController@unsubscribe')->name('frontend.blog.newsletters.unsubscribe');
+
+    $this->router->group(['prefix' => 'app', 'middleware' => 'auth'], function () {
+        $this->router->get('preferences', 'PreferenceController@index')->name('preferences.index');
+        $this->router->post('preferences', 'PreferenceController@store')->name('preferences.store');
+
+        $this->router->post('posts/{post}/status/{status}', 'PostController@status')->name('posts.status');
+        $this->router->resource('posts', 'PostController');
+        $this->router->resource('posts.comments', 'CommentController');
+
+        $this->router->get('categories/select2', 'CategoryController@select2Search')->name('categories.select2');
+        $this->router->resource('categories', 'CategoryController');
+
+        $this->router->get('tags/select2', 'TagController@select2Search')->name('tags.select2');
+        $this->router->resource('tags', 'TagController');
+
+        $this->router->get('activities/{action}', 'ActivityController@show')->name('activities.show');
+        $this->router->resource('activities', 'ActivityController')->only(['store', 'update', 'destroy']);
+
+        $this->router->resource('types', 'ActivityTypeController');
+        $this->router->resource('newsletters', 'NewsletterController', ['only' => ['index', 'show']]);
     });
 
 });
