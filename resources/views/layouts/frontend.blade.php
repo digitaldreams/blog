@@ -12,22 +12,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           type="text/css"/>
     <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+
 
         @media (min-width: 768px) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
             }
         }
+        body{
+            line-height: 180% !important;
+            font-size: 16px !important;
+        }
     </style>
-    <!-- Custom styles for this template -->
+@yield('style')
+<!-- Custom styles for this template -->
     <link href="{{asset('css/frontend.css')}}" rel="stylesheet">
 </head>
 <body style="margin-top: 60px">
@@ -74,7 +72,8 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('blog::posts.index') }}">{{ __('Dashboard') }}</a>
+                                <a class="dropdown-item"
+                                   href="{{ route('blog::posts.index') }}">{{ __('Dashboard') }}</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

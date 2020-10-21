@@ -24,15 +24,14 @@
         </div>
     </section>
     <section class="container">
-        <div class="m-md-3 text-center">
-            <p class="text-muted display-5">Take advantage of 21st Century SEO trends, learn marketing tips, discover
-                how to leverage the power of customer reviews and most importantly protect your online brand reputation.
-            </p>
+
             <form>
+                <div class="input-group">
                 <input type="search" value="{{request('search')}}" placeholder="search..."
-                       class="form-control form-control-lg" id="search-area">
+                       class="form-control" id="search-area">
+                    <button type="submit" class="input-group-append btn btn-outline-secondary">Search</button>
+                </div>
             </form>
-        </div>
 
         <hr/>
         <h2 class="h4">Featured Posts</h2>
@@ -49,7 +48,7 @@
                         <h3 class="card-title h3">
                             <a href="{{route('blog::frontend.blog.posts.show',['category'=>$leadPost->category->slug,'post'=>$leadPost->slug])}}"> {{$leadPost->title}}</a>
                         </h3>
-                        <p class="mb-0">{{$leadPost->getSummary(200)}}</p>
+                        <p class="mb-0">{{$leadPost->getSummary(300)}}</p>
                         <hr/>
                         <a href="{{route('blog::frontend.blog.categories.index',$leadPost->category->slug)}}"
                            class="card-link">{{$leadPost->category->title}}</a>
@@ -102,15 +101,15 @@
         @foreach($latest as $post)
             <div class="card mb-3">
                 <div class="row no-gutters">
-                    <div class="col-md-2 text-center" style="max-height: 230px;overflow: hidden">
+                    <div class="col-md-3 text-center" style="max-height: 230px;overflow: hidden">
                         <img src="{{$post->getImageUrl()}}" style="object-fit: cover;object-position: center" class="card-img" alt="{{$post->title}}">
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <div class="card-body">
                             <h3 class="card-title h5">
                                 <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"> {{$post->title}}</a>
                             </h3>
-                            <p class="mb-0">{{$post->getSummary(180)}}
+                            <p class="mb-0">{{$post->getSummary(250)}}
                                 <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"
                                    class="card-link">
                                     Read more <i class="fa fa-chevron-right"></i>
