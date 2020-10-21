@@ -7,6 +7,7 @@
     <script type="text/javascript">
 
         $('#blog_tags').select2({
+            placeholder: 'Select one or more tags or create new',
             tags: true,
             tokenSeparators: [",",],
             createSearchChoice: function (term, data) {
@@ -26,6 +27,7 @@
         });
 
         $('#category_id').select2({
+            placeholder: 'Select a category from below',
             ajax: {
                 url: '{{route('blog::categories.select2')}}',
                 dataType: 'json'

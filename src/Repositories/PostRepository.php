@@ -62,7 +62,7 @@ class PostRepository
         $this->post->image_id = $this->photoRepository->create($file, ['caption' => $data['title']])->id;
         $this->post->save();
 
-        return $this->notifyAndTags($this->post, $data['tags']);
+        return $this->notifyAndTags($this->post, $data['tags'] ?? []);
     }
 
     /**
@@ -91,7 +91,7 @@ class PostRepository
 
         $post->save();
 
-        return $this->notifyAndTags($post, $data['tags']);
+        return $this->notifyAndTags($post, $data['tags'] ?? []);
     }
 
     /**

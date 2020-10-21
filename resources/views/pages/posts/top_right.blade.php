@@ -11,42 +11,43 @@
     </span>
     @endif
 </div>
+@can('approve',\Blog\Models\Post::class)
+    <div class="form-group">
+        <label for="status">Status</label> <br/>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="status" form="postForm" id="inlineRadio1"
+                   value="{{\Blog\Models\Post::STATUS_DRAFT}}" {{old('status',$model->status)==\Blog\Models\Post::STATUS_DRAFT?'checked':''}}>
+            <label class="form-check-label" for="inlineRadio1">Draft</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="status" form="postForm" id="inlineRadio2"
+                   value="{{\Blog\Models\Post::STATUS_PUBLISHED}}" {{old('status',$model->status)==\Blog\Models\Post::STATUS_PUBLISHED?'checked':''}}>
+            <label class="form-check-label" for="inlineRadio2">Published</label>
+        </div>
 
-<div class="form-group">
-    <label for="status">Status</label> <br/>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="status" form="postForm" id="inlineRadio1"
-               value="{{\Blog\Models\Post::STATUS_DRAFT}}" {{old('status',$model->status)==\Blog\Models\Post::STATUS_DRAFT?'checked':''}}>
-        <label class="form-check-label" for="inlineRadio1">Draft</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="status" form="postForm" id="inlineRadio2"
-               value="{{\Blog\Models\Post::STATUS_PUBLISHED}}" {{old('status',$model->status)==\Blog\Models\Post::STATUS_PUBLISHED?'checked':''}}>
-        <label class="form-check-label" for="inlineRadio2">Published</label>
-    </div>
-
-    @if($errors->has('status'))
-        <span class="form-control-feedback">
+        @if($errors->has('status'))
+            <span class="form-control-feedback">
         <strong>{{ $errors->first('status') }}</strong>
     </span>
-    @endif
-</div>
-
-<div class="form-group">
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" name="is_featured" type="checkbox" form="postForm" id="inlineCheckbox1"
-               value="1" {{old('is_featured',$model->is_featured)==\Blog\Models\Post::IS_FEATURED?'checked':''}}>
-        <label class="form-check-label" for="inlineCheckbox1"> Featured Post
-        </label>
+        @endif
     </div>
 
-    @if($errors->has('is_featured'))
-        <span class="form-control-feedback">
+
+    <div class="form-group">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" name="is_featured" type="checkbox" form="postForm" id="inlineCheckbox1"
+                   value="1" {{old('is_featured',$model->is_featured)==\Blog\Models\Post::IS_FEATURED?'checked':''}}>
+            <label class="form-check-label" for="inlineCheckbox1"> Featured Post
+            </label>
+        </div>
+
+        @if($errors->has('is_featured'))
+            <span class="form-control-feedback">
         <strong>{{ $errors->first('is_featured') }}</strong>
     </span>
-    @endif
-</div>
-
+        @endif
+    </div>
+@endcan
 <div class="form-group">
     <label for="image">Tags</label>
     <select form="postForm" class="form-control {{ $errors->has('tags') ? ' is-invalid' : '' }}"
@@ -66,6 +67,7 @@
            onchange="return checkSize(2097152,'image')"
            {{empty($model->id)?'required':''}}
            accept="image/*"
+           required
            placeholder="Upload your image">
     @if($errors->has('image'))
         <span class="form-control-feedback">

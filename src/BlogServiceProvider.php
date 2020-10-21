@@ -20,7 +20,6 @@ use Blog\Policies\CommentPolicy;
 use Blog\Policies\NewsletterPolicy;
 use Blog\Policies\PostPolicy;
 use Blog\Policies\TagPolicy;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -123,8 +122,14 @@ class BlogServiceProvider extends ServiceProvider
      */
     public function registerPolicies()
     {
+        $configuredPolicies = config('blog.policies');
+
         foreach ($this->policies as $key => $value) {
-            Gate::policy($key, $value);
+            if (isset($configuredPolicies[$key]) && class_exists($configuredPolicies[$key])) {
+                Gate::policy($key, $configuredPolicies[$key]);
+            } else {
+                Gate::policy($key, $value);
+            }
         }
     }
 
