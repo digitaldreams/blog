@@ -54,25 +54,23 @@
                     </form>
                 </div>
             </div>
-            @foreach($records->chunk(3) as $posts)
-                <div class="row my-3">
-                    @foreach($posts as $post)
-                        <div class="col-md-4 col-sm-6">
-                            <div class="card h-100">
-                                <img src="{{$post->getImageUrl()}}" class="card-img-top" alt="{{$post->title}}">
-                                <div class="card-body">
-                                    <h3 class="card-title h6">
+                @foreach($records as $post)
+                        <div class="card mb-4">
+                            <div class="card-body d-md-flex flex-md-row">
+                                <div class="w-md-25 mr-3">
+                                    <img src="{{$post->getImageUrl()}}" class=" img-thumbnail rounded"  alt="{{$post->title}}">
+                                </div>
+                                <div class="w-md-75">
+                                    <h3 class="card-title h4">
                                         <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"> {{$post->title}}</a>
                                     </h3>
-                                    {{$post->getSummary(120)}}
+                                    {{$post->getSummary(300)}}
                                     <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"
                                        class="card-link">
                                         Read more <i class="fa fa-chevron-right"></i>
                                     </a>
                                     <hr/>
-                                </div>
-                                <div class="card-footer">
-                                    <div>
+                                    <div class="text-right">
                                         <a href="{{route('blog::frontend.blog.categories.index',$post->category->slug)}}"
                                            class="card-link">{{$post->category->title}}</a>
                                         <form action="{{route('blog::activities.store')}}" method="post"
@@ -81,8 +79,8 @@
                                             <input type="hidden" name="activityable_type" value="{{get_class($post)}}">
                                             <input type="hidden" name="activityable_id" value="{{$post->id }}">
                                             <input type="hidden" name="type" value="like">
-                                            <button class="btn badge badge-light">
-                                                <i class="fa fa-thumbs-up"></i> {{$post->likes()->count()}}
+                                            <button title="likes" class="btn badge badge-light">
+                                                <i class="fa fa-thumbs-up"></i> {{$post->likes()->count()}} Likes
                                             </button>
                                         </form>
                                         <form action="{{route('blog::activities.store')}}" method="post"
@@ -91,20 +89,22 @@
                                             <input type="hidden" name="activityable_type" value="{{get_class($post)}}">
                                             <input type="hidden" name="activityable_id" value="{{$post->id }}">
                                             <input type="hidden" name="type" value="favourite">
-                                            <button class="btn badge badge-light">
-                                                <i class="fa fa-star"></i> {{$post->favourites()->count()}}
+                                            <button title="favourite" class="btn badge badge-light">
+                                                <i class="fa fa-star"></i> {{$post->favourites()->count()}} Favourite
+
                                             </button>
                                         </form>&nbsp;
-                                        <button class="btn badge badge-light"><i
-                                                    class="fa fa-comments"></i> {{$post->comments_count ??0}}</button>
+                                        <button title="comments" class="btn badge badge-light"><i
+                                                class="fa fa-comments"></i> {{$post->comments_count ??0}}</button>
                                     </div>
                                 </div>
+
+
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-                <hr/>
-            @endforeach
+
+                    </div>
+                @endforeach
+            <hr/>
 
             {!! $records->render() !!}
 

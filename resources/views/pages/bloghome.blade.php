@@ -86,10 +86,11 @@
             @foreach($categories as $category)
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="{{route('blog::frontend.blog.categories.index',$category->slug)}}">{{$category->title}}</a>
+                       href="{{route('blog::frontend.blog.categories.index',$category->slug)}}">
+                        {{$category->title}} <small class="badge badge-light badge-pill">{{$category->total}}</small>
+                    </a>
                 </li>
             @endforeach
-
         </ul>
         <br/>
         <div class="row">
@@ -160,7 +161,7 @@
                 <h3>Our Popular Topics</h3>
                 @foreach($tags as $tag)
                     <a class="btn btn-light" href="{{route('blog::frontend.blog.tags.index',$tag->slug)}}">
-                        {{$tag->name}} <span class="badge badge-pill badge-secondary">{{$tag->posts_count}}</span>
+                        {{$tag->name}} <span class="badge badge-pill badge-secondary">{{$tag->total}}</span>
                     </a>
                 @endforeach
             </div>

@@ -3,10 +3,12 @@
 namespace Blog\Http\Controllers\Frontend;
 
 use Blog\Http\Controllers\Controller;
-use Blog\Http\Requests\Posts\Index;
 use Blog\Models\Category;
 use Blog\Models\Post;
 use Blog\Models\Tag;
+use Blog\Repositories\CategoryRepository;
+use Blog\Repositories\PostRepository;
+use Blog\Repositories\TagRepository;
 use Illuminate\Http\Request;
 
 /**
@@ -17,9 +19,35 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
+     * @var \Blog\Repositories\PostRepository
+     */
+    protected $postRepository;
+    /**
+     * @var \Blog\Repositories\TagRepository
+     */
+    protected $tagRepository;
+    /**
+     * @var \Blog\Repositories\CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
+     * PostController constructor.
+     *
+     * @param \Blog\Repositories\PostRepository     $postRepository
+     * @param \Blog\Repositories\TagRepository      $tagRepository
+     * @param \Blog\Repositories\CategoryRepository $categoryRepository
+     */
+    public function __construct(PostRepository $postRepository, TagRepository $tagRepository, CategoryRepository $categoryRepository)
+    {
+        $this->postRepository = $postRepository;
+        $this->tagRepository = $tagRepository;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @param Index $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -59,36 +87,30 @@ class PostController extends Controller
 
     public function bloghome(Request $request)
     {
-        $fpost = Post::where('status', Post::STATUS_PUBLISHED)
-            ->where('is_featured', Post::IS_FEATURED)
-            ->orderBy('created_at', 'desc')
-            ->take(4)
-            ->get();
-        $latest = Post::where('status', Post::STATUS_PUBLISHED)
-            ->where('is_featured', 0)->orderBy('created_at', 'desc')
-            ->take(6)->get();
+        $fpost = $this->postRepository->featuredPosts(4);
+        $latest = $this->postRepository->latestPosts(3);
 
         return view('blog::pages.bloghome', [
             'leadPost' => $fpost->shift(),
             'featuredPosts' => $fpost,
             'latest' => $latest,
-            'tags' => Tag::withCount('posts')->get(),
-            'categories' => Category::whereNull('parent_id')->take(10)->get(),
+            'tags' => $this->tagRepository->popular(),
+            'categories' => $this->categoryRepository->popular(),
         ]);
     }
 
     /**
-     * @param Index    $request
      * @param Category $category
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function category(Request $request, Category $category)
     {
+        $categorIds = $category->children()->pluck('id')->toArray();
+        $categorIds[] = $category->id;
         $posts = Post::where('status', Post::STATUS_PUBLISHED)
-            ->where('category_id', $category->id)
+            ->whereIn('category_id', $categorIds)
             ->orderBy('created_at', 'desc');
-
         return view('blog::pages.posts.frontend.index', [
             'records' => $posts->paginate(6),
             'model' => $category,
@@ -96,7 +118,6 @@ class PostController extends Controller
     }
 
     /**
-     * @param Index $request
      * @param $tag
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

@@ -7,6 +7,7 @@ use Blog\Jobs\TableOfContentGeneratorJob;
 use Blog\Models\Post;
 use Blog\Notifications\NewPostApproval;
 use Blog\Services\CheckProfanity;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Notification;
 use Photo\Repositories\PhotoRepository;
@@ -108,6 +109,32 @@ class PostRepository
         }
 
         return true;
+    }
+
+    /**
+     * @param int $limit
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function featuredPosts(int $limit = 4): Collection
+    {
+        return $this->post->newQuery()->where('status', Post::STATUS_PUBLISHED)
+            ->where('is_featured', Post::IS_FEATURED)
+            ->orderBy('created_at', 'desc')
+            ->take($limit)
+            ->get();
+    }
+
+    /**
+     * @param int $limit
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function latestPosts(int $limit = 6): Collection
+    {
+        return $this->post->newQuery()->where('status', Post::STATUS_PUBLISHED)
+            ->where('is_featured', 0)->orderBy('created_at', 'desc')
+            ->take($limit)->get();
     }
 
     /**

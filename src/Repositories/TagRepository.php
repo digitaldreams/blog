@@ -4,6 +4,7 @@ namespace Blog\Repositories;
 
 use Blog\Models\Tag;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 
 class TagRepository
@@ -51,6 +52,21 @@ class TagRepository
         }
 
         return $this->model->newQuery()->whereIn('name', $tags)->get();
+    }
+
+    /**
+     * @param int $limit
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function popular(int $limit = 10): Collection
+    {
+        return $this->model->newQuery()
+            ->selectRaw('id,name,slug, (select count(*) from blog_post_tag where blog_post_tag.tag_id=blog_tags.id) as total')
+            ->havingRaw('total > 0 ')
+            ->orderByRaw('total desc')
+            ->take($limit)
+            ->get();
     }
 
     /**
