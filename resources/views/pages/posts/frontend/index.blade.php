@@ -54,56 +54,56 @@
                     </form>
                 </div>
             </div>
-                @foreach($records as $post)
-                        <div class="card mb-4">
-                            <div class="card-body d-md-flex flex-md-row">
-                                <div class="w-md-25 mr-3">
-                                    <img src="{{$post->getImageUrl()}}" class=" img-thumbnail rounded"  alt="{{$post->title}}">
+            @foreach($records as $post)
+                <div class="card mb-4">
+                    <div class="row no-gutters">
+                        <div class="col-md-3" style="max-height: 220px;overflow: hidden">
+                            <img src="{{$post->getImageUrl()}}" class="card-img"  style="object-fit:scale-down;object-position: center" alt="{{$post->title}}">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h3 class="card-title h4">
+                                    <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"> {{$post->title}}</a>
+                                </h3>
+                                {{$post->getSummary(300)}}
+                                <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"
+                                   class="card-link">
+                                    Read more <i class="fa fa-chevron-right"></i>
+                                </a>
+                                <hr/>
+                                <div class="text-right">
+                                    <a href="{{route('blog::frontend.blog.categories.index',$post->category->slug)}}"
+                                       class="card-link">{{$post->category->title}}</a>
+                                    <form action="{{route('blog::activities.store')}}" method="post"
+                                          class="d-inline">
+                                        {{csrf_field()}}
+                                        <input type="hidden" name="activityable_type" value="{{get_class($post)}}">
+                                        <input type="hidden" name="activityable_id" value="{{$post->id }}">
+                                        <input type="hidden" name="type" value="like">
+                                        <button title="likes" class="btn badge badge-light">
+                                            <i class="fa fa-thumbs-up"></i> {{$post->likes()->count()}} Likes
+                                        </button>
+                                    </form>
+                                    <form action="{{route('blog::activities.store')}}" method="post"
+                                          class="d-inline">
+                                        {{csrf_field()}}
+                                        <input type="hidden" name="activityable_type" value="{{get_class($post)}}">
+                                        <input type="hidden" name="activityable_id" value="{{$post->id }}">
+                                        <input type="hidden" name="type" value="favourite">
+                                        <button title="favourite" class="btn badge badge-light">
+                                            <i class="fa fa-star"></i> {{$post->favourites()->count()}} Favourite
+
+                                        </button>
+                                    </form>&nbsp;
+                                    <button title="comments" class="btn badge badge-light"><i
+                                            class="fa fa-comments"></i> {{$post->comments_count ??0}}</button>
                                 </div>
-                                <div class="w-md-75">
-                                    <h3 class="card-title h4">
-                                        <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"> {{$post->title}}</a>
-                                    </h3>
-                                    {{$post->getSummary(300)}}
-                                    <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"
-                                       class="card-link">
-                                        Read more <i class="fa fa-chevron-right"></i>
-                                    </a>
-                                    <hr/>
-                                    <div class="text-right">
-                                        <a href="{{route('blog::frontend.blog.categories.index',$post->category->slug)}}"
-                                           class="card-link">{{$post->category->title}}</a>
-                                        <form action="{{route('blog::activities.store')}}" method="post"
-                                              class="d-inline">
-                                            {{csrf_field()}}
-                                            <input type="hidden" name="activityable_type" value="{{get_class($post)}}">
-                                            <input type="hidden" name="activityable_id" value="{{$post->id }}">
-                                            <input type="hidden" name="type" value="like">
-                                            <button title="likes" class="btn badge badge-light">
-                                                <i class="fa fa-thumbs-up"></i> {{$post->likes()->count()}} Likes
-                                            </button>
-                                        </form>
-                                        <form action="{{route('blog::activities.store')}}" method="post"
-                                              class="d-inline">
-                                            {{csrf_field()}}
-                                            <input type="hidden" name="activityable_type" value="{{get_class($post)}}">
-                                            <input type="hidden" name="activityable_id" value="{{$post->id }}">
-                                            <input type="hidden" name="type" value="favourite">
-                                            <button title="favourite" class="btn badge badge-light">
-                                                <i class="fa fa-star"></i> {{$post->favourites()->count()}} Favourite
-
-                                            </button>
-                                        </form>&nbsp;
-                                        <button title="comments" class="btn badge badge-light"><i
-                                                class="fa fa-comments"></i> {{$post->comments_count ??0}}</button>
-                                    </div>
-                                </div>
-
-
                             </div>
+                        </div>
 
                     </div>
-                @endforeach
+                </div>
+            @endforeach
             <hr/>
 
             {!! $records->render() !!}

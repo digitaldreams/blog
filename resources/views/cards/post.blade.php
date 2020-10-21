@@ -1,6 +1,10 @@
 <div class="card bg-light mb-3">
     <a style="border: 0;" href="{{route('blog::posts.show',$record->slug)}}">
-       {!! $record->image->renderThumbnails() !!}
+        @if($record->image)
+            {!! $record->image->renderThumbnails() !!}
+        @else
+            <img src="{{config('blog.defaultPhoto')}}" class="card-img-top">
+        @endif
     </a>
     <div class="card-body">
         <div class="card-title">

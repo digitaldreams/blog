@@ -86,7 +86,9 @@ class PostRepository
         }
 
         if ($file) {
-            $this->photoRepository->delete($post->image);
+            if ($post->image) {
+                $this->photoRepository->delete($post->image);
+            }
             $this->post->image_id = $this->photoRepository->create($file, ['caption' => $data['title']]);
         }
 
@@ -104,7 +106,8 @@ class PostRepository
      */
     public function delete(Post $post)
     {
-        if ($post->delete()) {
+        $post->delete();
+        if ($post->image) {
             $this->photoRepository->delete($post->image);
         }
 
@@ -135,6 +138,22 @@ class PostRepository
         return $this->post->newQuery()->where('status', Post::STATUS_PUBLISHED)
             ->where('is_featured', 0)->orderBy('created_at', 'desc')
             ->take($limit)->get();
+    }
+
+    /**
+     * @param \Blog\Models\Post $post
+     * @param int               $limit
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function relatedPosts(Post $post, int $limit = 4): Collection
+    {
+        return Post::where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
+            ->orderBy('total_view', 'desc')
+            ->latest()
+            ->limit($limit)
+            ->get();
     }
 
     /**

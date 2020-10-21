@@ -146,7 +146,6 @@
 
                         </form>&nbsp;
                     </div>
-                    <h3 class="display-6">Share</h3>
                     <ul class="share_this border-bottom border-reddish-orange mb-3 pb-3 list-inline">
                         <li class="list-inline-item">
                             <a href="javascript:void(0);" class="text-reddish-orange text-decoration-none">
@@ -170,14 +169,13 @@
             <h3>Related Post</h3>
             <div class="row">
                 @foreach($relatedPosts as $post)
-                    <div class="col-md-4 col-sm-6">
-                        <div class="card">
-                            <img src="{{$post->getImageUrl()}}" class="card-img-top" alt="{{$post->title}}">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card mb-3">
                             <div class="card-body">
                                 <h3 class="card-title h6">
                                     <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"> {{$post->title}}</a>
                                 </h3>
-                                {{$post->getSummary(120)}}
+                                {{$post->getSummary(150)}}
                                 <hr/>
                                 <a href="{{route('blog::frontend.blog.categories.index',$post->category->slug)}}"
                                    class="card-link">{{$post->category->title}}</a>

@@ -48,7 +48,6 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -76,19 +75,14 @@ class PostController extends Controller
 
         return view('blog::pages.posts.frontend.show', [
             'record' => $post,
-            'relatedPosts' => Post::where('category_id', $post->category_id)
-                ->where('id', '!=', $post->id)
-                ->orderBy('total_view', 'desc')
-                ->latest()
-                ->limit(3)
-                ->get(),
+            'relatedPosts' => $this->postRepository->relatedPosts($post),
         ]);
     }
 
     public function bloghome(Request $request)
     {
         $fpost = $this->postRepository->featuredPosts(4);
-        $latest = $this->postRepository->latestPosts(3);
+        $latest = $this->postRepository->latestPosts(4);
 
         return view('blog::pages.bloghome', [
             'leadPost' => $fpost->shift(),
@@ -111,6 +105,7 @@ class PostController extends Controller
         $posts = Post::where('status', Post::STATUS_PUBLISHED)
             ->whereIn('category_id', $categorIds)
             ->orderBy('created_at', 'desc');
+
         return view('blog::pages.posts.frontend.index', [
             'records' => $posts->paginate(6),
             'model' => $category,
