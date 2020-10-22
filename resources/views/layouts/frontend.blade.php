@@ -26,7 +26,7 @@
     </style>
 @yield('style')
 <!-- Custom styles for this template -->
-    <link href="{{asset('css/frontend.css')}}" rel="stylesheet">
+    <link href="{{secure_asset('css/frontend.css')}}" rel="stylesheet">
 </head>
 <body style="margin-top: 60px">
 <section>

@@ -1,7 +1,7 @@
-<script type="text/javascript" src="{{asset('js/manifest.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/vendor.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/blog-layout-scripts.js')}}"></script>
+<script type="text/javascript" src="{{secure_asset('js/manifest.js')}}"></script>
+<script type="text/javascript" src="{{secure_asset('js/vendor.js')}}"></script>
+<script type="text/javascript" src="{{secure_asset('js/app.js')}}"></script>
+<script type="text/javascript" src="{{secure_asset('js/blog-layout-scripts.js')}}"></script>
 <script type="text/javascript">
 
     window.addEventListener('load', async e => {
