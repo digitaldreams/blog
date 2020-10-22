@@ -193,5 +193,5 @@
 
 @endsection
 @section('scripts')
-    @include('blog::pages.posts.frontend.search')
+
 @endsection

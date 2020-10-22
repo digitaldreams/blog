@@ -39,18 +39,31 @@
 
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <h1 class="h3 text-black  mb-4">
+                    <h2 class="h3 text-black  mb-4">
                         @if(isset($model) && is_object($model))
                             {{$model->title}} Posts
                         @else
                             Posts
                         @endif
-                    </h1>
+                        @if($records->total()>0)
+                            <small class="text-muted">(Showing {{$records->firstItem()}} to {{$records->lastItem()}} out
+                                of {{$records->total()}})
+                            </small>
+                        @else
+                            <span class="">No result found</span>
+                        @endif
+                    </h2>
+
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <form>
-                        <input type="search" value="{{request('search')}}" placeholder="search..." id="search-area"
-                               class="form-control form-control-lg">
+                        <div class="input-group">
+                            <input type="search" value="{{request('search')}}" name="search" placeholder="search..."
+                                   id="search-area"
+                                   class="form-control">
+                            <button type="submit" class="btn btn-secondary">Search</button>
+                        </div>
+
                     </form>
                 </div>
             </div>
@@ -58,7 +71,8 @@
                 <div class="card mb-4">
                     <div class="row no-gutters">
                         <div class="col-md-3" style="max-height: 220px;overflow: hidden">
-                            <img src="{{$post->getImageUrl()}}" class="card-img"  style="object-fit:scale-down;object-position: center" alt="{{$post->title}}">
+                            <img src="{{$post->getImageUrl()}}" class="card-img"
+                                 style="object-fit:scale-down;object-position: center" alt="{{$post->title}}">
                         </div>
                         <div class="col-md-9">
                             <div class="card-body">
@@ -72,8 +86,6 @@
                                 </a>
                                 <hr/>
                                 <div class="text-right">
-                                    <a href="{{route('blog::frontend.blog.categories.index',$post->category->slug)}}"
-                                       class="card-link">{{$post->category->title}}</a>
                                     <form action="{{route('blog::activities.store')}}" method="post"
                                           class="d-inline">
                                         {{csrf_field()}}
@@ -97,6 +109,44 @@
                                     </form>&nbsp;
                                     <button title="comments" class="btn badge badge-light"><i
                                             class="fa fa-comments"></i> {{$post->comments_count ??0}}</button>
+                                    <a href="{{route('blog::frontend.blog.categories.index',$post->category->slug)}}"
+                                       class="card-link">{{$post->category->title}}
+                                    </a>
+                                    @foreach($post->tags as $tag)
+                                        <span class="badge badge-light">{{$tag->name}}</span>
+                                    @endforeach
+                                    @can('update',$post)
+                                        <div class="dropdown d-inline dropleft" id="dropdown-{{$post->id}}">
+                                            <a href="#" class="fa fa-ellipsis-v" data-toggle="dropdown" role="button" aria-expanded="false">
+                                            </a>
+                                            <ul class="dropdown-menu list-group-flush">
+
+                                                @can('update',$post)
+                                                    <li class="list-group-item">
+
+                                                        <a class="btn btn-outline-secondary btn-block"
+                                                           href="{{route('blog::posts.edit',$post->slug)}}">
+                                                            <i class="fa fa-pencil"></i> Edit
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                                @can('delete',$post)
+                                                    <li class="list-group-item">
+                                                        <form onsubmit="return confirm('Are you sure you want to delete?')"
+                                                              action="{{route('blog::posts.destroy',$post->slug)}}"
+                                                              method="post"
+                                                              style="display: inline">
+                                                            {{csrf_field()}}
+                                                            {{method_field('DELETE')}}
+                                                            <button type="submit" class="btn btn-outline-danger btn-block btn-sm">
+                                                                <i class="fa fa-remove"></i> Remove
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                @endcan
+                                            </ul>
+                                        </div>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
@@ -112,5 +162,4 @@
     </section>
 @endsection
 @section('scripts')
-    @include('blog::pages.posts.frontend.search')
 @endsection

@@ -9,6 +9,7 @@ use Blog\Models\Tag;
 use Blog\Repositories\CategoryRepository;
 use Blog\Repositories\PostRepository;
 use Blog\Repositories\TagRepository;
+use Blog\Services\BlogHomeService;
 use Illuminate\Http\Request;
 
 /**
@@ -50,13 +51,10 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, BlogHomeService $blogHomeService)
     {
-        $posts = Post::where('status', Post::STATUS_PUBLISHED)->q($request->get('search'))
-            ->with(['category', 'user'])->withCount('comments');
-
         return view('blog::pages.posts.frontend.index', [
-            'records' => $posts->latest()->paginate(6),
+            'records' => $blogHomeService->get($request->get('search'), auth()->user(), 6),
         ]);
     }
 
@@ -79,12 +77,12 @@ class PostController extends Controller
         ]);
     }
 
-    public function bloghome(Request $request)
+    public function blog(Request $request)
     {
         $fpost = $this->postRepository->featuredPosts(4);
         $latest = $this->postRepository->latestPosts(4);
 
-        return view('blog::pages.bloghome', [
+        return view('blog::pages.posts.frontend.blog', [
             'leadPost' => $fpost->shift(),
             'featuredPosts' => $fpost,
             'latest' => $latest,
@@ -131,28 +129,4 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function smartSearch(Request $request)
-    {
-        $result = [];
-        $search = $request->get('search');
-
-        $posts = Post::search($search)->select(['id', 'title', 'category_id', 'slug'])->take(10)->get();
-
-        foreach ($posts as $post) {
-            $result[] = [
-                'title' => $post->title,
-                'link' => route('blog::frontend.blog.posts.show', ['category' => $post->category->slug, 'post' => $post->slug]),
-            ];
-        }
-
-        return response()->json([
-            'status' => true,
-            'data' => $result,
-        ]);
-    }
 }

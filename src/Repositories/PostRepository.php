@@ -7,8 +7,10 @@ use Blog\Jobs\TableOfContentGeneratorJob;
 use Blog\Models\Post;
 use Blog\Notifications\NewPostApproval;
 use Blog\Services\CheckProfanity;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Notification;
 use Photo\Repositories\PhotoRepository;
 
@@ -189,5 +191,103 @@ class PostRepository
         }
 
         return $model;
+    }
+
+    /**
+     * @param string $search
+     * @param int    $perPage
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function search(string $search, int $perPage = 6): LengthAwarePaginator
+    {
+        $builder = $this->post->newQuery()->selectRaw('blog_posts.*,
+             match(blog_posts.title,blog_posts.body) against ("' . $search . '" IN NATURAL LANGUAGE MODE) as bscore')
+            ->distinct()
+            ->leftJoin('blog_categories', 'blog_posts.category_id', '=', 'blog_categories.id')
+            ->leftJoin('blog_post_tag', 'blog_posts.id', '=', 'blog_post_tag.post_id')
+            ->leftJoin('blog_tags', 'blog_post_tag.tag_id', '=', 'blog_tags.id');
+
+        $keywords = $this->fullTextWildCards($search);
+
+        foreach ($keywords as $keyword) {
+            $builder = $this->searchBykeyword($builder, $keyword);
+        }
+
+        return $builder->where('status', Post::STATUS_PUBLISHED)
+            ->orderByRaw('bscore desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param int                                   $userId
+     * @param int                                   $perPage
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function preferences(int $userId, int $perPage = 6): LengthAwarePaginator
+    {
+        return $this->post->newquery()->selectRaw("*, 
+        (select count(*) from preferences where category_id=blog_posts.category_id and user_id='{$userId}') as cscore,
+        (select count(*) from preferences where tag_id IN (select tag_id from blog_post_tag where post_id=blog_posts.id) and user_id={$userId}) as tscore
+        ")
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->orderByRaw('cscore*2+tscore desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * @param int $perPage
+     *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function popular(int $perPage): LengthAwarePaginator
+    {
+        return $this->post->newQuery()
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->paginate($perPage);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string                                $search
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function searchBykeyword(Builder $builder, string $search): Builder
+    {
+        return $builder->where(function ($q) use ($search) {
+            $q->orWhereRaw('match(blog_posts.title,blog_posts.body) against (? IN NATURAL LANGUAGE MODE)', $search)
+                ->orWhereRaw('match(blog_categories.title) against (? IN NATURAL LANGUAGE MODE)', $search)
+                ->orWhereRaw('match(blog_tags.name) against (? IN NATURAL LANGUAGE MODE)', $search);
+        });
+    }
+
+    /**
+     * @param string $term
+     * @param string $start
+     * @param string $end
+     *
+     * @return array
+     */
+    private function fullTextWildCards(string $term, $start = '+', $end = '*'): array
+    {
+        $reservedSymbols = ['-', '+', '"', "'", '<', '>', '@', '(', ')', '~', '*'];
+        $term = str_replace($reservedSymbols, '', $term);
+
+        $words = explode(' ', $term);
+
+        foreach ($words as $key => $word) {
+            /*
+             * applying + operator (required word) only big words
+             * because smaller ones are not indexed by mysql
+             */
+            if (strlen($word) >= 3) {
+                $words[$key] = $start . $word . $end;
+            }
+        }
+
+        return $words;
     }
 }
