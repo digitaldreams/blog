@@ -25,13 +25,21 @@
     </section>
     <section class="container">
 
-            <form>
-                <div class="input-group">
-                <input type="search" value="{{request('search')}}" placeholder="search..."
-                       class="form-control" id="search-area">
-                    <button type="submit" class="input-group-append btn btn-outline-secondary">Search</button>
-                </div>
-            </form>
+        <form action="{{route('blog::frontend.blog.posts.index')}}">
+            <div class="input-group">
+                <input type="search" name="search" value="{{request('search')}}" placeholder="search..."
+                       class="form-control" id="search-area" list="keywords">
+                <button type="submit"  class="input-group-append btn btn-outline-secondary">Search
+                </button>
+            </div>
+            <datalist id="keywords">
+                @if(isset($keywords))
+                    @foreach($keywords as $keyword)
+                        <option value="{{$keyword['name']??''}}">
+                    @endforeach
+                @endif
+            </datalist>
+        </form>
 
         <hr/>
         <h2 class="h4">Featured Posts</h2>
@@ -102,7 +110,8 @@
             <div class="card mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-3 text-center" style="max-height: 230px;overflow: hidden">
-                        <img src="{{$post->getImageUrl()}}" style="object-fit: cover;object-position: center" class="card-img" alt="{{$post->title}}">
+                        <img src="{{$post->getImageUrl()}}" style="object-fit: cover;object-position: center"
+                             class="card-img" alt="{{$post->title}}">
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
@@ -120,6 +129,7 @@
                     </div>
                 </div>
             </div>
+            <p class="text-center"><a href="{{route('blog::frontend.blog.posts.index')}}">Show All Posts</a></p>
         @endforeach
         <hr/>
         <div class="row bg-light align-items-center">
@@ -165,7 +175,7 @@
             <div class="col-sm-12 p-5 text-center">
                 <h3>Our Popular Topics</h3>
                 @foreach($tags as $tag)
-                    <a class="btn btn-light" href="{{route('blog::frontend.blog.tags.index',$tag->slug)}}">
+                    <a class="btn btn-light" href="{{route('blog::frontend.blog.posts.index',['search'=>$tag->name])}}">
                         {{$tag->name}} <span class="badge badge-pill badge-secondary">{{$tag->total}}</span>
                     </a>
                 @endforeach

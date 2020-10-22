@@ -29,6 +29,14 @@
                         </span>
                         <meta itemprop="position" content="3"/>
                     </li>
+                @else
+                    <li class="breadcrumb-item active" itemprop="itemListElement" itemscope
+                        itemtype="http://schema.org/ListItem">
+                        <span itemprop="item">
+                            <span itemprop="name">Posts</span>
+                        </span>
+                        <meta itemprop="position" content="3"/>
+                    </li>
                 @endif
             </ul>
         </div>
@@ -59,9 +67,16 @@
                     <form>
                         <div class="input-group">
                             <input type="search" value="{{request('search')}}" name="search" placeholder="search..."
-                                   id="search-area"
+                                   id="search-area" list="keywords"
                                    class="form-control">
                             <button type="submit" class="btn btn-secondary">Search</button>
+                            <datalist id="keywords">
+                                @if(isset($keywords))
+                                    @foreach($keywords as $keyword)
+                                        <option value="{{$keyword['name']??''}}">
+                                    @endforeach
+                                @endif
+                            </datalist>
                         </div>
 
                     </form>
@@ -113,11 +128,14 @@
                                        class="card-link">{{$post->category->title}}
                                     </a>
                                     @foreach($post->tags as $tag)
-                                        <span class="badge badge-light">{{$tag->name}}</span>
+                                        <a href="{{route('blog::frontend.blog.posts.index',['search'=>$tag->name])}}"> <span
+                                                class="badge badge-light">{{$tag->name}}</span>
+                                        </a>
                                     @endforeach
                                     @can('update',$post)
                                         <div class="dropdown d-inline dropleft" id="dropdown-{{$post->id}}">
-                                            <a href="#" class="fa fa-ellipsis-v" data-toggle="dropdown" role="button" aria-expanded="false">
+                                            <a href="#" class="fa fa-ellipsis-v" data-toggle="dropdown" role="button"
+                                               aria-expanded="false">
                                             </a>
                                             <ul class="dropdown-menu list-group-flush">
 
@@ -132,13 +150,15 @@
                                                 @endcan
                                                 @can('delete',$post)
                                                     <li class="list-group-item">
-                                                        <form onsubmit="return confirm('Are you sure you want to delete?')"
-                                                              action="{{route('blog::posts.destroy',$post->slug)}}"
-                                                              method="post"
-                                                              style="display: inline">
+                                                        <form
+                                                            onsubmit="return confirm('Are you sure you want to delete?')"
+                                                            action="{{route('blog::posts.destroy',$post->slug)}}"
+                                                            method="post"
+                                                            style="display: inline">
                                                             {{csrf_field()}}
                                                             {{method_field('DELETE')}}
-                                                            <button type="submit" class="btn btn-outline-danger btn-block btn-sm">
+                                                            <button type="submit"
+                                                                    class="btn btn-outline-danger btn-block btn-sm">
                                                                 <i class="fa fa-remove"></i> Remove
                                                             </button>
                                                         </form>

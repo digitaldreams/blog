@@ -49,11 +49,16 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request       $request
+     * @param \Blog\Services\BlogHomeService $blogHomeService
+     *
      * @return \Illuminate\Http\Response
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function index(Request $request, BlogHomeService $blogHomeService)
     {
         return view('blog::pages.posts.frontend.index', [
+            'keywords' => $this->postRepository->keywords(),
             'records' => $blogHomeService->get($request->get('search'), auth()->user(), 6),
         ]);
     }
@@ -77,6 +82,12 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
     public function blog(Request $request)
     {
         $fpost = $this->postRepository->featuredPosts(4);
@@ -88,6 +99,7 @@ class PostController extends Controller
             'latest' => $latest,
             'tags' => $this->tagRepository->popular(),
             'categories' => $this->categoryRepository->popular(),
+            'keywords' => $this->postRepository->keywords(),
         ]);
     }
 
@@ -95,6 +107,7 @@ class PostController extends Controller
      * @param Category $category
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function category(Request $request, Category $category)
     {
@@ -107,25 +120,7 @@ class PostController extends Controller
         return view('blog::pages.posts.frontend.index', [
             'records' => $posts->paginate(6),
             'model' => $category,
-        ]);
-    }
-
-    /**
-     * @param $tag
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function tag(Request $request, $tag)
-    {
-        $posts = Post::where('status', Post::STATUS_PUBLISHED)->whereHas('tags', function ($q) use ($tag) {
-            $q->where('slug', $tag);
-        })->orderBy('created_at', 'desc');
-        $model = Tag::where('slug', $tag)->firstOrFail();
-        $model->title = $model->name ?? '';
-
-        return view('blog::pages.posts.frontend.index', [
-            'records' => $posts->paginate(6),
-            'model' => $model,
+            'keywords' => $this->postRepository->keywords(),
         ]);
     }
 

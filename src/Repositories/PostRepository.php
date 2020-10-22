@@ -4,7 +4,9 @@ namespace Blog\Repositories;
 
 use App\Models\User;
 use Blog\Jobs\TableOfContentGeneratorJob;
+use Blog\Models\Category;
 use Blog\Models\Post;
+use Blog\Models\Tag;
 use Blog\Notifications\NewPostApproval;
 use Blog\Services\CheckProfanity;
 use Illuminate\Database\Eloquent\Builder;
@@ -289,5 +291,37 @@ class PostRepository
         }
 
         return $words;
+    }
+
+
+    /**
+     * @return array|\Illuminate\Cache\CacheManager|mixed
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \Exception
+     */
+    public function keywords()
+    {
+        $key = 'posts_category_tags_keywords';
+        if (cache()->has($key)) {
+            return cache($key);
+        }
+
+        $categories = Category::query()
+            ->selectRaw('title as name,(select count(*) from blog_posts where blog_posts.category_id=blog_categories.id ) as total')
+            ->havingRaw('total > 0 ')
+            ->orderByRaw('total desc')->get()->toArray();
+
+        $tags = Tag::query()
+            ->selectRaw('name, (select count(*) from blog_post_tag where blog_post_tag.tag_id=blog_tags.id) as total')
+            ->havingRaw('total > 0 ')
+            ->orderByRaw('total desc')
+            ->get()->toArray();
+
+        $data = array_merge($categories, $tags);
+
+        cache()->put($key, $data, now()->addDay());
+
+        return $data;
     }
 }

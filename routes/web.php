@@ -1,7 +1,6 @@
 <?php
 $this->router->group(['middleware' => ['web'], 'namespace' => 'Blog\Http\Controllers', 'as' => 'blog::'], function () {
     $this->router->get('blog.html', 'Frontend\PostController@blog')->name('posts.home');
-    $this->router->get('blog/tags/{tag}.html', 'Frontend\PostController@tag')->name('frontend.blog.tags.index');
     $this->router->get('blog/posts.html', 'Frontend\PostController@index')->name('frontend.blog.posts.index');
 
     $this->router->get('blog/{category}/{post}.html', 'Frontend\PostController@show')->name('frontend.blog.posts.show');
