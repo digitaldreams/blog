@@ -120,7 +120,7 @@
 
                         @foreach($record->tags as $tag)
                             <a class="btn badge badge-light p-1"
-                               href="{{route('blog::frontend.blog.tags.index',$tag->slug)}}">{{$tag->name}}
+                               href="{{route('blog::frontend.blog.posts.index',['search'=>$tag->name])}}">{{$tag->name}}
                             </a>
                         @endforeach
                         <button class="btn badge badge-light">
@@ -149,17 +149,17 @@
                     <ul class="share_this border-bottom border-reddish-orange mb-3 pb-3 list-inline">
                         <li class="list-inline-item">
                             <a href="javascript:void(0);" class="text-reddish-orange text-decoration-none">
-                                <i class="fa fa-facebook fa-2x"></i>
+                                <i class="fa fa-facebook"></i>
                             </a>
                         </li>
                         <li class="list-inline-item">
                             <a href="javascript:void(0);" class="text-reddish-orange text-decoration-none">
-                                <i class="fa fa-twitter fa-2x"></i>
+                                <i class="fa fa-twitter "></i>
                             </a>
                         </li>
                         <li class="list-inline-item">
                             <a href="javascript:void(0);" class="text-reddish-orange text-decoration-none">
-                                <i class="fa fa-envelope fa-2x"></i>
+                                <i class="fa fa-envelope"></i>
                             </a>
                         </li>
                     </ul>
