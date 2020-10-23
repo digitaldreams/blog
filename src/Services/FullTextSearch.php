@@ -27,7 +27,7 @@ trait FullTextSearch
              * because smaller ones are not indexed by mysql
              */
             if (strlen($word) >= 3) {
-                $words[$key] = $start . $word . $end;
+                $words[$key] = $key + 1 == count($words) ? $word . $end : $start . $word . $end;
             }
         }
 
