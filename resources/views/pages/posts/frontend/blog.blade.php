@@ -127,8 +127,9 @@
                     </div>
                 </div>
             </div>
-            <p class="text-center"><a href="{{route('blog::frontend.blog.posts.index')}}">Show All Posts</a></p>
         @endforeach
+        <p class="text-center"><a href="{{route('blog::frontend.blog.posts.index')}}">Show All Posts</a></p>
+
         <hr/>
         <div class="row bg-light align-items-center">
             <div class="col-sm-6 text-center p-5">
