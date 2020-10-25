@@ -32,6 +32,11 @@ class PreferenceController extends Controller
         $user = auth()->user();
         $user->preferredCategories()->sync($request->get('categories', []));
         $user->preferredTags()->sync($request->get('tags', []));
+        if ($returnUrl = $request->get('returnUrl')) {
+            if (filter_var($returnUrl, FILTER_VALIDATE_URL)) {
+                return redirect()->away($returnUrl)->with('message', 'Preferences saved successfully. We will try to recommend contents based on your preferences');
+            }
+        }
         return redirect()->back()->with('message', 'Preferences saved successfully');
     }
 }
