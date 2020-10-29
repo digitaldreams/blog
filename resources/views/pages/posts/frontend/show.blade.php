@@ -99,14 +99,12 @@
                         <h3 class="h5 text-left">Author</h3>
                         <br/>
                         <div class="media">
-                            <img width="120px" src="/images/blog_author_lady.png"
+                            <img width="120px" src="{{$record->user->getAvatarThumb()}}"
                                  class="mr-3 mr-3 rounded-circle img-responsive"
                                  alt="Emily Williams">
                             <div class="media-body">
-                                <h5 class="mt-0 text-left">Emily Williams</h5>
-                                Emily Williams is one of the members of the Content and Marketing team .
-                                She is a marketing expert with a knack for digital marketing strategy, crafting and
-                                implementation.
+                                <h5 class="mt-0 text-left">{{$record->user->name??''}}</h5>
+                                {{$record->user->about ??""}}
                             </div>
                         </div>
                     @endif

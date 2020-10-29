@@ -5,7 +5,7 @@
 @section('content')
 
     <section>
-        <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+        <ul class="breadcrumb px-3 py-1" itemscope itemtype="http://schema.org/BreadcrumbList">
             <li class="breadcrumb-item" itemprop="itemListElement" itemscope
                 itemtype="http://schema.org/ListItem">
                 <a itemprop="item" href="{{url('/')}}">
@@ -42,25 +42,45 @@
 
     <div class="row">
         <div class="col-md-6 col-sm-12">
-            <h2 class="h3 text-black  mb-4">
-                @if(isset($model) && is_object($model))
-                    {{$model->title}} Posts
-                @else
-                    Posts
-                @endif
-                @if($records->total()>0)
-                    <small class="text-muted">(Showing {{$records->firstItem()}} to {{$records->lastItem()}} out
-                        of {{$records->total()}})
-                    </small>
-                @else
-                    <span class="">No result found</span>
-                @endif
-            </h2>
+            <div class="d-flex d-flex-row justify-content-between">
+                <h2 class="h3 text-black  mb-4">
+                    @if(isset($model) && is_object($model))
+                        {{$model->title}} Posts
+                    @else
+                        Posts
+                    @endif
+                    @if($records->total()>0)
+                        <small class="text-muted">(Showing {{$records->firstItem()}} to {{$records->lastItem()}} out
+                            of {{$records->total()}})
+                        </small>
+                    @else
+                        <span class="">No result found</span>
+                    @endif
+                </h2>
+
+            </div>
+
 
         </div>
         <div class="col-md-6 col-sm-12">
             <form>
                 <div class="input-group">
+                    <div class="dropdown">
+                        <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Topics
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            @foreach($keywords as $keyword)
+                                <li class="dropdown-item">
+                                    <a class="btn btn-outline-secondary" href="?search={{$keyword['name']}}">
+                                        {{$keyword['name']}}  <span class="badge badge-secondary">{{$keyword['total']}}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </div>
+                    </div>
                     <input type="search" value="{{request('search')}}" name="search" placeholder="search..."
                            id="search-area" list="keywords"
                            class="form-control">

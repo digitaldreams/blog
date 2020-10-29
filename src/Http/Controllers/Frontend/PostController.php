@@ -5,7 +5,6 @@ namespace Blog\Http\Controllers\Frontend;
 use Blog\Http\Controllers\Controller;
 use Blog\Models\Category;
 use Blog\Models\Post;
-use Blog\Models\Tag;
 use Blog\Repositories\CategoryRepository;
 use Blog\Repositories\PostRepository;
 use Blog\Repositories\TagRepository;
@@ -53,6 +52,7 @@ class PostController extends Controller
      * @param \Blog\Services\BlogHomeService $blogHomeService
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function index(Request $request, BlogHomeService $blogHomeService)
@@ -86,6 +86,7 @@ class PostController extends Controller
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function blog(Request $request)
@@ -107,6 +108,7 @@ class PostController extends Controller
      * @param Category $category
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     *
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function category(Request $request, Category $category)
@@ -123,5 +125,4 @@ class PostController extends Controller
             'keywords' => $this->postRepository->keywords(),
         ]);
     }
-
 }
