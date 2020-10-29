@@ -3,7 +3,7 @@ $this->router->group(['middleware' => ['web'], 'namespace' => 'Blog\Http\Control
     $this->router->get('blog.html', 'Frontend\PostController@blog')->name('posts.home');
     $this->router->get('blog/posts.html', 'Frontend\PostController@index')->name('frontend.blog.posts.index');
 
-    $this->router->get('blog/{category}/{post}.html', 'Frontend\PostController@show')->name('frontend.blog.posts.show');
+    $this->router->get('blog/posts/{post}.html', 'Frontend\PostController@show')->name('frontend.blog.posts.show');
     $this->router->get('blog/{category}.html', 'Frontend\PostController@category')->name('frontend.blog.categories.index');
 
     $this->router->post('newsletter/subscribe', 'Frontend\NewsletterController@subscribe')->name('frontend.blog.newsletters.subscribe');

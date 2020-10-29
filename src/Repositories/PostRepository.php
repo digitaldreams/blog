@@ -293,7 +293,6 @@ class PostRepository
         return $words;
     }
 
-
     /**
      * @return array|\Illuminate\Cache\CacheManager|mixed
      *
@@ -323,5 +322,41 @@ class PostRepository
         cache()->put($key, $data, now()->addDay());
 
         return $data;
+    }
+
+    /**
+     * @param string $start
+     * @param string $end
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     * @throws \Exception
+     */
+    public function publishedBetween(string $start = 'now', string $end = '-24 hours'): Collection
+    {
+        return $this->post->newQuery()
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->whereBetween('published_at', [
+                (new \DateTime($start))->format('Y-m-d H:i:s'),
+                (new \DateTime($end))->format('Y-m-d H:i:s'),
+            ])->get();
+    }
+
+    /**
+     * @param \Blog\Models\Post $post
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function findPreferredUsersForPost(Post $post): Collection
+    {
+        $category = $post->category_id;
+        $tags = $post->tags()->allRelatedIds();
+
+        return User::query()->where(function ($q) use ($category, $tags) {
+            $q->orWhereHas('preferredCategories', function ($sq) use ($category) {
+                $sq->where('category_id', $category);
+            })->orWhereHas('preferredTags', function ($tg) use ($tags) {
+                $tg->whereIn('tag_id', $tags);
+            });
+        })->get();
     }
 }

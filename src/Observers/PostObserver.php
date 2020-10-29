@@ -29,6 +29,10 @@ class PostObserver
      */
     public function saved(Post $post): void
     {
+        if (Post::STATUS_PUBLISHED === $post->status && empty($post->published_at)) {
+            $post->published_at = date('Y-m-d H:i:s');
+            $post->save();
+        }
         Seo::save($post, route('blog::frontend.blog.posts.show', [
             'category' => $post->category->slug,
             'post' => $post->slug,

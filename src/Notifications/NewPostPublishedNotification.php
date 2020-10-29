@@ -2,22 +2,42 @@
 
 namespace Blog\Notifications;
 
+use Blog\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\WebPush\WebPushChannel;
+use NotificationChannels\WebPush\WebPushMessage;
 
+/**
+ */
 class NewPostPublishedNotification extends Notification
 {
     use Queueable;
+    /**
+     * @var \Blog\Models\Post
+     */
+    protected $post;
+    /**
+     * @var string
+     */
+    private $subject;
+
+    /**
+     * @var string
+     */
+    private $link;
 
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param \Blog\Models\Post $post
      */
-    public function __construct()
+    public function __construct(Post $post)
     {
-        //
+        $this->post = $post;
+        $this->subject = 'New Post <b>' . $post->title . '</b> published';
+        $this->link = route('blog::frontend.blog.posts.show', $post->slug);
     }
 
     /**
@@ -29,7 +49,7 @@ class NewPostPublishedNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database', WebPushChannel::class];
     }
 
     /**
@@ -42,9 +62,11 @@ class NewPostPublishedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage())
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->subject(strip_tags($this->subject))
+            ->line('New Post published that you may be interested')
+            ->line($this->subject)
+            ->action('View', $this->link)
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -59,5 +81,29 @@ class NewPostPublishedNotification extends Notification
         return [
             //
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function toDatabase()
+    {
+        return [
+            'message' => $this->subject,
+            'link' => $this->link,
+            'icon' => 'fa fa-doc',
+        ];
+    }
+
+    /**
+     * @return \NotificationChannels\WebPush\WebPushMessage
+     */
+    public function toWebPush()
+    {
+        return (new WebPushMessage())
+            ->title('New Post publised that you are interested in.')
+            ->body($this->subject)
+            ->requireInteraction()
+            ->data(['url' => $this->link]);
     }
 }
