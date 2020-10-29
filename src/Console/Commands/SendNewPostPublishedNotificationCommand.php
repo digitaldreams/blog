@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Blog\Console\Commands;
 
 use Blog\Notifications\NewPostPublishedNotification;
 use Blog\Repositories\PostRepository;

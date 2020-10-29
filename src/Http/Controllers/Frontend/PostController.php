@@ -72,7 +72,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $category, Post $post)
+    public function show(Request $request, Post $post)
     {
         $post->incrementViewCount();
 

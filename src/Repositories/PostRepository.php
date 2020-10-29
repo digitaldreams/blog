@@ -331,7 +331,7 @@ class PostRepository
      * @return \Illuminate\Database\Eloquent\Collection
      * @throws \Exception
      */
-    public function publishedBetween(string $start = 'now', string $end = '-24 hours'): Collection
+    public function publishedBetween(string $start = '-24 hours', string $end = 'now'): Collection
     {
         return $this->post->newQuery()
             ->where('status', Post::STATUS_PUBLISHED)
