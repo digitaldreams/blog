@@ -8,10 +8,15 @@
     </a>
     <div class="card-body">
         <div class="card-title">
-            <h3 class="h6">
-                <a href="{{route('blog::frontend.blog.posts.show',['category'=>$record->category->slug,'post'=>$record->slug])}}"> {{$record->title}}</a>
-            </h3>
-        </div>
+            <div class="d-flex flex-row justify-content-between">
+                <h4>
+                    <a href="{{route('blog::frontend.blog.posts.show',['category'=>$record->category->slug,'post'=>$record->slug])}}"> {{$record->title}}</a>
+                </h4>
+                @can('update',$record)
+                    @include('blog::includes.post_dropdown_menu')
+                @endcan
+            </div>
+         </div>
     </div>
     <div class="card-footer text-right" style="font-size: 13px" title="{{$record->created_at->diffForHumans()}}">
 
@@ -40,12 +45,7 @@
                 <i class="fa fa-star"></i> {{$record->favourites()->count()}}
             </button>
         </form>&nbsp;
-        @can('update',$record)
-            <a class="card-link" href="{{route('blog::posts.edit',$record->slug)}}">
-                <span class="fa fa-pencil-alt"></span>
-            </a>
-            @include('blog::forms.destroy',['route'=>route('blog::posts.destroy',$record->slug)])
-        @endcan
+
 
     </div>
 </div>

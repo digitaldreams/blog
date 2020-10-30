@@ -44,24 +44,37 @@
         <div class="row">
             <div class="col-md-6 col-sm-6">
                 <div class="card">
-                    @if($leadPost->image)
-                        <img src="{{$leadPost->image->getUrl()}}" class="card-img-top" alt="{{$leadPost->title}}">
-                    @else
-                        <img src="{{$leadPost->getImageUrl()}}" class="card-img-top" alt="{{$leadPost->title}}">
-                    @endif
+                    <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}">
+                        @if($leadPost->image)
+                            <img src="{{$leadPost->image->getUrl()}}" class="card-img-top" alt="{{$leadPost->title}}">
+                        @else
+                            <img src="{{$leadPost->getImageUrl()}}" class="card-img-top" alt="{{$leadPost->title}}">
+                        @endif
+                    </a>
 
                     <div class="card-body">
-                        <h3 class="card-title h3">
-                            <a href="{{route('blog::frontend.blog.posts.show',['category'=>$leadPost->category->slug,'post'=>$leadPost->slug])}}"> {{$leadPost->title}}</a>
-                        </h3>
-                        <p class="mb-0">{{$leadPost->getSummary(300)}}</p>
-                        <hr/>
-                        <a href="{{route('blog::frontend.blog.categories.index',$leadPost->category->slug)}}"
-                           class="card-link">{{$leadPost->category->title}}</a>
-                        <a href="{{route('blog::frontend.blog.posts.show',['category'=>$leadPost->category->slug,'post'=>$leadPost->slug])}}"
-                           class="card-link">Read more <i
-                                class="fa fa-chevron-right"></i>
-                        </a>
+                        <div>
+                            <div class="d-flex flex-row justify-content-between">
+                                <h3 class="card-title h3">
+                                    <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}">
+                                        {{$leadPost->title}}
+                                    </a>
+                                </h3>
+                                @can('update',$leadPost)
+                                    @include('blog::includes.post_dropdown_menu',['record'=> $leadPost])
+                                @endcan
+                            </div>
+                            <p class="mb-0">{{$leadPost->getSummary(300)}}
+                                <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}"
+                                   class="card-link">Read more <i
+                                        class="fa fa-chevron-right"></i>
+                                </a>
+                            </p>
+                            <hr/>
+                            <a href="{{route('blog::frontend.blog.categories.index',$leadPost->category->slug)}}"
+                               class="card-link">{{$leadPost->category->title}}</a>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -108,16 +121,28 @@
             <div class="card mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-3 text-center" style="max-height: 230px;overflow: hidden">
-                        <img src="{{$post->getImageUrl()}}" style="object-fit: cover;object-position: center"
-                             class="card-img" alt="{{$post->title}}">
+                        <a href="{{route('blog::frontend.blog.posts.show',['post'=>$post->slug])}}">
+                            <img src="{{$post->getImageUrl()}}" style="object-fit: cover;object-position: center"
+                                 class="card-img" alt="{{$post->title}}">
+                        </a>
                     </div>
                     <div class="col-md-9">
                         <div class="card-body">
-                            <h3 class="card-title h5">
-                                <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"> {{$post->title}}</a>
-                            </h3>
+                            <div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <h3 class="card-title h5">
+                                        <a href="{{route('blog::frontend.blog.posts.show',['post'=>$post->slug])}}">
+                                            {{$post->title}}
+                                        </a>
+                                    </h3>
+                                    @can('update',$post)
+                                        @include('blog::includes.post_dropdown_menu',['record'=> $post])
+                                    @endcan
+                                </div>
+                            </div>
+
                             <p class="mb-0">{{$post->getSummary(250)}}
-                                <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"
+                                <a href="{{route('blog::frontend.blog.posts.show',['post'=>$post->slug])}}"
                                    class="card-link">
                                     Read more <i class="fa fa-chevron-right"></i>
                                 </a>
@@ -174,7 +199,8 @@
             <div class="col-sm-12 p-5 text-center">
                 <h3>Our Popular Topics</h3>
                 @foreach($tags as $tag)
-                    <a class="btn btn-light" href="{{route('blog::frontend.blog.posts.index',['search'=>$tag->name])}}">
+                    <a class="btn btn-light"
+                       href="{{route('blog::frontend.blog.posts.index',['search'=>$tag->name])}}">
                         {{$tag->name}} <span class="badge badge-pill badge-secondary">{{$tag->total}}</span>
                     </a>
                 @endforeach

@@ -66,7 +66,8 @@
             <form>
                 <div class="input-group">
                     <div class="dropdown">
-                        <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button"
+                           id="dropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Topics
                         </a>
@@ -75,7 +76,8 @@
                             @foreach($keywords as $keyword)
                                 <li class="dropdown-item">
                                     <a class="btn btn-outline-secondary" href="?search={{$keyword['name']}}">
-                                        {{$keyword['name']}}  <span class="badge badge-secondary">{{$keyword['total']}}</span>
+                                        {{$keyword['name']}} <span
+                                            class="badge badge-secondary">{{$keyword['total']}}</span>
                                     </a>
                                 </li>
                             @endforeach
@@ -101,14 +103,26 @@
         <div class="card mb-4">
             <div class="row no-gutters">
                 <div class="col-md-3" style="max-height: 220px;overflow: hidden">
-                    <img src="{{$post->getImageUrl()}}" class="card-img"
-                         style="object-fit:scale-down;object-position: center" alt="{{$post->title}}">
+                    <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}">
+                        <img src="{{$post->getImageUrl()}}" class="card-img"
+                             style="object-fit:scale-down;object-position: center" alt="{{$post->title}}">
+                    </a>
                 </div>
                 <div class="col-md-9">
                     <div class="card-body">
-                        <h3 class="card-title h4">
-                            <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"> {{$post->title}}</a>
-                        </h3>
+                        <div>
+                            <div class="d-flex flex-row justify-content-between">
+                                <h3 class="card-title h4">
+                                    <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}">
+                                        {{$post->title}}
+                                    </a>
+                                </h3>
+                                @can('update',$post)
+                                    @include('blog::includes.post_dropdown_menu',['record'=> $post])
+                                @endcan
+                            </div>
+                        </div>
+
                         {{$post->getSummary(300)}}
                         <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}"
                            class="card-link">
@@ -147,41 +161,7 @@
                                         class="badge badge-light">{{$tag->name}}</span>
                                 </a>
                             @endforeach
-                            @can('update',$post)
-                                <div class="dropdown d-inline dropleft" id="dropdown-{{$post->id}}">
-                                    <a href="#" class="fa fa-ellipsis-v" data-toggle="dropdown" role="button"
-                                       aria-expanded="false">
-                                    </a>
-                                    <ul class="dropdown-menu list-group-flush">
 
-                                        @can('update',$post)
-                                            <li class="list-group-item">
-
-                                                <a class="btn btn-outline-secondary btn-block"
-                                                   href="{{route('blog::posts.edit',$post->slug)}}">
-                                                    <i class="fa fa-pencil"></i> Edit
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can('delete',$post)
-                                            <li class="list-group-item">
-                                                <form
-                                                    onsubmit="return confirm('Are you sure you want to delete?')"
-                                                    action="{{route('blog::posts.destroy',$post->slug)}}"
-                                                    method="post"
-                                                    style="display: inline">
-                                                    {{csrf_field()}}
-                                                    {{method_field('DELETE')}}
-                                                    <button type="submit"
-                                                            class="btn btn-outline-danger btn-block btn-sm">
-                                                        <i class="fa fa-remove"></i> Remove
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        @endcan
-                                    </ul>
-                                </div>
-                            @endcan
                         </div>
                     </div>
                 </div>

@@ -77,7 +77,20 @@
     <p class="help-block">450px X 304px and maximum 2 MB allowed</p>
 
     <img src="{{$model->getImageUrl()}}" class="img-thumbnail" style="max-height: 300px" id="image_preview">
-
+    @if(is_object($model->image))
+        @can('update',$model->image)
+            <div class="btn-group btn-group-sm text-right">
+            <a class="btn btn-outline-secondary"
+               href="{{route('photo::photos.edit',$model->image_id)}}?returnUrl={{request()->fullUrl()}}">
+                <span class="fa fa-pencil-alt"> Edit </span>
+            </a>
+            <a class="btn btn-outline-secondary"
+               href="{{route('photo::photos.show',$model->image_id)}}?returnUrl={{request()->fullUrl()}}">
+                <span class="fa fa-crop"> Crop</span>
+            </a>
+            </div>
+        @endcan
+    @endif
     @if($errors->has('image'))
         <span class="form-control-feedback">
         <strong>{{ $errors->first('image') }}</strong>
