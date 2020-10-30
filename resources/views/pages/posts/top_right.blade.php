@@ -64,7 +64,7 @@
     <label for="image">Image</label>
     <input type="file" form="postForm" class="form-control {{ $errors->has('image') ? ' is-invalid' : '' }}"
            name="image" id="image"
-           onchange="return checkSize(2097152,'image')"
+           onchange="checkSize(2097152,'image','image')"
            {{empty($model->id)?'required':''}}
            accept="image/*"
            required

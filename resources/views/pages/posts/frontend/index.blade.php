@@ -104,8 +104,13 @@
             <div class="row no-gutters">
                 <div class="col-md-3" style="max-height: 220px;overflow: hidden">
                     <a href="{{route('blog::frontend.blog.posts.show',['category'=>$post->category->slug,'post'=>$post->slug])}}">
-                        <img src="{{$post->getImageUrl()}}" class="card-img"
-                             style="object-fit:scale-down;object-position: center" alt="{{$post->title}}">
+
+                        @if($post->image)
+                            {!! $post->image->renderThumbnails('card-img','object-fit: cover;object-position: center') !!}
+                        @else
+                            <img src="{{config('blog.defaultPhoto')}}" alt="{{$post->title}}" class="card-img"
+                                 style="object-fit: cover;object-position: center">
+                        @endif
                     </a>
                 </div>
                 <div class="col-md-9">

@@ -46,9 +46,9 @@
                 <div class="card">
                     <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}">
                         @if($leadPost->image)
-                            <img src="{{$leadPost->image->getUrl()}}" class="card-img-top" alt="{{$leadPost->title}}">
+                            {!! $leadPost->image->render('card-img-top') !!}
                         @else
-                            <img src="{{$leadPost->getImageUrl()}}" class="card-img-top" alt="{{$leadPost->title}}">
+                            <img src="{{config('blog.defaultPhoto')}}" class="card-img-top">
                         @endif
                     </a>
 
@@ -122,8 +122,12 @@
                 <div class="row no-gutters">
                     <div class="col-md-3 text-center" style="max-height: 230px;overflow: hidden">
                         <a href="{{route('blog::frontend.blog.posts.show',['post'=>$post->slug])}}">
-                            <img src="{{$post->getImageUrl()}}" style="object-fit: cover;object-position: center"
-                                 class="card-img" alt="{{$post->title}}">
+                            @if($post->image)
+                                {!! $post->image->renderThumbnails('card-img','object-fit: cover;object-position: center') !!}
+                            @else
+                                <img src="{{config('blog.defaultPhoto')}}" alt="{{$post->title}}" class="card-img"
+                                     style="object-fit: cover;object-position: center">
+                            @endif
                         </a>
                     </div>
                     <div class="col-md-9">
