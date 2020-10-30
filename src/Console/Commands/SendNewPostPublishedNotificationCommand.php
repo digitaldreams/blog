@@ -37,7 +37,6 @@ class SendNewPostPublishedNotificationCommand extends Command
      * Execute the console command.
      *
      * @param \Blog\Repositories\PostRepository        $postRepository
-     *
      * @param \Illuminate\Notifications\ChannelManager $channelManager
      *
      * @return int
@@ -53,6 +52,7 @@ class SendNewPostPublishedNotificationCommand extends Command
                 if ($users->count() > 0) {
                     $channelManager->send($users, new NewPostPublishedNotification($post));
                 }
+                $this->info(sprintf('%s user send post %s ', $users->count(), $post->title));
             }
         }
         $this->info(sprintf('There are %s post published in last 24 hours', $posts->count()));
