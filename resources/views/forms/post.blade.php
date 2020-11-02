@@ -4,18 +4,17 @@
     <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
 
 
-    <div class="form-row">
-        <div class="form-group col-sm-8">
-            <label for="title">Title</label>
-            <input type="text" class="form-control" name="title" id="title" value="{{old('title',$model->title)}}"
-                   required
-                   placeholder="" maxlength="255">
-            @if($errors->has('title'))
-                <span class="form-control-feedback">
-        <strong>{{ $errors->first('title') }}</strong>
-    </span>
-            @endif
-        </div>
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control {{$errors->has('title')?'is-invalid':''}}" name="title" id="title"
+               value="{{old('title',$model->title)}}"
+               required
+               placeholder="Type a unique post title." maxlength="255">
+        @if($errors->has('title'))
+            <span class="form-control-feedback">
+                <strong>{{ $errors->first('title') }}</strong>
+            </span>
+        @endif
     </div>
 
 

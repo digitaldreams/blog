@@ -117,7 +117,7 @@ class PostController extends Controller
             return redirect()->back()->withInput($request->all());
         }
 
-        return redirect()->route('blog::posts.index');
+        return redirect()->route('blog::frontend.blog.posts.show', $post->slug);
     }
 
     /**
@@ -158,7 +158,7 @@ class PostController extends Controller
             return redirect()->back()->withInput($request->all());
         }
 
-        return redirect()->route('blog::posts.show', $post->slug);
+        return redirect()->route('blog::frontend.blog.posts.show', $post->slug);
     }
 
     /**

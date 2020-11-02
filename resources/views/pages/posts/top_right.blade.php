@@ -1,5 +1,7 @@
 <div class="m-form__group form-group">
-    <label for="category_id">Category</label>
+    <label for="category_id">Category
+        <span class="fa fa-info-circle" data-toggle="tooltip" title="{{trans('blog::info.category')}}"></span>
+    </label>
     <select form="postForm" class="form-control" name="category_id" id="category_id" required>
         @if($model->category_id)
             <option value="{{$model->category_id}}" selected>{{$model->category->title}}</option>
@@ -13,7 +15,9 @@
 </div>
 @can('approve',\Blog\Models\Post::class)
     <div class="form-group">
-        <label for="status">Status</label> <br/>
+        <label for="status">Status</label>
+        <span class="fa fa-info-circle" data-toggle="tooltip" title="{{trans('blog::info.postStatus')}}"></span>
+        <br/>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="status" form="postForm" id="inlineRadio1"
                    value="{{\Blog\Models\Post::STATUS_DRAFT}}" {{old('status',$model->status)==\Blog\Models\Post::STATUS_DRAFT?'checked':''}}>
@@ -39,6 +43,8 @@
                    value="1" {{old('is_featured',$model->is_featured)==\Blog\Models\Post::IS_FEATURED?'checked':''}}>
             <label class="form-check-label" for="inlineCheckbox1"> Featured Post
             </label>
+            &nbsp; <span class="fa fa-info-circle" data-toggle="tooltip"
+                         title="{{trans('blog::info.featuredPost')}}"></span>
         </div>
 
         @if($errors->has('is_featured'))
@@ -49,7 +55,9 @@
     </div>
 @endcan
 <div class="form-group">
-    <label for="image">Tags</label>
+    <label for="image">Tags
+        <span class="fa fa-info-circle" data-toggle="tooltip" title="{{trans('blog::info.tags')}}"></span>
+    </label>
     <select form="postForm" class="form-control {{ $errors->has('tags') ? ' is-invalid' : '' }}"
             name="tags[]" id="blog_tags" multiple>
         @if(!empty($model->tags))
@@ -61,13 +69,13 @@
 </div>
 
 <div class="form-group">
-    <label for="image">Image</label>
+    <label for="image">Feature Image</label>
     <input type="file" form="postForm" class="form-control {{ $errors->has('image') ? ' is-invalid' : '' }}"
            name="image" id="image"
            onchange="checkSize(2097152,'image','image')"
            {{empty($model->id)?'required':''}}
            accept="image/*"
-           required
+           {{empty($model->id?'required':'')}}
            placeholder="Upload your image">
     @if($errors->has('image'))
         <span class="form-control-feedback">
@@ -80,14 +88,14 @@
     @if(is_object($model->image))
         @can('update',$model->image)
             <div class="btn-group btn-group-sm text-right">
-            <a class="btn btn-outline-secondary"
-               href="{{route('photo::photos.edit',$model->image_id)}}?returnUrl={{request()->fullUrl()}}">
-                <span class="fa fa-pencil-alt"> Edit </span>
-            </a>
-            <a class="btn btn-outline-secondary"
-               href="{{route('photo::photos.show',$model->image_id)}}?returnUrl={{request()->fullUrl()}}">
-                <span class="fa fa-crop"> Crop</span>
-            </a>
+                <a class="btn btn-outline-secondary"
+                   href="{{route('photo::photos.edit',$model->image_id)}}?returnUrl={{request()->fullUrl()}}">
+                    <span class="fa fa-pencil-alt"> Edit </span>
+                </a>
+                <a class="btn btn-outline-secondary"
+                   href="{{route('photo::photos.show',$model->image_id)}}?returnUrl={{request()->fullUrl()}}">
+                    <span class="fa fa-crop"> Crop</span>
+                </a>
             </div>
         @endcan
     @endif
