@@ -13,7 +13,7 @@ use Blog\Notifications\FavouriteNotification;
 use Blog\Notifications\LikeNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
-
+use Illuminate\Translation\Translator;
 /**
  * Description of WordMeaningController.
  *
@@ -21,6 +21,27 @@ use Illuminate\Support\Facades\Notification;
  */
 class ActivityController extends Controller
 {
+    /**
+     * @var \Illuminate\Contracts\Translation\Translator
+     */
+    protected $translator;
+
+    /**
+     * ActivityController constructor.
+     *
+     * @param \Illuminate\Contracts\Translation\Translator $translator
+     */
+    public function __construct(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param                          $action
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function show(Request $request, $action)
     {
         $model = false;
@@ -30,10 +51,10 @@ class ActivityController extends Controller
         if (class_exists($activityAbleType)) {
             $model = $activityAbleType::find($activityAbleId);
             if (!$model) {
-                return redirect()->back()->with('error', 'Activity Type does not exists any more');
+                return redirect()->back()->with('error', $this->translator->get('blog::flash.notExists', ['model' => 'Activity Type']));
             }
         } else {
-            return redirect()->back()->with('error', 'Activity Type does not exists any more');
+            return redirect()->back()->with('error', $this->translator->get('blog::flash.notExists', ['model' => 'Activity Type']));
         }
 
         return view('blog::pages.activities.show', [
@@ -62,7 +83,7 @@ class ActivityController extends Controller
         if ($model) {
             $model->delete();
 
-            return redirect()->back()->with('message', 'Your ' . $request->get('type') . ' is undo');
+            return redirect()->back()->with('message', $this->translator->get('blog::flash.undo', ['action' => $request->get('type')]));
         } else {
             $activityAbleClass = $request->get('activityable_type');
             $activityAbleId = $request->get('activityable_id');
@@ -82,9 +103,9 @@ class ActivityController extends Controller
         $model->fill($request->all());
 
         if ($model->save()) {
-            session()->flash('message', 'Thanks for ' . $request->get('type'));
+            session()->flash('message', $this->translator->get('blog::flash.thanksFor', ['action' => $request->get('type')]));
         } else {
-            session()->flash('error', 'Oops something went wrong while ' . $request->get('type'));
+            session()->flash('error', $this->translator->get('blog::flash.oops', ['action' => $request->get('type')]));
         }
 
         return redirect()->back();
@@ -104,11 +125,11 @@ class ActivityController extends Controller
 
         if ($activity->save()) {
             $activity->tags()->sync($request->get('tags', []));
-            session()->flash('message', 'Your activity successfully updated');
+            session()->flash('message', $this->translator->get('blog::flash.updated', ['model' => 'Your Activity']));
 
             return redirect()->back();
         } else {
-            session()->flash('error', 'Oops something went wrong while updating Word');
+            session()->flash('error', $this->translator->get('blog::flash.oops', ['action' => 'updating action']));
         }
 
         return redirect()->back();
@@ -127,9 +148,9 @@ class ActivityController extends Controller
     public function destroy(Destroy $request, Activity $activity)
     {
         if ($activity->delete()) {
-            session()->flash('message', 'Word  successfully deleted');
+            session()->flash('message', $this->translator->get('blog::flash.deleted', ['model' => $activity->type]));
         } else {
-            session()->flash('error', 'Error occurred while deleting Word');
+            session()->flash('error', $this->translator->get('blog::flash.errorOccurred', ['action' => 'deleting Activity']));
         }
 
         return redirect()->back();

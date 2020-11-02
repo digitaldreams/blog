@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Translation\Translator;
 use Photo\Repositories\PhotoRepository;
 
 class PostRepository
@@ -32,6 +33,10 @@ class PostRepository
      * @var \Blog\Repositories\TagRepository
      */
     protected $tagRepository;
+    /**
+     * @var \Illuminate\Translation\Translator
+     */
+    protected $translator;
 
     /**
      * PostRepository constructor.
@@ -39,12 +44,14 @@ class PostRepository
      * @param \Blog\Models\Post                   $post
      * @param \Blog\Repositories\TagRepository    $tagRepository
      * @param \Photo\Repositories\PhotoRepository $photoRepository
+     * @param \Illuminate\Translation\Translator  $translator
      */
-    public function __construct(Post $post, TagRepository $tagRepository, PhotoRepository $photoRepository)
+    public function __construct(Post $post, TagRepository $tagRepository, PhotoRepository $photoRepository, Translator $translator)
     {
         $this->post = $post;
         $this->photoRepository = $photoRepository;
         $this->tagRepository = $tagRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -184,9 +191,9 @@ class PostRepository
 
         if (!auth()->user()->can('approve', Post::class)) {
             Notification::send(User::getAdmins(), new NewPostApproval($model));
-            session()->flash('message', 'Post saved successfully and one of our moderator will review it soon');
+            session()->flash('message', $this->translator->get('blog::flash.underReview', ['model' => 'Post']));
         } else {
-            session()->flash('message', 'Post saved successfully');
+            session()->flash('message', $this->translator->get('blog::flash.saved'));
         }
         if ($tags) {
             $model->tags()->sync($this->tagRepository->saveTags($tags));
@@ -329,6 +336,7 @@ class PostRepository
      * @param string $end
      *
      * @return \Illuminate\Database\Eloquent\Collection
+     *
      * @throws \Exception
      */
     public function publishedBetween(string $start = '-24 hours', string $end = 'now'): Collection

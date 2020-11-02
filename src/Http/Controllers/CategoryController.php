@@ -7,6 +7,7 @@ use Blog\Http\Requests\Categories\Update;
 use Blog\Models\Category;
 use Blog\Services\CheckProfanity;
 use Illuminate\Http\Request;
+use Illuminate\Translation\Translator;
 
 /**
  * Description of CategoryController.
@@ -15,6 +16,21 @@ use Illuminate\Http\Request;
  */
 class CategoryController extends Controller
 {
+    /**
+     * @var \Illuminate\Translation\Translator
+     */
+    protected $translator;
+
+    /**
+     * CategoryController constructor.
+     *
+     * @param \Illuminate\Translation\Translator $translator
+     */
+    public function __construct(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +43,8 @@ class CategoryController extends Controller
         $this->authorize('index', Category::class);
 
         return view('blog::pages.categories.index', [
-            'records' => Category::search($request->get('search'))
+            'records' => Category::query()
+                ->search($request->get('search'))
                 ->withCount('posts')
                 ->with('parentCategory')
                 ->paginate(10),
@@ -87,15 +104,11 @@ class CategoryController extends Controller
             return redirect()->back()->withInput($request->all());
         }
 
-        if ($model->save()) {
-            session()->flash('message', 'Category saved successfully');
+        $model->save();
 
-            return redirect()->route('blog::categories.index');
-        } else {
-            session()->flash('message', 'Oops something went wrong while saving the category');
-        }
-
-        return redirect()->back();
+        return redirect()
+            ->route('blog::categories.index')
+            ->with('message', $this->translator->get('blog::flash.created', ['model' => 'category']));
     }
 
     /**
@@ -134,15 +147,11 @@ class CategoryController extends Controller
             return redirect()->back()->withInput($request->all());
         }
 
-        if ($category->save()) {
-            session()->flash('message', 'Category successfully updated');
+        $category->save();
 
-            return redirect()->route('blog::categories.index');
-        } else {
-            session()->flash('error', 'Oops something went wrong while updating Category');
-        }
-
-        return redirect()->back();
+        return redirect()
+            ->route('blog::categories.index')
+            ->with('message', $this->translator->get('blog::flash.updated', ['model' => 'Category']));
     }
 
     /**
@@ -153,18 +162,17 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
         $this->authorize('delete', $category);
 
-        if ($category->delete()) {
-            session()->flash('message', 'Category successfully deleted');
-        } else {
-            session()->flash('error', 'Error occurred while deleting Category');
-        }
+        $category->delete();
 
-        return redirect()->back();
+        return redirect()
+            ->route('blog::categories.index')
+            ->with('message', $this->translator->get('blog::flash.deleted', ['model' => $category->title]));
     }
 
     /**

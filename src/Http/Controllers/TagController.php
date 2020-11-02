@@ -7,6 +7,7 @@ use Blog\Http\Requests\Tags\Update;
 use Blog\Models\Tag;
 use Blog\Services\CheckProfanity;
 use Illuminate\Http\Request;
+use Illuminate\Translation\Translator;
 
 /**
  * Description of CategoryController.
@@ -15,6 +16,21 @@ use Illuminate\Http\Request;
  */
 class TagController extends Controller
 {
+    /**
+     * @var \Illuminate\Translation\Translator
+     */
+    protected $translator;
+
+    /**
+     * TagController constructor.
+     *
+     * @param \Illuminate\Translation\Translator $translator
+     */
+    public function __construct(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -86,16 +102,11 @@ class TagController extends Controller
         if ($checkProfanity->check()) {
             return redirect()->back()->withInput($request->all());
         }
+        $model->save();
 
-        if ($model->save()) {
-            session()->flash('message', 'Tag saved successfully');
-
-            return redirect()->route('blog::tags.index');
-        } else {
-            session()->flash('message', 'Oops something went wrong while saving your tag');
-        }
-
-        return redirect()->back();
+        return redirect()
+            ->route('blog::tags.index')
+            ->with('message', $this->translator->get('blog::flash.saved', ['model' => 'Tag']));
     }
 
     /**
@@ -133,15 +144,9 @@ class TagController extends Controller
             return redirect()->back()->withInput($request->all());
         }
 
-        if ($tag->save()) {
-            session()->flash('message', 'Tag successfully updated');
+        $tag->save();
 
-            return redirect()->route('blog::tags.index');
-        } else {
-            session()->flash('error', 'Oops something went wrong while updating tag');
-        }
-
-        return redirect()->back();
+        return redirect()->route('blog::tags.index')->with('message', $this->translator->get('blog::flash.updated', ['model' => 'Tag']));
     }
 
     /**
@@ -152,18 +157,15 @@ class TagController extends Controller
      * @return \Illuminate\Http\Response
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      */
     public function destroy(Tag $tag)
     {
         $this->authorize('delete', $tag);
 
-        if ($tag->delete()) {
-            session()->flash('message', 'Tag successfully deleted');
-        } else {
-            session()->flash('error', 'Error occurred while deleting Tag');
-        }
+        $tag->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('message', $this->translator->get('blog::flash.deleted', ['model' => $tag->name]));
     }
 
     /**

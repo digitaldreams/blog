@@ -8,6 +8,7 @@ use Blog\Models\Post;
 use Blog\Notifications\NewPostApprovalCompleted;
 use Blog\Repositories\PostRepository;
 use Illuminate\Http\Request;
+use Illuminate\Translation\Translator;
 
 /**
  * Description of PostController.
@@ -20,15 +21,21 @@ class PostController extends Controller
      * @var
      */
     protected PostRepository $postRepository;
+    /**
+     * @var \Illuminate\Translation\Translator
+     */
+    protected $translator;
 
     /**
      * PostController constructor.
      *
-     * @param \Blog\Repositories\PostRepository $postRepository
+     * @param \Blog\Repositories\PostRepository  $postRepository
+     * @param \Illuminate\Translation\Translator $translator
      */
-    public function __construct(PostRepository $postRepository)
+    public function __construct(PostRepository $postRepository, Translator $translator)
     {
         $this->postRepository = $postRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -44,13 +51,15 @@ class PostController extends Controller
     {
         $this->authorize('index', Post::class);
 
-        $posts = Post::search($request->get('search'))
-            ->with(['category', 'user'])
-            ->withCount('comments');
+        $search = $request->get('search');
+        if (!empty($search)) {
+            $posts = $this->postRepository->search($search, 8);
+        } else {
+            $posts = Post::query()->latest()->paginate(8);
+        }
 
         return view('blog::pages.posts.index', [
-            'records' => $posts->latest()->paginate(6),
-            'enableSearch' => true,
+            'records' => $posts,
         ]);
     }
 
@@ -168,7 +177,9 @@ class PostController extends Controller
 
         $this->postRepository->delete($post);
 
-        return redirect()->route('blog::posts.index')->with('message', $post->title . ' deleted successfully');
+        return redirect()
+            ->route('blog::posts.index')
+            ->with('message', $this->translator->get('blog::flash.deleted', ['model' => $post->title]));
     }
 
     /**
@@ -191,6 +202,6 @@ class PostController extends Controller
             $post->user->notify(new NewPostApprovalCompleted($post));
         }
 
-        return redirect()->back()->with('message', 'Thanks for your action');
+        return redirect()->back()->with('message', $this->translator->get('blog::flash.statusChanged', ['status' => $status]));
     }
 }

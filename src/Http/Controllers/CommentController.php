@@ -10,6 +10,7 @@ use Blog\Models\Comment;
 use Blog\Models\Post;
 use Blog\Notifications\CommentNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Translation\Translator;
 
 /**
  * Description of CommentController.
@@ -18,9 +19,20 @@ use Illuminate\Support\Facades\Notification;
  */
 class CommentController extends Controller
 {
-    public function __construct()
+    /**
+     * @var \Illuminate\Translation\Translator
+     */
+    protected $translator;
+
+    /**
+     * CommentController constructor.
+     *
+     * @param \Illuminate\Translation\Translator $translator
+     */
+    public function __construct(Translator $translator)
     {
         $this->middleware('auth', ['except' => 'index']);
+        $this->translator = $translator;
     }
 
     /**
@@ -50,16 +62,13 @@ class CommentController extends Controller
         $model->fill($request->all());
         $model->post_id = $post->id;
         $model->user_id = auth()->user()->id;
-        if ($model->save()) {
-            Notification::send(User::getAdmins(), new CommentNotification($post, auth()->user()));
-            session()->flash('message', 'Comment saved successfully');
+        $model->save();
 
-            return redirect()->route('blog::posts.show', $post->slug);
-        } else {
-            session()->flash('error', 'Oops something went wrong while saving your comment');
-        }
+        Notification::send(User::getAdmins(), new CommentNotification($post, auth()->user()));
 
-        return redirect()->back();
+        return redirect()
+            ->back()
+            ->with('message', $this->translator->get('blog::flash.saved', ['model' => 'Comment']));
     }
 
     /**
@@ -75,12 +84,8 @@ class CommentController extends Controller
      */
     public function destroy(Destroy $request, Post $post, Comment $comment)
     {
-        if ($comment->delete()) {
-            session()->flash('message', 'Comment successfully deleted');
-        } else {
-            session()->flash('error', 'Error occurred while deleting Comment');
-        }
+        $comment->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('message', $this->translator->get('blog::flash.deleted', ['model' => 'Comment']));
     }
 }

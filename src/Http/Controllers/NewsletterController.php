@@ -11,6 +11,7 @@ use Blog\Http\Requests\Newsletters\Show;
 use Blog\Http\Requests\Newsletters\Store;
 use Blog\Http\Requests\Newsletters\Update;
 use Blog\Models\Newsletter;
+use Illuminate\Translation\Translator;
 
 /**
  * Description of NewsletterController.
@@ -20,6 +21,21 @@ use Blog\Models\Newsletter;
 class NewsletterController extends Controller
 {
     /**
+     * @var \Illuminate\Translation\Translator
+     */
+    protected $translator;
+
+    /**
+     * NewsletterController constructor.
+     *
+     * @param \Illuminate\Translation\Translator $translator
+     */
+    public function __construct(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @param Index $request
@@ -28,7 +44,9 @@ class NewsletterController extends Controller
      */
     public function index(Index $request)
     {
-        return view('blog::pages.newsletters.index', ['records' => Newsletter::paginate(10)]);
+        return view('blog::pages.newsletters.index', [
+            'records' => Newsletter::query()->paginate(10),
+        ]);
     }
 
     /**
@@ -71,16 +89,11 @@ class NewsletterController extends Controller
     {
         $model = new Newsletter();
         $model->fill($request->all());
+        $model->save();
+        session()->flash('message', 'Newsletter saved successfully');
 
-        if ($model->save()) {
-            session()->flash('message', 'Newsletter saved successfully');
-
-            return redirect()->route('blog::newsletters.index');
-        } else {
-            session()->flash('message', 'Something is wrong while saving Newsletter');
-        }
-
-        return redirect()->back();
+        return redirect()->route('blog::newsletters.index')
+            ->with('message', $this->translator->get('blog::flash.saved', ['model' => 'Newsletter']));
     }
 
     /**
@@ -109,16 +122,11 @@ class NewsletterController extends Controller
     public function update(Update $request, Newsletter $newsletter)
     {
         $newsletter->fill($request->all());
+        $newsletter->save();
 
-        if ($newsletter->save()) {
-            session()->flash('message', 'Newsletter successfully updated');
-
-            return redirect()->route('blog::newsletters.index');
-        } else {
-            session()->flash('error', 'Something is wrong while updating Newsletter');
-        }
-
-        return redirect()->back();
+        return redirect()
+            ->route('blog::newsletters.index')
+            ->with('message', $this->translator->get('blog::flash.updated', ['model' => 'Newsletter']));
     }
 
     /**
@@ -133,12 +141,8 @@ class NewsletterController extends Controller
      */
     public function destroy(Destroy $request, Newsletter $newsletter)
     {
-        if ($newsletter->delete()) {
-            session()->flash('message', 'Newsletter successfully deleted');
-        } else {
-            session()->flash('error', 'Error occurred while deleting Newsletter');
-        }
+        $newsletter->delete();
 
-        return redirect()->back();
+        return redirect()->back()->with('message', $this->translator->get('blog::flash.deleted', ['model' => 'Newsletter']));
     }
 }

@@ -5,9 +5,25 @@ namespace Blog\Http\Controllers;
 use Blog\Models\Category;
 use Blog\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Translation\Translator;
 
 class PreferenceController extends Controller
 {
+    /**
+     * @var \Illuminate\Translation\Translator
+     */
+    protected $translator;
+
+    /**
+     * PreferenceController constructor.
+     *
+     * @param \Illuminate\Translation\Translator $translator
+     */
+    public function __construct(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -34,9 +50,9 @@ class PreferenceController extends Controller
         $user->preferredTags()->sync($request->get('tags', []));
         if ($returnUrl = $request->get('returnUrl')) {
             if (filter_var($returnUrl, FILTER_VALIDATE_URL)) {
-                return redirect()->away($returnUrl)->with('message', 'Preferences saved successfully. We will try to recommend contents based on your preferences');
+                return redirect()->away($returnUrl)->with('message', $this->translator->get('blog::flash.preferencesSaved'));
             }
         }
-        return redirect()->back()->with('message', 'Preferences saved successfully');
+        return redirect()->back()->with('message', $this->translator->get('blog::flash.preferencesSaved'));
     }
 }
