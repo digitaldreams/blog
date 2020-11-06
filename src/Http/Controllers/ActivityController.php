@@ -14,6 +14,7 @@ use Blog\Notifications\LikeNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Translation\Translator;
+
 /**
  * Description of WordMeaningController.
  *
@@ -97,9 +98,13 @@ class ActivityController extends Controller
             } elseif (ActivityType::FAVOURITE == $request->get('type')) {
                 $notificationOb = new FavouriteNotification($activityModel, auth()->user());
             }
-            Notification::send(User::getAdmins(), $notificationOb);
-            $model = new Activity();
+            if (is_object($activityModel) && is_object($activityModel->user)) {
+                $activityModel->user->notify($notificationOb);
+            } else {
+                Notification::send(User::getAdmins(), $notificationOb);
+            }
         }
+        $model = new Activity();
         $model->fill($request->all());
 
         if ($model->save()) {

@@ -24,5 +24,6 @@ return [
     'undo' => 'Your :action is undo',
     'statusChanged' => 'Post status changed to :status',
     'preferencesSaved' => 'Preferences saved successfully. We will try to recommend contents based on your preferences',
+    'thanksFor' => 'Thanks for :action',
 ];
 
