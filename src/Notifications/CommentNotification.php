@@ -3,13 +3,14 @@
 namespace Blog\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class CommentNotification extends Notification
+class CommentNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

@@ -6,10 +6,11 @@ use Blog\Models\Category;
 use Blog\Models\Post;
 use Blog\Models\Tag;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notification;
 
-class FavouriteNotification extends Notification
+class FavouriteNotification extends Notification implements ShouldQueue
 {
     use Queueable;
     /**

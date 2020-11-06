@@ -4,12 +4,13 @@ namespace Blog\Notifications;
 
 use Blog\Models\Newsletter;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class SubscribedToNewsletter extends Notification
+class SubscribedToNewsletter extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -36,7 +37,7 @@ class SubscribedToNewsletter extends Notification
     public function __construct(Newsletter $newsletter)
     {
         $this->newsletter = $newsletter;
-        $this->subject = $this->newsletter->email . ' subscribed to our newsletter.';
+        $this->subject = sprintf('%s  subscribed to our newsletter.', $this->newsletter->email);
         $this->actionLink = route('blog::newsletters.show', $this->newsletter->id);
     }
 

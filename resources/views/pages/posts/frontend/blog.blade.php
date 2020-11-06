@@ -42,42 +42,43 @@
         <hr/>
         <h2 class="h4">Featured Posts</h2>
         <div class="row">
-            <div class="col-md-6 col-sm-6">
-                <div class="card">
-                    <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}">
-                        @if($leadPost->image)
-                            {!! $leadPost->image->render('card-img-top') !!}
-                        @else
-                            <img src="{{config('blog.defaultPhoto')}}" class="card-img-top">
-                        @endif
-                    </a>
+            @if(is_object($leadPost))
+                <div class="col-md-6 col-sm-6">
+                    <div class="card">
+                        <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}">
+                            @if($leadPost->image)
+                                {!! $leadPost->image->render('card-img-top') !!}
+                            @else
+                                <img src="{{config('blog.defaultPhoto')}}" class="card-img-top">
+                            @endif
+                        </a>
 
-                    <div class="card-body">
-                        <div>
-                            <div class="d-flex flex-row justify-content-between">
-                                <h3 class="card-title h3">
-                                    <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}">
-                                        {{$leadPost->title}}
+                        <div class="card-body">
+                            <div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <h3 class="card-title h3">
+                                        <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}">
+                                            {{$leadPost->title}}
+                                        </a>
+                                    </h3>
+                                    @can('update',$leadPost)
+                                        @include('blog::includes.post_dropdown_menu',['record'=> $leadPost])
+                                    @endcan
+                                </div>
+                                <p class="mb-0">{{$leadPost->getSummary(300)}}
+                                    <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}"
+                                       class="card-link">Read more <i
+                                            class="fa fa-chevron-right"></i>
                                     </a>
-                                </h3>
-                                @can('update',$leadPost)
-                                    @include('blog::includes.post_dropdown_menu',['record'=> $leadPost])
-                                @endcan
+                                </p>
+                                <hr/>
+                                <a href="{{route('blog::frontend.blog.categories.index',$leadPost->category->slug)}}"
+                                   class="card-link">{{$leadPost->category->title}}</a>
                             </div>
-                            <p class="mb-0">{{$leadPost->getSummary(300)}}
-                                <a href="{{route('blog::frontend.blog.posts.show',['post'=>$leadPost->slug])}}"
-                                   class="card-link">Read more <i
-                                        class="fa fa-chevron-right"></i>
-                                </a>
-                            </p>
-                            <hr/>
-                            <a href="{{route('blog::frontend.blog.categories.index',$leadPost->category->slug)}}"
-                               class="card-link">{{$leadPost->category->title}}</a>
-
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <div class="col-md-6 col-sm-6">
                 <div class="row">
                     @foreach($featuredPosts as $fpost)

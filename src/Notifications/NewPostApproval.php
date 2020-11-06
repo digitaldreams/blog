@@ -4,12 +4,13 @@ namespace Blog\Notifications;
 
 use Blog\Models\Post;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class NewPostApproval extends Notification
+class NewPostApproval extends Notification implements ShouldQueue
 {
     use Queueable;
 

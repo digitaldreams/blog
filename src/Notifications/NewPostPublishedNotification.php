@@ -101,7 +101,7 @@ class NewPostPublishedNotification extends Notification
     public function toWebPush()
     {
         return (new WebPushMessage())
-            ->title('New Post publised that you are interested in.')
+            ->title('New Post published that you are interested in.')
             ->body($this->subject)
             ->requireInteraction()
             ->data(['url' => $this->link]);

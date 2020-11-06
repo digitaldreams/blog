@@ -4,12 +4,13 @@ namespace Blog\Notifications;
 
 use Blog\Models\Post;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class NewPostApprovalCompleted extends Notification
+class NewPostApprovalCompleted extends Notification implements ShouldQueue
 {
     use Queueable;
     /**
@@ -35,7 +36,7 @@ class NewPostApprovalCompleted extends Notification
     public function __construct(Post $post)
     {
         $this->post = $post;
-        $this->subject = 'Your post ' . $this->post->title . ' is ' . $this->post->status;
+        $this->subject = sprintf('Your post %s is %s', $this->post->title, $this->post->status);
         $this->actionLink = route('blog::posts.show', $this->post->slug);
     }
 
