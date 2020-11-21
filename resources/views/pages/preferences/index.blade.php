@@ -21,21 +21,32 @@
                     <ul class="list-group list-group-flush">
                         @foreach($chunkedCategories as $category)
                             <li class="list-group-item">
-                                <label class="form-check">
-                                    <input type="checkbox" value="{{$category->id}}"
+                                <div class="form-check">
+
+                                    <input class="form-check-input" id="user_category_{{$category->id}}" type="checkbox"
+                                           value="{{$category->id}}"
                                            {{in_array($category->id,$userCategories)?'checked':''}} name="categories[]">
-                                    {{$category->title}}
-                                </label>
+                                    <label class="form-check-label" for="user_category_{{$category->id}}">
+                                        {{$category->title}}
+                                    </label>
+                                </div>
                                 @if(!empty($category->children))
                                     <ul class="list-group list-group-flush">
                                         @foreach($category->children as $childCategory)
                                             <li class="list-group-item my-1 py-1">
-                                                <label class="form-check">
-                                                    <input type="checkbox" value="{{$childCategory->id}}"
+                                                <div class="form-check">
+
+                                                    <input class="form-check-input"
+                                                           id="user_child_category_{{$childCategory->id}}"
+                                                           type="checkbox"
+                                                           value="{{$childCategory->id}}"
                                                            {{in_array($childCategory->id,$userCategories)?'checked':''}}
                                                            name="categories[]">
-                                                    {{$childCategory->title}}
-                                                </label>
+                                                    <label class="form-check-label"
+                                                           for="user_child_category_{{$childCategory->id}}">
+                                                        {{$childCategory->title}}
+                                                    </label>
+                                                </div>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -53,20 +64,19 @@
         </h3>
         <div class="row">
             @foreach($tags->chunk(10) as $chunkedTags)
-                <ul class="list-group list-group-flush">
                     @foreach($chunkedTags as $tag)
-                        <li class="list-group-item my-0 py-0">
-                            <label class="form-check">
-                                <input type="checkbox" value="{{$tag->id}}"
+                            <div class="form-check">
+                                <input class="form-check-input" id="user_tags_{{$tag->id}}" type="checkbox"
+                                       value="{{$tag->id}}"
                                        {{in_array($tag->id,$userTags)?'checked':''}} name="tags[]">
-                                {{$tag->name}}
-                            </label>
-                        </li>
+                                <label class="form-check-label" for="user_tags_{{$tag->id}}">
+                                    {{$tag->name}}
+                                </label>
+                            </div>
                     @endforeach
-                </ul>
             @endforeach
         </div>
-        <div class="form-group text-right">
+        <div class="text-right">
             <input type="submit" class="btn btn-primary" value="Save">
         </div>
     </form>

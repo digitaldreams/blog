@@ -130,12 +130,12 @@
 
             <div class="tab-pane fade" id="nav-fakeTable" role="tabpanel" aria-labelledby="nav-fakeTable-tab">
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="insertTableFields">Fields</label>
                     <select id="insertTableFields" class="form-control" multiple style="width: 100%"></select>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="totalTableRow">Total</label>
                     <input type="number" min="5" max="200" value="5" class="form-control" id="totalTableRow">
                 </div>
@@ -148,7 +148,7 @@
 
             <div class="tab-pane fade" id="nav-fakeTabs" role="tabpanel" aria-labelledby="nav-fakeTabs-tab">
 
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="insertTabsFields">Tabs</label>
 
                     <select id="insertTabsFields" class="form-control" multiple style="width: 100%">
@@ -208,7 +208,7 @@
                     </div>
 
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label>Title</label>
                     <input type="text" id="insertChartjsTitle" class="form-control form-control-sm"
                            placeholder="e.g. Product sales report by month">

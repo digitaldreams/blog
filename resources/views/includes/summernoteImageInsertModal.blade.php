@@ -41,7 +41,7 @@
                               method="post"
                               enctype="multipart/form-data">
                             {{csrf_field()}}
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <input type="file" name="file[]" accept="image/*" class="form-control"
                                        onchange="readURLs(this,'uploadedImagePreviewBox')" multiple/>
                             </div>

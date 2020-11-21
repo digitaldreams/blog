@@ -10,12 +10,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
+                <div class="mb-3">
                     <label for="tooltipTitle">Title</label>
                     <input type="text" name="tooltipTitle" class="form-control" id="tooltipTitle"
                            placeholder=" e.g. Lorum Ipsum dummy text" required>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label>Placement</label>
                     <select class="form-control" id="tooltipPlacement" name="tooltipPlacement">
                         <option>top</option>

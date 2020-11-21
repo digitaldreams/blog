@@ -27,8 +27,7 @@ function SidebarCollapse() {
     $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
 }
 
-function checkSize(max_img_size, id) {
-    var input = document.getElementById(id);
+function checkMimes(type, input) {
     var allowedImageMimeType = [
         'image/svg+xml',
         'image/jpg',
@@ -38,26 +37,54 @@ function checkSize(max_img_size, id) {
         'image/bmp',
         'image/webp'
     ];
+    var allowedAudioMimeType = [
+        "audio/mp4",
+        "audio/mpeg",
+        "audio/ogg",
+        "audio/wav"
+    ];
 
     if (input.files && input.files.length == 1) {
-        if (allowedImageMimeType.indexOf(input.files[0].type) == -1) {
+
+        if (type == 'image' && allowedImageMimeType.indexOf(input.files[0].type) == -1) {
             alert('File Type Not allowed. Only jpg,jpeg,png,webp,svg allowed');
             input.value = '';
             return false;
+        } else if (type == 'audio' && allowedAudioMimeType.indexOf(input.files[0].type) == -1) {
+            alert('File Type Not allowed. Only mp4,mp3,ogg,wav allowed');
+            input.value = '';
+            return false;
         }
+    }
+
+    return true;
+}
+
+function checkSize(max_img_size, id, type) {
+    var input = document.getElementById(id);
+
+
+    if (input.files && input.files.length == 1) {
+
         if (input.files[0].size > max_img_size) {
             var yourFileSize = (input.files[0].size / 1024 / 1024);
             input.value = '';
-            alert("The file must be less than " + (max_img_size / 1024 / 1024) + "MB", "Your file size is " + yourFileSize.toFixed(2) + 'MB', "warning")
+            alert("The file must be less than " + (max_img_size / 1024 / 1024).toFixed(2) + " MB." + " Your file size is " + yourFileSize.toFixed(2) + 'MB')
             return false;
-        } else {
+        }
+        if (type == 'image') {
             var reader = new FileReader();
             reader.onload = function (e) {
                 $('#' + id + '_preview').attr('src', e.target.result);
             }
+            return checkMimes(type, input);
+
 
             reader.readAsDataURL(input.files[0]);
+        } else if (type == 'audio') {
+            return checkMimes(type, input);
         }
+
     }
     return true;
 }
@@ -98,7 +125,7 @@ $(document).ready(function () {
 
                 if (clickedNode) {
                     if (clickedNode.nodeName == 'INPUT' || clickedNode.nodeName == 'TEXTAREA') {
-                        clickedNode.value = clickedNode.value +' '+ lastScript[0].transcript + endChar;
+                        clickedNode.value = clickedNode.value + ' ' + lastScript[0].transcript + endChar;
                     } else {
                         var text = document.createTextNode(lastScript[0].transcript + endChar);
                         clickedNode.appendChild(text);

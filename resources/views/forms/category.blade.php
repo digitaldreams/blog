@@ -1,9 +1,9 @@
-<form action="{{$route ?? route('blog::categories.store')}}" method="POST" class="m-form"
+<form action="{{$route ?? route('blog::categories.store')}}" method="POST" class=""
       onsubmit="return disableBtn()">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
-    <div class="m-form__group form-group row">
-        <label for="title" class="col-form-label col-md-2">Title</label>
+    <div class="mb-3 row">
+        <label for="title" class="col-form-label col-md-2">Name</label>
         <div class="col-md-9">
             <input type="text" class="form-control {{ $errors->has('title') ? ' is-invalid' : '' }}" name="title"
                    id="title"
@@ -16,10 +16,10 @@
             @endif
         </div>
     </div>
-    <div class="m-form__group form-group row">
-        <label for="parent_id" class="col-form-label col-md-2">Parent </label>
+    <div class="mb-3 row">
+        <label for="parent_id" class="col-form-label col-md-2">Parent Category </label>
         <div class="col-md-9">
-            <select class="form-control {{ $errors->has('parent_id') ? ' is-invalid' : '' }}" name="parent_id"
+            <select class="form-select {{ $errors->has('parent_id') ? ' is-invalid' : '' }}" name="parent_id"
                     id="parent_id">
                 <option value="">None</option>
                 @foreach($categories as $category)
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="form-group text-right ">
+    <div class="text-right ">
         <input type="reset" class="btn btn-default" value="Clear"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
 

@@ -4,12 +4,12 @@
     <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
 
 
-    <div class="form-group">
-        <label for="title">Title</label>
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control {{$errors->has('title')?'is-invalid':''}}" name="title" id="title"
                value="{{old('title',$model->title)}}"
                required
-               placeholder="Type a unique post title." maxlength="255">
+               placeholder="Type a unique post title." maxlength="190">
         @if($errors->has('title'))
             <span class="form-control-feedback">
                 <strong>{{ $errors->first('title') }}</strong>
@@ -30,7 +30,7 @@
 
     {!! \SEO\Seo::form($model) !!}
 
-    <div class="form-group text-right mt-2 ">
+    <div class="text-right mt-2 ">
         <input type="reset" class="btn btn-default" value="Clear"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
 

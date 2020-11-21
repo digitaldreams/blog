@@ -1,4 +1,4 @@
-<div class="m-form__group form-group">
+<div class="mb-3">
     <label for="category_id">Category
         <span class="fa fa-info-circle" data-toggle="tooltip" title="{{trans('blog::info.category')}}"></span>
     </label>
@@ -14,7 +14,7 @@
     @endif
 </div>
 @can('approve',\Blog\Models\Post::class)
-    <div class="form-group">
+    <div class="mb-3">
         <label for="status">Status</label>
         <span class="fa fa-info-circle" data-toggle="tooltip" title="{{trans('blog::info.postStatus')}}"></span>
         <br/>
@@ -37,7 +37,7 @@
     </div>
 
 
-    <div class="form-group">
+    <div class="mb-3">
         <div class="form-check form-check-inline">
             <input class="form-check-input" name="is_featured" type="checkbox" form="postForm" id="inlineCheckbox1"
                    value="1" {{old('is_featured',$model->is_featured)==\Blog\Models\Post::IS_FEATURED?'checked':''}}>
@@ -54,7 +54,7 @@
         @endif
     </div>
 @endcan
-<div class="form-group">
+<div class="mb-3">
     <label for="image">Tags
         <span class="fa fa-info-circle" data-toggle="tooltip" title="{{trans('blog::info.tags')}}"></span>
     </label>
@@ -68,7 +68,7 @@
     </select>
 </div>
 
-<div class="form-group">
+<div class="mb-3">
     <label for="image">Feature Image</label>
     <input type="file" form="postForm" class="form-control {{ $errors->has('image') ? ' is-invalid' : '' }}"
            name="image" id="image"

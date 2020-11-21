@@ -1,7 +1,7 @@
 <form action="{{$route ?? route('blog::tags.store')}}" method="POST" class="m-form" onsubmit="return disableBtn()">
     {{csrf_field()}}
     <input type="hidden" name="_method" value="{{$method ?? 'POST'}}"/>
-    <div class="m-form__group form-group row">
+    <div class="mb-3 row">
         <label for="title" class="col-form-label col-md-2">Name</label>
         <div class="col-md-9">
             <input type="text" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" name="name"
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="m-form__group  form-group row">
+    <div class="mb-3 row">
         <label class="col-form-label col-md-2">Description</label>
         <div class="col-md-9">
             <textarea class="form-control" placeholder="describe about tag"
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="form-group text-right ">
+    <div class="text-right ">
         <input type="reset" class="btn btn-default" value="Clear"/>
         <input type="submit" class="btn btn-primary" value="Save"/>
     </div>
