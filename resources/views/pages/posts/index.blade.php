@@ -43,7 +43,7 @@
 
         <div class="row">
             @foreach($records as $record)
-                <div class="card-group col-md-3 col-sm-4 col-12">
+                <div class="col-md-4 col-sm-6 col-12">
                     @include('blog::cards.post')
                 </div>
             @endforeach

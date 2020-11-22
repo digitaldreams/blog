@@ -128,11 +128,11 @@
                     <div class="bg-light">
 
                         @foreach($record->tags as $tag)
-                            <a class="btn badge badge-light p-1"
+                            <a class="badge bg-light p-1"
                                href="{{route('blog::frontend.blog.posts.index',['search'=>$tag->name])}}">{{$tag->name}}
                             </a>
                         @endforeach
-                        <button class="btn badge badge-light">
+                        <button class="badge bg-secondary">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill"
                                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
@@ -145,7 +145,7 @@
                             <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
                             <input type="hidden" name="activityable_id" value="{{$record->id }}">
                             <input type="hidden" name="type" value="like">
-                            <button class="btn badge badge-light">
+                            <button class="badge bg-secondary">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-hand-thumbs-up"
                                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -159,7 +159,7 @@
                             <input type="hidden" name="activityable_type" value="{{get_class($record)}}">
                             <input type="hidden" name="activityable_id" value="{{$record->id }}">
                             <input type="hidden" name="type" value="favourite">
-                            <button class="btn badge badge-light">
+                            <button class="badge bg-secondary">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-star-fill"
                                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path
